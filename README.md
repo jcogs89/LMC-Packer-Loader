@@ -2,7 +2,7 @@
 
 | Faculty Mentor              | Customer POC & SME |
 | :-------------------------: |:------------------:|
-| [Sabetto](rsabetto@gmu.edu) | [Matt Murray](matthew.m.murray@lmco.com), [Steve Kyle](steven.t.kyle@lmco.com), [Austin Keeley](austin.t.keeley@lmco.com) |
+| [Sabetto](mailto:rsabetto@gmu.edu) | [Matt Murray](mailto:matthew.m.murray@lmco.com), [Steve Kyle](mailto:steven.t.kyle@lmco.com), [Austin Keeley](mailto:austin.t.keeley@lmco.com) |
 
 ## Questions
 
