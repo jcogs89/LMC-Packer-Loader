@@ -1,7 +1,10 @@
-# capstone
-CYSE-492 Senior Design
+# Lockheed Martin - 3 ( Packer / Loader )
 
-Questions
+| Faculty Mentor              | Customer POC & SME |
+| :-------------------------: |:------------------:|
+| [Sabetto](rsabetto@gmu.edu) | [Matt Murray](matthew.m.murray@lmco.com), [Steve Kyle](steven.t.kyle@lmco.com), [Austin Keeley](austin.t.keeley@lmco.com) |
+
+## Questions
 
 1. Do they want the packer to send the loader along with the file?
 
@@ -16,11 +19,10 @@ Questions
 6. Can you please outline an expected use case?
 
 
-Notes
+## Notes
 
  - PE file is not going to run in 
  
  - Remove zip header?  Compress first, then run every byte through AES...
  
  - Loader never touches disk.  This is tougher, but doable for us. We will try this last.
- 
