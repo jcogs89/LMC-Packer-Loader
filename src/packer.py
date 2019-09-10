@@ -36,7 +36,7 @@ def main(args):
             print("Specified output directory does not exist; will output to default.")  # ToDo switch to logger
 
     if args.input_file:
-        pack_one_to_one(args.file_path, args.password, opt_dir)
+        pack_one_to_one(args.input_file, args.password, opt_dir)
     else:  # input is a directory
         filepaths = get_dir_filepaths(inp_dir)
         if args.compress_output:
@@ -52,5 +52,5 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--input_directory', help='specify input as all files in a directory', type=str)
     parser.add_argument('-o', '--output_dir', help='specify an output directory', type=str)
     parser.add_argument('-c', '--compress_output', help='put all input files into one output file', action='store_true')
-    parser.add_argument('-pass', '--password', help='specify a password to encrypt with', type=str)
+    parser.add_argument('-p', '--password', help='specify a password to encrypt with', type=str)
     main(parser.parse_args())
