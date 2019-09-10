@@ -1,0 +1,6 @@
+sample/__pycache__/
+
+*.pyc
+*.pyo
+
+.idea
