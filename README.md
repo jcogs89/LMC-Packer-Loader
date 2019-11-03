@@ -6,7 +6,6 @@ Lockheed Martin - 3 ( Packer / Loader )
 | [Sabetto](mailto:rsabetto@gmu.edu) | [Matt Murray](mailto:matthew.m.murray@lmco.com), [Steve Kyle](mailto:steven.t.kyle@lmco.com), [Austin Keeley](mailto:austin.t.keeley@lmco.com) |
 
 ## Questions
-
 1. Do they want the packer to send the loader along with the file?
 2. What encryption standard do you need us to meet? (We're thinking AES)
 3. Can we use 7zip? Has native encryption, multithreading, etc.
