@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-
+//lists files for a given dir
 vector<string> dirlist(string path)
 {
 	vector<string> filesv;
@@ -19,3 +19,11 @@ vector<string> dirlist(string path)
     return filesv;
 }
 
+//prints a vector, for use with dirlist
+void dirprint(vector<string> files)
+{
+	for (auto ir = files.crbegin(); ir != files.crend(); ++ir)
+		{
+		        cout << *ir << "\n";
+		}
+}

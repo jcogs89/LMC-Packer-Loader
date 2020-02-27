@@ -14,7 +14,9 @@ static const char usage[] = "\
 Sends a user defined PAYLOAD to TARGET. \n\
 Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-h, --help\tPrints this Help Page\
+	-s \tStarts in service mode\
 	\n\n";
+
 
 int main(int argc, char *argv[]) {
 	int option;
@@ -24,14 +26,15 @@ int main(int argc, char *argv[]) {
 	if(argc<2){ //Check to see if any arguments passed
 		printf(usage);
 		//testing();
-		//string path = "./";
-		//cout << dirlist(path)<< endl;
+		string path = "./";
+		//dirprint(dirlist(path));
 		//vector<string> files = dirlist(path);
 		return 0;
 	}
 
 	// put ':' at the starting of the string so compiler can distinguish between '?' and ':'
-	while((option = getopt(argc, argv, ":ht:f:")) != -1){ //get option from the getopt() method
+	while((option = getopt(argc, argv, ":ht:f:s")) != -1)//get option from the getopt() method
+	{
 		switch(option){
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
@@ -50,6 +53,12 @@ int main(int argc, char *argv[]) {
 			case 'h':
 				printf(usage);
 				//testing();
+				break;
+			case 's':
+				printf("Starting\n");
+				//insert cli here
+				return 1;
+				break;
 			return 0;
 		}
 	}
