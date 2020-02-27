@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include <iostream>
 #include <filesystem>
 #include <vector>
@@ -24,6 +25,7 @@ void dirprint(vector<string> files)
 {
 	for (auto ir = files.crbegin(); ir != files.crend(); ++ir)
 		{
-		        cout << *ir << "\n";
+				string tmp = *ir;
+				printf("%s\n",tmp.substr(2).c_str());
 		}
 }

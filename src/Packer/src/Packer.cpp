@@ -2,8 +2,9 @@
 #include <unistd.h>
 #include <vector>
 #include <string.h>
-#include "testing.h"
+//#include "testing.h"
 #include "dirlist.h"
+#include "cliopts.h"
 using namespace std;
 
 //requires c++ v17
@@ -22,13 +23,12 @@ int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
+	string path = "./";
+	vector<string> files = dirlist(path);
+	//dirprint(files);
 
 	if(argc<2){ //Check to see if any arguments passed
 		printf(usage);
-		//testing();
-		string path = "./";
-		//dirprint(dirlist(path));
-		//vector<string> files = dirlist(path);
 		return 0;
 	}
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 				break;
 			case 's':
 				printf("Starting\n");
-				//insert cli here
+				//insert cli here needs "files"
 				return 1;
 				break;
 			return 0;
