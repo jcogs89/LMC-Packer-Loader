@@ -5,6 +5,7 @@
 #include <iostream>
 #include "testing.h"
 #include "dirlist.h"
+#include "cliopts.h"
 using namespace std;
 
 //requires c++ v17
