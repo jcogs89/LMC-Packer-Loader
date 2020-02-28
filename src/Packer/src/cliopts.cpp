@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "dirlist.h"
+#include "Helpers.h"
 using namespace std;
 
 void listpayloads(vector<string> files)
@@ -50,11 +51,13 @@ void addpayload(string pathpacked, string pathstaging)
 	//10 is magic, trust me
 	printf("\n");
 	dirprint(stage, 10);
-	int id;
+	unsigned int id;
 	while (1)
 		{
 			printf("\nEnter number for file to be packed\n>> ");
-			cin >> id;
+			id = intinput();
+			printf("%i",id);
+			exit(0);
 			if (id<0)
 			{
 				cout << "Invalid Option\n";
