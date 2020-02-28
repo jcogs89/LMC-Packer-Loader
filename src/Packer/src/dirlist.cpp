@@ -23,11 +23,14 @@ vector<string> dirlist(string path)
 //prints a vector, for use with dirlist
 void dirprint(vector<string> files, int magic)
 {
-	int cnt =0;
-	for (auto ir = files.crbegin(); ir != files.crend(); ++ir)
+	long unsigned int cnt =0;
+	//for (auto ir = files.crbegin(); ir != files.crend(); ++ir)
+	for (cnt=0; cnt !=files.size();cnt++)
 		{
-				string tmp = *ir;
+				//string tmp = *ir;
 
-				printf("%i %s\n",cnt++,tmp.substr(magic).c_str());
+				printf("%li %s\n",cnt,files[cnt].substr(magic).c_str());
+				//printf("%i %s\n",cnt,tmp.substr(magic).c_str());
+
 		}
 }

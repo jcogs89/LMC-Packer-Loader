@@ -23,7 +23,7 @@ int validateIP4Dotted(const char *s){
     return 1;
 }
 
-int main(){
+int mainz(){
 	char ipaddress[256];
 	printf("Enter IP Adress: ");
 	fgets(ipaddress, sizeof(ipaddress), stdin);

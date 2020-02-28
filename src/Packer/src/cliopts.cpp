@@ -65,6 +65,7 @@ void addpayload(string pathpacked, string pathstaging)
 		else
 		{
 			//cout << stage[id];
+			printf("\n%i\n",id);
 			break;
 		}
 	}
@@ -72,10 +73,38 @@ void addpayload(string pathpacked, string pathstaging)
 	//jenk
 	printf("\ndo somthig here\n");
 	//magic again
-	string outp= "./Payloads/"+stage[id].substr(10)+".zip";
+	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
 	string iput = stage[id];
-	int ret = ziphelp(iput, outp);
+	ziphelp(iput, outp);
+	//ret = uziphelp(outp, outp+".txt");
+
+	while (1)
+		{
+			printf("Do you want to delete the source in staging (y/n)?\n>> ");
+			cin >> ans;
+			if (ans==y or ans == yc)
+			{
+				if( remove( iput.c_str() ) != 0 )
+				    perror( "Error deleting file" );
+				  else
+				    puts( "File successfully deleted" );
+				break;
+			}
+			else if (ans==n)
+			{
+				break;
+			}
+			else
+			{
+				cout << "Invalid Option\n";
+			}
+
+		}
+	//encryption goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+}
 
 
-
+void sendpayload(string pathpacked)
+{
+	printf("\nsend a payload\n");
 }

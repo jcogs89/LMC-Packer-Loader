@@ -8,7 +8,8 @@ using namespace std;
 static const char options[] = "\
 \n \e[1;32mChoose an option:\e[0;17m \n\
 1. List Available Payloads \n\
-2. Add new payload \n\n\
+2. Add new payload \n\
+3. Send payload \n\
 0. Exit \n\
 \e[1;32m>\e[0;17m ";
 	
@@ -26,6 +27,10 @@ int cli(vector<string> files, string pathpacked, string pathstaging)
 			else if(id==2)
 			{
 				addpayload(pathpacked, pathstaging);
+			}
+			else if(id==3)
+			{
+				sendpayload(pathpacked);
 			}
 			else if(id==0)
 			{

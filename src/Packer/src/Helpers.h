@@ -6,3 +6,4 @@
  */
 int intinput();
 int ziphelp(string in, string out);
+int uziphelp(string in, string out);
