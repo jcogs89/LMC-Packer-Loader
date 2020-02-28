@@ -26,7 +26,7 @@ void addpayload(string pathpacked, string pathstaging)
 	char n = 'n';
 	while (1)
 	{
-		printf("Please put file in Staging folder\nIs the file in the staging folder (y/n)?");
+		printf("Please put file in Staging folder\nIs the file in the staging folder (y/n)?\n>> ");
 		cin >> ans;
 		if (ans==y)
 		{
@@ -50,5 +50,22 @@ void addpayload(string pathpacked, string pathstaging)
 	//10 is magic, trust me
 	printf("\n");
 	dirprint(stage, 10);
+	int id;
+	while (1)
+		{
+			printf("\nEnter number for file to be packed\n>> ");
+			cin >> id;
+			if (id<0)
+			{
+				cout << "Invalid Option\n";
+				continue;
+			}
+			else if (id>stage.size()-1)
+			{
+				cout << "Invalid Option\n";
+				continue;
+			}
+			//printf("%lu", stage.size());
+		}
 
 }

@@ -19,7 +19,6 @@ int cli(vector<string> files, string pathpacked, string pathstaging)
 		{
 			cout << options;
 			cin >> id;
-
 			if(id==1)
 			{
 				listpayloads(files);
