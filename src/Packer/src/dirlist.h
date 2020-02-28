@@ -4,4 +4,4 @@ using namespace std;
 
 
 vector<string> dirlist(string path);
-void dirprint(vector<string> files);
+void dirprint(vector<string> files, int magic);

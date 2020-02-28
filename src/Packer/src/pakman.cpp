@@ -3,9 +3,9 @@
 #include <vector>
 #include <string.h>
 #include <iostream>
-#include "testing.h"
+//#include "testing.h"
 #include "dirlist.h"
-#include "cliopts.h"
+#include "cli.h"
 using namespace std;
 
 //requires c++ v17
@@ -15,35 +15,23 @@ static const char usage[] = "\
 \nUsage: packman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE]\n\
 Sends a user defined PAYLOAD to TARGET. \n\
 Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
-	-h, --help\tPrints this Help Page\
+	-h, --help\tPrints this Help Page\n\
+	-s \tStarts in service mode\
 	\n\n";
 
-static const char options[] = "\
-\n \e[1;32mChoose an option:\e[0;17m \n\
-1. List Available Payloads \n\
-2. Do some other stuff \n\n\
-\e[1;32m>\e[0;17m ";
-	
-int cli() {
-		int id;
-		cout << options;
-		cin >> id;
-		
-		if(id==1){
-			cout << "Option 1 Selected\n";
-		}
-		else if(id==2){
-			cout << "Option 2 Selected\n";
-		}
-		else{
-		cout << "Invalid Option! Please enter a number.\n";
-		}
-}
+
 
 int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
+	//needs to be inported from config file <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	string pathpacked = "./Payloads/";
+	string pathstaging = "./Staging/";
+
+	vector<string> files = dirlist(pathpacked);
+
+	//dirprint(files);
 
 	if(argc<2){ //Check to see if any arguments passed
 		printf(usage);
@@ -55,7 +43,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// put ':' at the starting of the string so compiler can distinguish between '?' and ':'
-	while((option = getopt(argc, argv, ":ht:f:")) != -1){ //get option from the getopt() method
+	while((option = getopt(argc, argv, ":ht:f:s")) != -1){ //get option from the getopt() method
 		switch(option){
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
@@ -74,6 +62,12 @@ int main(int argc, char *argv[]) {
 			case 'h':
 				printf(usage);
 				//testing();
+				break;
+			case 's':
+				printf("Starting\n");
+				cli(files, pathpacked, pathstaging);
+				return 1;
+				break;
 			return 0;
 		}
 	}
@@ -84,5 +78,4 @@ int main(int argc, char *argv[]) {
 		printf(usage);
 		return 0;
 	}
-	cli();
 }

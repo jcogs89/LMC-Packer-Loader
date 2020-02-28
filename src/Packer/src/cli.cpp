@@ -1,25 +1,42 @@
 #include <iostream>
+#include <string>
+#include <vector>
+#include "cliopts.h"
 
 using namespace std;
 
 static const char options[] = "\
 \n \e[1;32mChoose an option:\e[0;17m \n\
 1. List Available Payloads \n\
-2. Do some other stuff \n\n\
+2. Add new payload \n\n\
+0. Exit \n\
 \e[1;32m>\e[0;17m ";
 	
-int cli() {
+int cli(vector<string> files, string pathpacked, string pathstaging)
+{
 		int id;
-		cout << options;
-		cin >> id;
-		
-		if(id==1){
-			cout << "Option 1 Selected\n";
+		while (1)
+		{
+			cout << options;
+			cin >> id;
+
+			if(id==1)
+			{
+				listpayloads(files);
+			}
+			else if(id==2)
+			{
+				addpayload(pathpacked, pathstaging);
+			}
+			else if(id==0)
+			{
+				cout << "exit\n";
+				break;
+			}
+			else
+			{
+				cout << "Invalid Option! Please enter a number.\n";
+			}
 		}
-		else if(id==2){
-			cout << "Option 2 Selected\n";
-		}
-		else{
-		cout << "Invalid Option! Please enter a number.\n"
-		}
+		return 0;
 }
