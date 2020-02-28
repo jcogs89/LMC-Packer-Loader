@@ -5,3 +5,4 @@
  *      Author: cbai
  */
 int intinput();
+int ziphelp(string in, string out);

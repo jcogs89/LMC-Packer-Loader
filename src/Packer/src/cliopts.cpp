@@ -48,27 +48,34 @@ void addpayload(string pathpacked, string pathstaging)
 
 	}
 	vector<string> stage = dirlist(pathstaging);
-	//10 is magic, trust me
+
 	printf("\n");
-	dirprint(stage, 10);
 	unsigned int id;
 	while (1)
+	{
+		//10 is magic, trust me
+		dirprint(stage, 10);
+		printf("\nEnter number for file to be packed\n>> ");
+		id = intinput();
+		if (id>stage.size()-1)
 		{
-			printf("\nEnter number for file to be packed\n>> ");
-			id = intinput();
-			printf("%i",id);
-			exit(0);
-			if (id<0)
-			{
-				cout << "Invalid Option\n";
-				continue;
-			}
-			else if (id>stage.size()-1)
-			{
-				cout << "Invalid Option\n";
-				continue;
-			}
-			//printf("%lu", stage.size());
+			cout << "Invalid Option\n\n";
+			continue;
 		}
+		else
+		{
+			//cout << stage[id];
+			break;
+		}
+	}
+	cout <<"File :\"" << stage[id] << "\" selected";
+	//jenk
+	printf("\ndo somthig here\n");
+	//magic again
+	string outp= "./Payloads/"+stage[id].substr(10)+".zip";
+	string iput = stage[id];
+	int ret = ziphelp(iput, outp);
+
+
 
 }
