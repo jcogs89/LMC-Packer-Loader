@@ -1,4 +1,4 @@
-# ![BS3 Logo](https://github.com/Buckaroo9/BluSh3ll/Content/blue_shell_64.jpg "BS3 Logo") Team BluSh3ll
+# ![BS3 Logo](https://github.com/Buckaroo9/BluSh3ll/blob/master/Content/blue_shell_64.jpg "BS3 Logo") Team BluSh3ll
 Lockheed Martin - 3 ( Packer / Loader )
 
 | Faculty Mentor              | Customer POC & SME |
