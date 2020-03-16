@@ -28,7 +28,15 @@ int main(int argc, char *argv[]) {
 	//needs to be inported from config file <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	string pathpacked = "./Payloads/";
 	string pathstaging = "./Staging/";
-
+	try
+	{
+		vector<string> files = dirlist(pathpacked);
+	}
+	catch (...)
+	{
+		printf("Payloads dir not found");
+		exit(0);
+	}
 	vector<string> files = dirlist(pathpacked);
 
 	//dirprint(files);

@@ -71,7 +71,7 @@ void addpayload(string pathpacked, string pathstaging)
 	}
 	cout <<"File :\"" << stage[id] << "\" selected";
 	//jenk
-	printf("\ndo somthig here\n");
+	printf("do somthing here\n");
 	//magic again
 	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
 	string iput = stage[id];
