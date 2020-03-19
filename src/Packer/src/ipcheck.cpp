@@ -13,7 +13,9 @@ int validateIP4Dotted(const char *s){
     int c = sscanf(s, "%3u.%3u.%3u.%3u%s", &d[0], &d[1], &d[2], &d[3], tail);
 
     if (c != 4 || tail[0])
+    {
         return 0;
+    }
 
 	int i;
     for (i = 0; i < 4; i++)
@@ -31,4 +33,5 @@ int mainz(){
 		printf("Valid IP Address\n");
 	else
 		printf("Invalid IP Address\n");
+	return(0);
 }

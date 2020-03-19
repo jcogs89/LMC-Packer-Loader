@@ -34,7 +34,7 @@ int cli(vector<string> files, string pathpacked, string pathstaging)
 			}
 			else if(id==0)
 			{
-				cout << "exit\n";
+				cout << "\nexit\n";
 				break;
 			}
 			else

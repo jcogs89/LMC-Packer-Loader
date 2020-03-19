@@ -10,6 +10,7 @@
 #include <vector>
 #include "dirlist.h"
 #include "Helpers.h"
+#include "sshwraper.h"
 using namespace std;
 
 void listpayloads(vector<string> files)
@@ -107,4 +108,5 @@ void addpayload(string pathpacked, string pathstaging)
 void sendpayload(string pathpacked)
 {
 	printf("\nsend a payload\n");
+	connect();
 }
