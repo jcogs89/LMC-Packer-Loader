@@ -10,8 +10,11 @@
 #include <assert.h>
 #include <limits.h>
 #include <iostream>
-#include "cryptopp/aes.h"
+#include <iomanip>
+
 #include "miniz/miniz.h"
+
+
 using namespace std;
 
 typedef unsigned char uint8;
@@ -326,19 +329,6 @@ int uziphelp(string in, string out)
 int encrypthelp(string in, string out)
 {
 	printf("Encryption call works.");
-	CryptoPP::byte key[ CryptoPP::AES::DEFAULT_KEYLENGTH ], iv[ CryptoPP::AES::BLOCKSIZE ];
-	    memset( key, 0x00, CryptoPP::AES::DEFAULT_KEYLENGTH );
-	    memset( iv, 0x00, CryptoPP::AES::BLOCKSIZE );
-
-	std::string plaintext = "Now is the time for all good men to come to the aide...";
-	std::string ciphertext;
-	std::string decryptedtext;
-
-	std::cout << "Plain Text (" << plaintext.size() << " bytes)" << std::endl;
-	std::cout << plaintext;
-	std::cout << std::endl << std::endl;
-
-	CryptoPP::AES::Encryption aesEncryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
 
 	return -69;
 }
