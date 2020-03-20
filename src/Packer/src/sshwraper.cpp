@@ -214,7 +214,7 @@ int scp_write(ssh_session session)
   return SSH_OK;
 }
 
-int connect()
+int connect(char *ip)
 {
 	  int port = 22;
 	  char usern[] = {'c','b','a','i'};
@@ -227,7 +227,7 @@ int connect()
 	    return(-1);
 	  }
 	  //												V ip to connect to -----------------------------
-	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, "localhost");
+	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, ip);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, &usern);
 

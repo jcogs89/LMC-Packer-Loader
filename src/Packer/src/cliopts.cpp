@@ -112,5 +112,6 @@ void addpayload(string pathpacked, string pathstaging)
 void sendpayload(string pathpacked)
 {
 	printf("\nsend a payload\n");
-	connect();
+	//logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	connect("127.0.0.1");
 }
