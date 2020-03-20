@@ -15,9 +15,43 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include "dirlist.h"
+#include <string>
+#include <vector>
+#include "Helpers.h"
 using namespace std;
 
 //to do
+int selector(){
+	vector<string> stage = dirlist("./Payloads/");
+	printf("\n");
+	unsigned int id;
+	while (1)
+	{
+		//10 is magic, trust me
+		dirprint(stage, 10);
+		printf("\nEnter number for file to be packed\n>> ");
+		id = intinput();
+		if (id>stage.size()-1)
+		{
+			cout << "Invalid Option\n\n";
+			continue;
+		}
+		else
+		{
+			//cout << stage[id];
+			printf("\n%i\n",id);
+			break;
+		}
+	}
+	cout <<"File :\"" << stage[id] << "\" selected";
+	//jenk
+	printf("do somthing here\n");
+	//magic again
+	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+	string iput = stage[id];
+	return 0;
+}
 
 int verify_knownhost(ssh_session session)
 {
@@ -137,6 +171,7 @@ int scp_write(ssh_session session)
   }
 
   //put shit here
+  selector();
   const char *helloworld = "Hello, world!\n";
   int length = strlen(helloworld);
 
