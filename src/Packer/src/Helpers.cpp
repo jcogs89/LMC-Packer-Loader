@@ -323,3 +323,14 @@ int uziphelp(string in, string out)
 		        printf("Success.\n");
 		        return EXIT_SUCCESS;
 }
+
+int encrypthelp(string in, string out)
+{
+	printf("Encryption call works.");
+	return -69;
+}
+
+int decrypthelp(string in, string out)
+{
+	return -69;
+}

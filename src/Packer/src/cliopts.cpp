@@ -72,14 +72,17 @@ void addpayload(string pathpacked, string pathstaging)
 	}
 	cout <<"File :\"" << stage[id] << "\" selected";
 	//jenk
-	printf("do somthing here\n");
+	//printf("do somthing here\n");
 	//magic again
-	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+	string compression_outp= "./Payloads/"+stage[id].substr(10)+".zips";
 	string iput = stage[id];
-	ziphelp(iput, outp);
+	ziphelp(iput, compression_outp);
 	//ret = uziphelp(outp, outp+".txt");
 
+	//encryption goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	//ToDo PRIORITY 2 - Add encryption here.
+	string encryption_outp= "./Payloads/"+stage[id].substr(10)+".encr";
+	encrypthelp(compression_outp, encryption_outp);
 
 	while (1)
 		{
@@ -103,7 +106,6 @@ void addpayload(string pathpacked, string pathstaging)
 			}
 
 		}
-	//encryption goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }
 
 
