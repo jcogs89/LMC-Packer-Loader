@@ -79,6 +79,8 @@ void addpayload(string pathpacked, string pathstaging)
 	ziphelp(iput, outp);
 	//ret = uziphelp(outp, outp+".txt");
 
+	//ToDo PRIORITY 2 - Add encryption here.
+
 	while (1)
 		{
 			printf("Do you want to delete the source in staging (y/n)?\n>> ");
