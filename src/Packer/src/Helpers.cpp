@@ -10,9 +10,9 @@
 #include <assert.h>
 #include <limits.h>
 #include <iostream>
+#include "cryptopp/aes.h"
 #include "miniz/miniz.h"
 using namespace std;
-
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
@@ -24,7 +24,6 @@ typedef unsigned int uint;
 #define BUF_SIZE (1024 * 1024)
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
-
 
 
 int intinput()
