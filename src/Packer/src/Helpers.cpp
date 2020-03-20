@@ -6,6 +6,7 @@
  */
 #include <stdexcept>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <assert.h>
 #include <limits.h>
@@ -326,9 +327,16 @@ int uziphelp(string in, string out)
 		        return EXIT_SUCCESS;
 }
 
+
 int encrypthelp(string in, string out)
 {
 	printf("Encryption call works.");
+	string cmd("openssl enc -aes-256-cbc -in ");
+	cmd += in;
+	cmd += " -base64 -md sha1 -out ";
+	cmd += out;
+	system(cmd.c_str());
+
 
 	return -69;
 }
