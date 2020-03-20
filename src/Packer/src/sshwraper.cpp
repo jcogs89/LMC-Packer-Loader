@@ -158,7 +158,7 @@ int connect()
 	    exit(-1);
 	  }
 	  printf("\nconnected\n");
-	  //do shit
+	  //ToDo PRIORITY 1 - send payload
 	  //https://api.libssh.org/stable/libssh_tutor_forwarding.html
 
 	  ssh_disconnect(my_ssh_session);

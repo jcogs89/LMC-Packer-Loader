@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 		printf("Payloads dir not found");
 		exit(0);
 	}
-	vector<string> files = dirlist(pathpacked);
+	vector<string> files = dirlist(pathpacked);	// ToDo why is this here twice?
 
 	//dirprint(files);
 
