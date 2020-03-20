@@ -217,7 +217,8 @@ int scp_write(ssh_session session)
 int connect()
 {
 	  int port = 22;
-	  char usern[] = {'c','b','a','i'};
+	  //ToDo change to variable
+	  char usern[] = {'b','u','i','l', 'd'};
 	  ssh_session my_ssh_session;
 	  int rc;
 	  my_ssh_session = ssh_new();

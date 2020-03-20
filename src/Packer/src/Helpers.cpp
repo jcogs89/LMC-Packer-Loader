@@ -59,7 +59,7 @@ int ziphelp(string in, string out)
 	const char *pSrc_filename = in.c_str();
 	const char *pDst_filename = out.c_str();
 	long file_loc;
-	printf("setsetstsetsetestestsetset\n");
+	//printf("setsetstsetsetestestsetset\n");
 
 	  printf("miniz.c version: %s\n", MZ_VERSION);
 
@@ -172,7 +172,7 @@ int ziphelp(string in, string out)
 
 	    //
 	    //
-		  printf("setsetstsetsetestestsetset9872345978523987523\n");
+		  //printf("setsetstsetsetestestsetset9872345978523987523\n");
 		  fclose(pInfile);
 		    if (EOF == fclose(pOutfile))
 		    {
@@ -199,7 +199,7 @@ int uziphelp(string in, string out)
 		const char *pSrc_filename = in.c_str();
 		const char *pDst_filename = out.c_str();
 		long file_loc;
-		printf("setsetstsetsetestestsetset\n");
+		//printf("setsetstsetsetestestsetset\n");
 
 		  printf("miniz.c version: %s\n", MZ_VERSION);
 
@@ -330,13 +330,13 @@ int uziphelp(string in, string out)
 
 int encrypthelp(string in, string out)
 {
-	printf("Encryption call works.");
+	printf("Encryption the file.");
 	string cmd("openssl enc -aes-256-cbc -in ");
 	cmd += in;
 	cmd += " -base64 -md sha1 -out ";
 	cmd += out;
 	system(cmd.c_str());
-
+	printf("File encrypted.");
 
 	return -69;
 }
