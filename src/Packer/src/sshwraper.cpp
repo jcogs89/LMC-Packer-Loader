@@ -22,38 +22,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//to do
-int selector(){
-	vector<string> stage = dirlist("./Payloads/");
-	printf("\n");
-	unsigned int id;
-	while (1)
-	{
-		//10 is magic, trust me
-		dirprint(stage, 10);
-		printf("\nEnter number for file to be packed\n>> ");
-		id = intinput();
-		if (id>stage.size()-1)
-		{
-			cout << "Invalid Option\n\n";
-			continue;
-		}
-		else
-		{
-			//cout << stage[id];
-			printf("\n%i\n",id);
-			break;
-		}
-	}
-	cout <<"File :\"" << stage[id] << "\" selected";
-	//jenk
-	printf("do somthing here\n");
-	//magic again
-	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
-	string iput = stage[id];
-	return 0;
-}
-
 int verify_knownhost(ssh_session session)
 {
 	printf("\nverify host\n");
@@ -172,22 +140,49 @@ int scp_write(ssh_session session)
   }
 
   //put shit here
-  int file;
-  file = selector();
-  printf("./Payloads/");
-  printf('%s',stage[id].substr(10));
-  prtinf(".encr\n");
-  ifstream file("./Payloads/"+stage[id].substr(10)+".encr", ios::binary | ios::ate);
+  vector<string> stage = dirlist("./Payloads/");
+  	printf("\n");
+  	unsigned int id;
+  	while (1)
+  	{
+  		//10 is magic, trust me
+  		dirprint(stage, 10);
+  		printf("\nEnter number for file to be packed\n>> ");
+  		id = intinput();
+  		if (id>stage.size()-1)
+  		{
+  			cout << "Invalid Option\n\n";
+  			continue;
+  		}
+  		else
+  		{
+  			//cout << stage[id];
+  			printf("\n%i\n",id);
+  			break;
+  		}
+  	}
+  	cout <<"File :\"" << stage[id] << "\" selected";
+  	//jenk
+  	//magic again
+  	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+  	string tmp = stage[id].substr(10);
+  	const char *fname= tmp.c_str();
+  	string iput = stage[id];
+  ifstream file(stage[id], ios::binary | ios::ate);
     streamsize size = file.tellg();
     file.seekg(0, ios::beg);
-
     vector<char> buffer(size);
     if (file.read(buffer.data(), size))
     {
-        /* worked! */
+       /* worked! */
+    	printf("\nid did work\n");
+
+   }
+    else
+    {
+    	printf("id didnt work");
+    	exit(0);
     }
-  const char *helloworld = "Hello, world!\n";
-  int length = strlen(helloworld);
 
   //								V pdir to make
   rc = ssh_scp_push_directory(scp, "payload", 0777);
@@ -197,15 +192,15 @@ int scp_write(ssh_session session)
     return rc;
   }
 
-  rc = ssh_scp_push_file(scp, "helloworld.txt", length, 0777);
+  rc = ssh_scp_push_file(scp, fname, size, 0777);
   if (rc != SSH_OK)
   {
     fprintf(stderr, "Can't open remote file: %s\n",
             ssh_get_error(session));
     return rc;
   }
-
-  rc = ssh_scp_write(scp, helloworld, length);
+  char* a = &buffer[0];
+  rc = ssh_scp_write(scp, a, size);
   if (rc != SSH_OK)
   {
     fprintf(stderr, "Can't write to remote file: %s\n",
@@ -224,7 +219,6 @@ int connect()
 	  char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
-	  printf("\n1\n");
 	  my_ssh_session = ssh_new();
 	  if (my_ssh_session == NULL)
 	  {
