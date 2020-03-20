@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include "Helpers.h"
+#include <bits/stdc++.h>
 using namespace std;
 
 //to do
@@ -171,7 +172,20 @@ int scp_write(ssh_session session)
   }
 
   //put shit here
-  selector();
+  int file;
+  file = selector();
+  printf("./Payloads/");
+  printf('%s',stage[id].substr(10));
+  prtinf(".encr\n");
+  ifstream file("./Payloads/"+stage[id].substr(10)+".encr", ios::binary | ios::ate);
+    streamsize size = file.tellg();
+    file.seekg(0, ios::beg);
+
+    vector<char> buffer(size);
+    if (file.read(buffer.data(), size))
+    {
+        /* worked! */
+    }
   const char *helloworld = "Hello, world!\n";
   int length = strlen(helloworld);
 
