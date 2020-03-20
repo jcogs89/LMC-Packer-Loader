@@ -112,6 +112,63 @@ int verify_knownhost(ssh_session session)
     return 0;
 }
 
+int scp_write(ssh_session session)
+{
+  //https://api.libssh.org/stable/libssh_tutor_scp.html
+  ssh_scp scp;
+  int rc;
+
+  scp = ssh_scp_new
+    (session, SSH_SCP_WRITE | SSH_SCP_RECURSIVE, ".");
+  if (scp == NULL)
+  {
+    fprintf(stderr, "Error allocating scp session: %s\n",
+            ssh_get_error(session));
+    return SSH_ERROR;
+  }
+
+  rc = ssh_scp_init(scp);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Error initializing scp session: %s\n",
+            ssh_get_error(session));
+    ssh_scp_free(scp);
+    return rc;
+  }
+
+  //put shit here
+  const char *helloworld = "Hello, world!\n";
+  int length = strlen(helloworld);
+
+  //								V pdir to make
+  rc = ssh_scp_push_directory(scp, "payload", 0777);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't create remote directory: %s\n", ssh_get_error(session));
+    return rc;
+  }
+
+  rc = ssh_scp_push_file(scp, "helloworld.txt", length, 0777);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't open remote file: %s\n",
+            ssh_get_error(session));
+    return rc;
+  }
+
+  rc = ssh_scp_write(scp, helloworld, length);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't write to remote file: %s\n",
+            ssh_get_error(session));
+    return rc;
+  }
+
+  ssh_scp_close(scp);
+  ssh_scp_free(scp);
+  return SSH_OK;
+}
+
 int connect()
 {
 	  int port = 22;
@@ -160,8 +217,10 @@ int connect()
 	  printf("\nconnected\n");
 	  //ToDo PRIORITY 1 - send payload
 	  //https://api.libssh.org/stable/libssh_tutor_forwarding.html
+	  scp_write(my_ssh_session);
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
 	  return(1);
 }
+
