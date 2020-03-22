@@ -6,13 +6,17 @@
  */
 #include <stdexcept>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <assert.h>
 #include <limits.h>
 #include <iostream>
-#include "miniz/miniz.h"
-using namespace std;
+#include <iomanip>
 
+#include "miniz/miniz.h"
+
+
+using namespace std;
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
@@ -24,7 +28,6 @@ typedef unsigned int uint;
 #define BUF_SIZE (1024 * 1024)
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
-
 
 
 int intinput()
@@ -56,7 +59,7 @@ int ziphelp(string in, string out)
 	const char *pSrc_filename = in.c_str();
 	const char *pDst_filename = out.c_str();
 	long file_loc;
-	printf("setsetstsetsetestestsetset\n");
+	//printf("setsetstsetsetestestsetset\n");
 
 	  printf("miniz.c version: %s\n", MZ_VERSION);
 
@@ -169,7 +172,7 @@ int ziphelp(string in, string out)
 
 	    //
 	    //
-		  printf("setsetstsetsetestestsetset9872345978523987523\n");
+		  //printf("setsetstsetsetestestsetset9872345978523987523\n");
 		  fclose(pInfile);
 		    if (EOF == fclose(pOutfile))
 		    {
@@ -196,7 +199,7 @@ int uziphelp(string in, string out)
 		const char *pSrc_filename = in.c_str();
 		const char *pDst_filename = out.c_str();
 		long file_loc;
-		printf("setsetstsetsetestestsetset\n");
+		//printf("setsetstsetsetestestsetset\n");
 
 		  printf("miniz.c version: %s\n", MZ_VERSION);
 
@@ -322,4 +325,23 @@ int uziphelp(string in, string out)
 		        printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 		        printf("Success.\n");
 		        return EXIT_SUCCESS;
+}
+
+
+int encrypthelp(string in, string out)
+{
+	printf("Encryption the file.");
+	string cmd("openssl enc -aes-256-cbc -in ");
+	cmd += in;
+	cmd += " -base64 -md sha1 -out ";
+	cmd += out;
+	system(cmd.c_str());
+	printf("File encrypted.");
+
+	return -69;
+}
+
+int decrypthelp(string in, string out)
+{
+	return -69;
 }

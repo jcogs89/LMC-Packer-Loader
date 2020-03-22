@@ -4,6 +4,7 @@
  *  Created on: Mar 16, 2020
  *      Author: cbai
  */
+ //ajksdhgfjksdhlfsjkadhfk
 //requires libssh
 //www.libssh.org
 //use your package manager or build it for windows
@@ -15,9 +16,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include "dirlist.h"
+#include <string>
+#include <vector>
+#include "Helpers.h"
+#include <bits/stdc++.h>
 using namespace std;
-
-//to do
 
 int verify_knownhost(ssh_session session)
 {
@@ -112,13 +116,111 @@ int verify_knownhost(ssh_session session)
     return 0;
 }
 
-int connect()
+int scp_write(ssh_session session)
+{
+  //https://api.libssh.org/stable/libssh_tutor_scp.html
+  ssh_scp scp;
+  int rc;
+
+  scp = ssh_scp_new
+    (session, SSH_SCP_WRITE | SSH_SCP_RECURSIVE, ".");
+  if (scp == NULL)
+  {
+    fprintf(stderr, "Error allocating scp session: %s\n",
+            ssh_get_error(session));
+    return SSH_ERROR;
+  }
+
+  rc = ssh_scp_init(scp);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Error initializing scp session: %s\n",
+            ssh_get_error(session));
+    ssh_scp_free(scp);
+    return rc;
+  }
+
+  //put shit here
+  vector<string> stage = dirlist("./Payloads/");
+  	printf("\n");
+  	unsigned int id;
+  	while (1)
+  	{
+  		//10 is magic, trust me
+  		dirprint(stage, 10);
+  		printf("\nEnter number for file to be packed\n>> ");
+  		id = intinput();
+  		if (id>stage.size()-1)
+  		{
+  			cout << "Invalid Option\n\n";
+  			continue;
+  		}
+  		else
+  		{
+  			//cout << stage[id];
+  			printf("\n%i\n",id);
+  			break;
+  		}
+  	}
+  	cout <<"File :\"" << stage[id] << "\" selected";
+  	//jenk
+  	//magic again
+  	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+  	string tmp = stage[id].substr(10);
+  	const char *fname= tmp.c_str();
+  	string iput = stage[id];
+  ifstream file(stage[id], ios::binary | ios::ate);
+    streamsize size = file.tellg();
+    file.seekg(0, ios::beg);
+    vector<char> buffer(size);
+    if (file.read(buffer.data(), size))
+    {
+       /* worked! */
+    	printf("\nid did work\n");
+
+   }
+    else
+    {
+    	printf("id didnt work");
+    	exit(0);
+    }
+
+  //								V pdir to make
+  rc = ssh_scp_push_directory(scp, "payload", 0777);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't create remote directory: %s\n", ssh_get_error(session));
+    return rc;
+  }
+
+  rc = ssh_scp_push_file(scp, fname, size, 0777);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't open remote file: %s\n",
+            ssh_get_error(session));
+    return rc;
+  }
+  char* a = &buffer[0];
+  rc = ssh_scp_write(scp, a, size);
+  if (rc != SSH_OK)
+  {
+    fprintf(stderr, "Can't write to remote file: %s\n",
+            ssh_get_error(session));
+    return rc;
+  }
+
+  ssh_scp_close(scp);
+  ssh_scp_free(scp);
+  return SSH_OK;
+}
+
+int connect(char *ip)
 {
 	  int port = 22;
-	  char usern[] = {'c','b','a','i'};
+	  //ToDo change to variable
+	  char usern[] = {'b','u','i','l', 'd'};
 	  ssh_session my_ssh_session;
 	  int rc;
-	  printf("\n1\n");
 	  my_ssh_session = ssh_new();
 	  if (my_ssh_session == NULL)
 	  {
@@ -126,7 +228,7 @@ int connect()
 	    return(-1);
 	  }
 	  //												V ip to connect to -----------------------------
-	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, "localhost");
+	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, ip);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, &usern);
 
@@ -158,10 +260,12 @@ int connect()
 	    exit(-1);
 	  }
 	  printf("\nconnected\n");
-	  //do shit
+	  //ToDo PRIORITY 1 - send payload
 	  //https://api.libssh.org/stable/libssh_tutor_forwarding.html
+	  scp_write(my_ssh_session);
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
 	  return(1);
 }
+

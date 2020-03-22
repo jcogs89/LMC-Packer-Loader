@@ -7,3 +7,5 @@
 int intinput();
 int ziphelp(string in, string out);
 int uziphelp(string in, string out);
+int encrypthelp(string in, string out);
+int decrypthelp(string in, string out);

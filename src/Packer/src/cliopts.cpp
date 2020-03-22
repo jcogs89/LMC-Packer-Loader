@@ -22,48 +22,32 @@ void listpayloads(vector<string> files)
 
 void addpayload(string pathpacked, string pathstaging)
 {
-	char ans;
 	char y = 'y';
 	char yc = 'Y';
 	char n = 'n';
-	while (1)
-	{
-		printf("Please put file in Staging folder\nIs the file in the staging folder (y/n)?\n>> ");
-		cin >> ans;
-		if (ans==y)
-		{
-			break;
-		}
-		else if (ans==yc)
-		{
-			break;
-		}
-		else if (ans==n)
-		{
-			continue;
-		}
-		else
-		{
-			cout << "Invalid Option\n";
-		}
+	char ans;
 
-	}
+	printf("The following payloads are availible in the staging folder:");
 	vector<string> stage = dirlist(pathstaging);
-
 	printf("\n");
+
+
+	//ToDo add way to back out gracefully
 	unsigned int id;
 	while (1)
 	{
 		//10 is magic, trust me
 		dirprint(stage, 10);
-		printf("\nEnter number for file to be packed\n>> ");
+		printf("\nEnter number for file to be packed.\n>> ");
 		id = intinput();
+
+		printf("%d", id);
 		if (id>stage.size()-1)
 		{
 			cout << "Invalid Option\n\n";
 			continue;
 		}
-		else
+			else
 		{
 			//cout << stage[id];
 			printf("\n%i\n",id);
@@ -71,13 +55,19 @@ void addpayload(string pathpacked, string pathstaging)
 		}
 	}
 	cout <<"File :\"" << stage[id] << "\" selected";
-	//jenk
-	printf("do somthing here\n");
-	//magic again
-	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+
+
+	// COMPRESSION <><>
+	string compression_outp= "./Payloads/"+stage[id].substr(10)+".zips";
 	string iput = stage[id];
-	ziphelp(iput, outp);
+	ziphelp(iput, compression_outp);
 	//ret = uziphelp(outp, outp+".txt");
+
+
+	//ENCRYPTION <><>
+	string encryption_outp= "./Payloads/"+stage[id].substr(10)+".encr";
+	encrypthelp(compression_outp, encryption_outp);
+
 
 	while (1)
 		{
@@ -101,12 +91,12 @@ void addpayload(string pathpacked, string pathstaging)
 			}
 
 		}
-	//encryption goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }
 
 
 void sendpayload(string pathpacked)
 {
 	printf("\nsend a payload\n");
-	connect();
+	//logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	connect("127.0.0.1");
 }

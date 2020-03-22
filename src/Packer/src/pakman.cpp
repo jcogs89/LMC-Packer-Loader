@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
-	//needs to be inported from config file <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	//ToDo needs to be inported from config file
 	string pathpacked = "./Payloads/";
 	string pathstaging = "./Staging/";
 	try
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 		printf("Payloads dir not found");
 		exit(0);
 	}
-	vector<string> files = dirlist(pathpacked);
+	vector<string> files = dirlist(pathpacked);	// ToDo why is this here twice?
 
 	//dirprint(files);
 
