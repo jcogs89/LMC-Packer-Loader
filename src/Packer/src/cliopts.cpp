@@ -5,7 +5,7 @@
  *      Author: cbai
  */
 #include <iostream>
-#include<stdio.h>
+#include <stdio.h>
 #include <string>
 #include <vector>
 #include "dirlist.h"
