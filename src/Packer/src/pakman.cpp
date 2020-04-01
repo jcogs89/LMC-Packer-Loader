@@ -89,16 +89,16 @@ int main(int argc, char *argv[]) {
 }
 
 //Grab Configuration Options
-config_option_t co;
-    if ((co = read_config_file("/Users/your_path_to_config_file/example.conf")) == NULL) {
-        perror("read_config_file()");
-        return -1;
-    }
-    while(1) {
-        printf("Key: %s\nValue: %s\n", co->key, co->value);
-        if (co->prev != NULL) {
-            co = co->prev;
-        } else {
-            break;
-        }
-    }
+//config_option_t co;
+//    if ((co = read_config_file("/Users/your_path_to_config_file/example.conf")) == NULL) {
+//        perror("read_config_file()");
+//        return -1;
+//    }
+//    while(1) {
+//        printf("Key: %s\nValue: %s\n", co->key, co->value);
+//        if (co->prev != NULL) {
+//            co = co->prev;
+//        } else {
+//            break;
+//        }
+//    }
