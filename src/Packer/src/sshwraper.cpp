@@ -269,3 +269,55 @@ int connect(char *ip)
 	  return(1);
 }
 
+int rec(ssh_session session, ssh_scp scp)
+{
+  int rc;
+  int size1, mode;
+  char *filename, *buffer;
+
+  rc = ssh_scp_pull_request(scp);
+  if (rc != SSH_SCP_REQUEST_NEWFILE)
+  {
+    fprintf(stderr, "Error receiving information about file: %s\n",
+            ssh_get_error(session));
+    return SSH_ERROR;
+  }
+
+  size1 = ssh_scp_request_get_size(scp);
+  filename = strdup(ssh_scp_request_get_filename(scp));
+  mode = ssh_scp_request_get_permissions(scp);
+  printf("Receiving file %s, size %d, permissions 0%o\n",
+          filename, size1, mode);
+  free(filename);
+
+  buffer = (char*)malloc(size1);
+  if (buffer == NULL)
+  {
+    fprintf(stderr, "Memory allocation error\n");
+    return SSH_ERROR;
+  }
+
+  ssh_scp_accept_request(scp);
+  rc = ssh_scp_read(scp, buffer, size1);
+  if (rc == SSH_ERROR)
+  {
+    fprintf(stderr, "Error receiving file data: %s\n",
+            ssh_get_error(session));
+    free(buffer);
+    return rc;
+  }
+  printf("Done\n");
+
+  write(1, buffer, size1);
+  free(buffer);
+
+  rc = ssh_scp_pull_request(scp);
+  if (rc != SSH_SCP_REQUEST_EOF)
+  {
+    fprintf(stderr, "Unexpected request: %s\n",
+            ssh_get_error(session));
+    return SSH_ERROR;
+  }
+
+  return SSH_OK;
+}

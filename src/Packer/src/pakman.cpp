@@ -6,6 +6,8 @@
 //#include "testing.h"
 #include "dirlist.h"
 #include "cli.h"
+#include "incom.h"
+
 using namespace std;
 
 //requires c++ v17
@@ -19,7 +21,35 @@ Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-s \tStarts in service mode\
 	\n\n";
 
-
+int forking ()
+{
+	printf("\nstart fork\n");
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		// child process
+	    printf("child process");
+	    incom("knownhosts");
+	    printf("child died");
+	    exit(0);
+	    return 0;
+	}
+	else if (pid > 0)
+	{
+	// parent process
+	    printf("main process");
+		return 1;
+	}
+	else
+	{
+	// fork failed
+	printf("\nfork() failed!\n");
+	exit(0);
+	return(-69);
+	}
+	exit(0);
+	return(-69);
+}
 
 int main(int argc, char *argv[]) {
 	int option;
@@ -73,6 +103,7 @@ int main(int argc, char *argv[]) {
 				break;
 			case 's':
 				printf("Starting\n");
+				forking();
 				cli(files, pathpacked, pathstaging);
 				return 1;
 				break;

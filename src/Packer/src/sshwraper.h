@@ -10,3 +10,4 @@
 
 int verify_knownhost(ssh_session session);
 int connect(char *ip);
+int rec();
