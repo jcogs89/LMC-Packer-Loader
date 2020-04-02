@@ -261,7 +261,7 @@ int connect(char *ip)
 	  }
 	  printf("\nconnected\n");
 
-      char ip_remote[20] = 0;//set this to be the ip of the loader may be able to use char array of local host instead of IP
+      const char ip_remote[20] = "127.0.0.1";//set this to be the ip of the loader may be able to use char array of local host instead of IP
 	  direct_forwarding(my_ssh_session, ip_remote);
       
       
@@ -272,11 +272,12 @@ int connect(char *ip)
 	  return(1);
 }
 
-int direct_forwarding(ssh_session session, char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
 {
 	ssh_channel forwarding_channel;
 	int rc;
-	char *payload = "Please for the love of god work";//Change this to a vector binary with payload
+	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
+	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload
 	int nbytes, nwritten;
 	forwarding_channel = ssh_channel_new(session);
 	if (forwarding_channel == NULL) {
@@ -284,8 +285,8 @@ int direct_forwarding(ssh_session session, char ip_remote[20])//fix port number 
   }
 
   rc = ssh_channel_open_forward(forwarding_channel,
-                                &ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
-                                "localhost", 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
+                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
   if (rc != SSH_OK)
   {
     ssh_channel_free(forwarding_channel);
@@ -294,7 +295,7 @@ int direct_forwarding(ssh_session session, char ip_remote[20])//fix port number 
 
   nbytes = strlen(payload); //For using vectors we will need to change this
   nwritten = ssh_channel_write(forwarding_channel,
-                           payload,
+                           &payload,
                            nbytes);
   if (nbytes != nwritten)
   {
