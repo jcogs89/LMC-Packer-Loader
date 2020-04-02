@@ -11,3 +11,4 @@
 int verify_knownhost(ssh_session session);
 int connect(char *ip);
 int rec();
+int direct_forwarding(ssh_session session, char ip_remote[20])

