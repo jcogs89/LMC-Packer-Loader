@@ -7,6 +7,7 @@
 #include "dirlist.h"
 #include "cli.h"
 #include "incom.h"
+#include "parser.h"
 
 using namespace std;
 
@@ -54,6 +55,27 @@ int forking ()
 }
 
 
+config_option_t grab_config() {
+	//Grab Configuration Options
+	config_option_t co;
+	if ((co = read_config_file("./example.conf")) == NULL) {
+		perror("read_config_file()");
+		return co; //ToDo handling
+	}
+	while(1) {
+		printf("Key: %s\nValue: %s\n", co->key, co->value);
+		if (co->prev != NULL) {
+			co = co->prev;
+		} else {
+			break;
+		}
+	}
+
+	return co;
+}
+
+
+
 int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
@@ -68,6 +90,8 @@ int main(int argc, char *argv[]) {
 		printf("Payloads dir not found");
 		exit(0);
 	}
+
+	//config_option_t co_2 = grab_config();
 
 	//dirprint(files);
 
@@ -115,18 +139,3 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 }
-
-//Grab Configuration Options
-//config_option_t co;
-//    if ((co = read_config_file("/Users/your_path_to_config_file/example.conf")) == NULL) {
-//        perror("read_config_file()");
-//        return -1;
-//    }
-//    while(1) {
-//        printf("Key: %s\nValue: %s\n", co->key, co->value);
-//        if (co->prev != NULL) {
-//            co = co->prev;
-//        } else {
-//            break;
-//        }
-//    }

@@ -21,8 +21,8 @@ config_option_t read_config_file(char* path) {
     
     while(1) {
         config_option_t co = NULL;
-        if ((co = calloc(1, sizeof(config_option))) == NULL)
-            continue;
+        //if ((co = calloc(1, sizeof(config_option))) == NULL)
+        //    continue;
         memset(co, 0, sizeof(config_option));
         co->prev = last_co_addr;
         
