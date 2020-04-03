@@ -355,10 +355,9 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
 
     ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
 
-    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_DSAKEY,
-    		&ssh_host_dsa_key);
-    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY,
-    		&ssh_host_rsa_key);
+    //printf("%s",ssh_host_dsa_key.c_str());
+    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_DSAKEY, ssh_host_dsa_key.c_str());
+    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, ssh_host_rsa_key.c_str());
 
 //#ifdef HAVE_ARGP_H
     /*

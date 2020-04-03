@@ -22,7 +22,7 @@ string findnew (string knownhostsfolder)
 	//hosts.open (knownhostsfile, ios::trunc);
 
 	long unsigned int cnt =0;
-	printf("The following payloads are availible in the staging folder:\n");
+	printf("The following systems are known:\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{

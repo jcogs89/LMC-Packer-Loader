@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 				break;
 			case 's':
 				printf("Starting\n");
-				//forking(); //ToDo this was broken, who last pushed??
+				forking(); //ToDo this was broken, who last pushed??
 				cli(files, pathpacked, pathstaging);
 				return 1;
 				break;
