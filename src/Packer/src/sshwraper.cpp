@@ -19,6 +19,8 @@
 #include "dirlist.h"
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
 #include "Helpers.h"
 
 #include <bits/stdc++.h>
@@ -250,12 +252,14 @@ int connect(char *ip)
 	  }
 
 	  char *password;
-	  password = getpass("Password: ");
-	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
+	  //password = getpass("Password: ");
+	  //printf("password:%s",password);
+	  //rc = ssh_userauth_password(my_ssh_session, NULL, password);
+	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
+	  rc = ssh_userauth_publickey_auto(my_ssh_session, NULL, NULL);
 	  if (rc != SSH_AUTH_SUCCESS)
 	  {
-	    fprintf(stderr, "Error authenticating with password: %s\n",
-	            ssh_get_error(my_ssh_session));
+	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
 	    ssh_disconnect(my_ssh_session);
 	    ssh_free(my_ssh_session);
 	    exit(-1);
