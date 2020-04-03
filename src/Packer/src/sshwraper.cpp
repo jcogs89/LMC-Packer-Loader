@@ -236,6 +236,7 @@ int connect(char *ip)
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, &usern);
 
 	  rc = ssh_connect(my_ssh_session);
+	  printf("\n%i\n",rc);
 	  if (rc != SSH_OK)
 	  {
 	    printf( "Error connecting to localhost: %s\n",
@@ -250,24 +251,29 @@ int connect(char *ip)
 	    ssh_free(my_ssh_session);
 	    exit(-1);
 	  }
-
+	  ssh_userauth_none(my_ssh_session, NULL);
+	  printf("\nhost v\n");
 	  char *password;
 	  password = getpass("Password: ");
 	  //printf("password:%s",password);
 	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
 	  //rc = ssh_userauth_publickey_auto(my_ssh_session, NULL, NULL);
-	  if (rc != SSH_AUTH_SUCCESS)
+	  printf("\n%i\n",rc);
+	  while (rc != SSH_AUTH_SUCCESS)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
-	    ssh_disconnect(my_ssh_session);
-	    ssh_free(my_ssh_session);
-	    exit(-1);
+	    password = getpass("Password: ");
+	    printf("password:%s",password);
+	    rc = ssh_userauth_password(my_ssh_session, NULL, password);
+	    //ssh_disconnect(my_ssh_session);
+	    //ssh_free(my_ssh_session);
+	    //exit(-1);
 	  }
 	  printf("\nconnected\n");
 
-      const char ip_remote[20] = "127.0.0.1";//set this to be the ip of the loader may be able to use char array of local host instead of IP
-	  direct_forwarding(my_ssh_session, ip_remote);
+      //const char ip_remote[20] = "127.0.0.1";//set this to be the ip of the loader may be able to use char array of local host instead of IP
+	  //direct_forwarding(my_ssh_session, ip_remote);
       
       
 	  scp_write(my_ssh_session);
