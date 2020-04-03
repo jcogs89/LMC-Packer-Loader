@@ -5,5 +5,5 @@
  *      Author: cbai
  */
 #include <string.h>
-void incom(string knownhostsfile);
+void incom(string knownhostsfile, pid_t parent);
 string findnew (string knownhostsfolder);

@@ -5,6 +5,7 @@
  *      Author: cbai
  */
 #include <stdio.h>
+#include <signal.h>
 #include <fstream>
 #include <iostream>
 #include <string.h>
@@ -61,12 +62,21 @@ string findnew (string knownhostsfolder)
 		return hostsf[id].substr(magic).c_str();
 }
 
-void incom(string knownhostsfile)
+void incom(string knownhostsfile, pid_t parent)
 {
 	while(1)
 	{
 		//fs << " more lorem ipsum\n";
 		sshserver(8833,"./Key/ssh_host_dsa_key", "./Key/ssh_host_rsa_key");
+		//comment this out later
+		if (0 == kill(parent, 0))
+		{
+		    // Process exists.
+		}
+		else
+		{
+			exit(0);
+		}
 		//a new connectoin has been added
 
 	}
