@@ -252,11 +252,11 @@ int connect(char *ip)
 	  }
 
 	  char *password;
-	  //password = getpass("Password: ");
+	  password = getpass("Password: ");
 	  //printf("password:%s",password);
-	  //rc = ssh_userauth_password(my_ssh_session, NULL, password);
+	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
-	  rc = ssh_userauth_publickey_auto(my_ssh_session, NULL, NULL);
+	  //rc = ssh_userauth_publickey_auto(my_ssh_session, NULL, NULL);
 	  if (rc != SSH_AUTH_SUCCESS)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
