@@ -13,13 +13,15 @@ using namespace std;
 //requires c++ v17
 //-std=c++17
 
-static const char usage[] = "\
-\nUsage: packman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE]\n\
+
+static const char usage[] = "\n\
+Usage: packman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE]\n\
 Sends a user defined PAYLOAD to TARGET. \n\
 Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-h, --help\tPrints this Help Page\n\
 	-s \tStarts in service mode\
 	\n\n";
+
 
 int forking ()
 {
@@ -51,38 +53,34 @@ int forking ()
 	return(-69);
 }
 
+
 int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
-	//ToDo needs to be inported from config file
-	string pathpacked = "./Payloads/";
-	string pathstaging = "./Staging/";
-	try
-	{
-		vector<string> files = dirlist(pathpacked);
+	vector<string> files;
+	string pathpacked = "./Payloads/";	// ToDo add to config
+	string pathstaging = "./Staging/";	// ToDo add to config
+	try {
+		files = dirlist(pathpacked);
 	}
-	catch (...)
-	{
+	catch (...) {
 		printf("Payloads dir not found");
 		exit(0);
 	}
-	vector<string> files = dirlist(pathpacked);	// ToDo why is this here twice?
 
 	//dirprint(files);
 
-	if(argc<2){ //Check to see if any arguments passed
+	//program requires one argument
+	//ToDo do we want to feed more arguments?  No arguments (if using config)?
+	if(argc<2) {
 		printf(usage);
-		//testing();
-		//string path = "./";
-		//cout << dirlist(path)<< endl;
-		//vector<string> files = dirlist(path);
 		return 0;
 	}
 
 	// put ':' at the starting of the string so compiler can distinguish between '?' and ':'
-	while((option = getopt(argc, argv, ":ht:f:s")) != -1){ //get option from the getopt() method
-		switch(option){
+	while((option = getopt(argc, argv, ":ht:f:s")) != -1) { //get option from the getopt() method
+		switch(option) {
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
 				printf("Target Flag: %s\n",tvalue);
@@ -103,16 +101,15 @@ int main(int argc, char *argv[]) {
 				break;
 			case 's':
 				printf("Starting\n");
-				forking();
+				//forking(); //ToDo this was broken, who last pushed??
 				cli(files, pathpacked, pathstaging);
 				return 1;
 				break;
 			return 0;
 		}
 	}
-	//printf("Target Flag: %s\n",tvalue);
-	//printf("File Flag: %s\n", fvalue);
-	for(; optind < argc; optind++){ //when some extra arguments are passed
+
+	for (; optind < argc; optind++) { //when some extra arguments are passed
 		printf("\nGiven extra arguments: %s\n", argv[optind]);
 		printf(usage);
 		return 0;
