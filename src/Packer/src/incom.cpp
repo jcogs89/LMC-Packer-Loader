@@ -11,15 +11,29 @@
 #include "sshwraper.h"
 #include "sshserver.h"
 #include "dirlist.h"
+#include <vector>
 using namespace std;
 
-void findnew (string knownhostsfile, string knownhostsfolder)
+string findnew (string knownhostsfile, string knownhostsfolder)
 {
-	dirlist("Known_hosts");
-	ofstream hosts;
-	hosts.open (knownhostsfile, ios::trunc);
-	hosts << "Writing this to a file.\n";
-	hosts.close();
+	int magic = 10;
+	vector<string> hostsf= dirlist("Known_hosts");
+	//ofstream hosts;
+	//hosts.open (knownhostsfile, ios::trunc);
+
+	long unsigned int cnt =0;
+	for (cnt=0; cnt !=hostsf.size();cnt++)
+	{
+		//string tmp = *ir;
+
+		printf("%li %s\n",cnt,hostsf[cnt].substr(magic).c_str());
+
+		//printf("%i %s\n",cnt,tmp.substr(magic).c_str());
+
+	}
+
+	//hosts << "Writing this to a file.\n";
+	//hosts.close();
 }
 
 void incom(string knownhostsfile)
