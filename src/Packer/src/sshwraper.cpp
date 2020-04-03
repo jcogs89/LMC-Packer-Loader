@@ -219,7 +219,7 @@ int connect(char *ip)
 {
 	  int port = 22;
 	  //ToDo change to variable
-	  char usern[] = {'b','u','i','l', 'd'};
+	  char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
 	  my_ssh_session = ssh_new();
