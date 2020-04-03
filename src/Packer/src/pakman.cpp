@@ -55,7 +55,9 @@ int forking ()
 }
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
+	printf("starting");
 	int option;
 	char tvalue[32];
 	char fvalue[32];

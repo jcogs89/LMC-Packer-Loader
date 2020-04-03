@@ -6,4 +6,4 @@
  */
 #include <string.h>
 void incom(string knownhostsfile);
-string findnew (string knownhostsfile, string knownhostsfolder);
+string findnew (string knownhostsfolder);

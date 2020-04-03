@@ -12,6 +12,7 @@
 #include "dirlist.h"
 #include "Helpers.h"
 #include "sshwraper.h"
+#include "incom.h"
 using namespace std;
 
 
@@ -22,7 +23,7 @@ void listpayloads(vector<string> files) {
 }
 
 
-int addpayload(string pathpacked, string pathstaging) {
+void addpayload(string pathpacked, string pathstaging) {
 	char y = 'y';
 	char yc = 'Y';
 	char n = 'n';
@@ -53,7 +54,7 @@ int addpayload(string pathpacked, string pathstaging) {
 			if ((inp != "x") and (inp != "X")) {
 				printf("Unrecognized input, please try again.");
 			} else {
-				return 0;
+				return;
 			}
 		}
 	}
@@ -90,5 +91,8 @@ int addpayload(string pathpacked, string pathstaging) {
 void sendpayload(string pathpacked) {
 	printf("\nsend a payload\n");
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	connect("127.0.0.1");
+	string ip = findnew( "Known_hosts");
+	char ip2[ip.size()+1];
+	strcpy(ip2, ip.c_str());
+	connect(ip2);
 }
