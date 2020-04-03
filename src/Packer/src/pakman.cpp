@@ -6,8 +6,8 @@
 //#include "testing.h"
 #include "dirlist.h"
 #include "cli.h"
+#include "config_parser.h"
 #include "incom.h"
-#include "parser2.h"
 
 using namespace std;
 
@@ -60,8 +60,26 @@ int main(int argc, char *argv[]) {
 	char tvalue[32];
 	char fvalue[32];
 	vector<string> files;
-	string pathpacked = "./Payloads/";	// ToDo add to config
-	string pathstaging = "./Staging/";	// ToDo add to config
+	std::string pathpacked;
+	std::string pathstaging;
+
+	ConfigFile cfg("./packer.conf");
+
+	if (cfg.keyExists("payloads_dir")) {
+		pathpacked = cfg.getValueOfKey<std::string>("payloads_dir");
+		//printf("Config worked: %s\n", pathpacked.c_str());
+	} else {
+		printf("No payloads directory specified in config.  Please update 'payloads_dir' in the config.");
+		exit(0);
+	}
+	if (cfg.keyExists("staging_dir")) {
+		pathstaging = cfg.getValueOfKey<std::string>("staging_dir");
+		//printf("Config worked: %s\n", pathstaging.c_str());
+	} else {
+		printf("No staging directory specified in config.  Please update 'staging_dir' in the config.");
+		exit(0);
+	}
+
 	try {
 		files = dirlist(pathpacked);
 	}
@@ -69,8 +87,6 @@ int main(int argc, char *argv[]) {
 		printf("Payloads dir not found");
 		exit(0);
 	}
-
-	ConfigFile cfg("./example.conf");
 
 	bool exists = cfg.keyExists("port");
 	std::cout << "port: " << std::boolalpha << exists << "\n";

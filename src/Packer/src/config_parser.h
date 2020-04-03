@@ -111,8 +111,10 @@ private:
 	{
 		std::ifstream file;
 		file.open(fName.c_str());
-		if (!file)
-			exit(0); // file not found
+		if (!file) {
+			printf("Config file not found.");
+			exit(0);
+		}
 
 		std::string line;
 		size_t lineNo = 0;
@@ -154,10 +156,3 @@ public:
 		return Convert::string_to_T<ValueType>(contents.find(key)->second);
 	}
 };
-
-ConfigFile get_config()
-{
-	ConfigFile cfg("./example.conf");
-
-	return cfg;
-}
