@@ -172,7 +172,7 @@ int scp_write(ssh_session session)
   	string tmp = stage[id].substr(10);
   	const char *fname= tmp.c_str();
   	string iput = stage[id];
-  ifstream file(stage[id], ios::binary | ios::ate);
+    ifstream file(stage[id], ios::binary | ios::ate);
     streamsize size = file.tellg();
     file.seekg(0, ios::beg);
     vector<char> buffer(size);
@@ -221,7 +221,8 @@ int connect(char *ip)
 {
 	  int port = 22;
 	  //ToDo change to variable
-	  char usern[] = {'c','b','a','i'};
+	  char usern[] = {'p','i'};
+	  //char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
 	  my_ssh_session = ssh_new();
@@ -264,7 +265,7 @@ int connect(char *ip)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
 	    password = getpass("Password: ");
-	    printf("password:%s",password);
+	    //printf("password:%s",password);
 	    rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	    //ssh_disconnect(my_ssh_session);
 	    //ssh_free(my_ssh_session);

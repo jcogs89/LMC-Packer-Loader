@@ -330,7 +330,7 @@ int uziphelp(string in, string out)
 
 int encrypthelp(string in, string out)
 {
-	printf("Encryption the file.");
+	printf("Encryption the file\n.");
 	string cmd("openssl enc -aes-256-cbc -in ");
 	cmd += in;
 	cmd += " -base64 -md sha1 -out ";

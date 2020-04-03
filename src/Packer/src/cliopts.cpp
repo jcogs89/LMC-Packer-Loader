@@ -65,9 +65,10 @@ void addpayload(string pathpacked, string pathstaging) {
 	string iput = stage[id];
 	ziphelp(iput, compression_outp);
 	//ret = uziphelp(outp, outp+".txt");
-
+	printf("file ziped\n.");
+	printf("password should not be blank\n.");
 	//ENCRYPTION <><>
-	string encryption_outp= "./Payloads/"+stage[id].substr(10)+".encr";
+	string encryption_outp= "./Payloads/"+stage[id].substr(10)+".zips";
 	encrypthelp(compression_outp, encryption_outp);
 
 	while (1) {
