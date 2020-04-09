@@ -59,9 +59,8 @@ int ziphelp(string in, string out)
 	const char *pSrc_filename = in.c_str();
 	const char *pDst_filename = out.c_str();
 	long file_loc;
-	//printf("setsetstsetsetestestsetset\n");
 
-	  printf("miniz.c version: %s\n", MZ_VERSION);
+	  //printf("miniz.c version: %s\n", MZ_VERSION);
 
 	  // Open input file.
 	    pInfile = fopen(pSrc_filename, "rb");
@@ -71,7 +70,7 @@ int ziphelp(string in, string out)
 	      return EXIT_FAILURE;
 	    }
 
-	  printf("Mode: c, Level: %u\nInput File: \"%s\"\nOutput File: \"%s\"\n", level, pSrc_filename, pDst_filename);
+	  //printf("Mode: c, Level: %u\nInput File: \"%s\"\nOutput File: \"%s\"\n", level, pSrc_filename, pDst_filename);
 
 
 	  // Determine input file's size.
@@ -96,7 +95,7 @@ int ziphelp(string in, string out)
 	        return EXIT_FAILURE;
 	      }
 
-	      printf("Input file size: %u\n", infile_size);
+	     //printf("Input file size: %u\n", infile_size);
 
 	      // Init the z_stream
 	      memset(&stream, 0, sizeof(stream));
@@ -104,10 +103,6 @@ int ziphelp(string in, string out)
 	      stream.avail_in = 0;
 	      stream.next_out = s_outbuf;
 	      stream.avail_out = BUF_SIZE;
-
-
-
-
 
 	      // Compression.
 	          uint infile_remaining = infile_size;
@@ -118,16 +113,14 @@ int ziphelp(string in, string out)
 	            return EXIT_FAILURE;
 	          }
 
-	          for ( ; ; )
-	          {
+	          for ( ; ; ) {
 	            int status;
-	            if (!stream.avail_in)
-	            {
-	              // Input buffer is empty, so read more bytes from input file.
+
+	            // Input buffer is empty, so read more bytes from input file.
+	            if (!stream.avail_in) {
 	              uint n = my_min(BUF_SIZE, infile_remaining);
 
-	              if (fread(s_inbuf, 1, n, pInfile) != n)
-	              {
+	              if (fread(s_inbuf, 1, n, pInfile) != n) {
 	                printf("Failed reading from input file!\n");
 	                return EXIT_FAILURE;
 	              }
@@ -141,27 +134,25 @@ int ziphelp(string in, string out)
 
 	            status = deflate(&stream, infile_remaining ? Z_NO_FLUSH : Z_FINISH);
 
-	            if ((status == Z_STREAM_END) || (!stream.avail_out))
-	            {
-	              // Output buffer is full, or compression is done, so write buffer to output file.
+	            // Output buffer is full, or compression is done, so write buffer to output file.
+	            if ((status == Z_STREAM_END) || (!stream.avail_out)) {
 	              uint n = BUF_SIZE - stream.avail_out;
-	              if (fwrite(s_outbuf, 1, n, pOutfile) != n)
-	              {
+
+	              if (fwrite(s_outbuf, 1, n, pOutfile) != n) {
 	                printf("Failed writing to output file!\n");
 	                return EXIT_FAILURE;
 	              }
+
 	              stream.next_out = s_outbuf;
 	              stream.avail_out = BUF_SIZE;
 	            }
 
 	            if (status == Z_STREAM_END)
 	              break;
-	            else if (status != Z_OK)
-	            {
+	            else if (status != Z_OK) {
 	              printf("deflate() failed with status %i!\n", status);
 	              return EXIT_FAILURE;
 	            }
-	            printf("\nasdf\n");
 	          }
 
 	          if (deflateEnd(&stream) != Z_OK)
@@ -170,9 +161,6 @@ int ziphelp(string in, string out)
 	            return EXIT_FAILURE;
 	          }
 
-	    //
-	    //
-		  //printf("setsetstsetsetestestsetset9872345978523987523\n");
 		  fclose(pInfile);
 		    if (EOF == fclose(pOutfile))
 		    {
@@ -180,9 +168,9 @@ int ziphelp(string in, string out)
 		      return EXIT_FAILURE;
 		    }
 
-		    printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
-		    printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
-		    printf("Success.\n");
+		    //printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
+		    //printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
+		    //printf("Success: %d\n", EXIT_SUCCESS);
 		    return EXIT_SUCCESS;
 	    return -69;
 }
@@ -330,13 +318,12 @@ int uziphelp(string in, string out)
 
 int encrypthelp(string in, string out)
 {
-	printf("Encryption the file\n.");
+	//printf("Encryption the file\n.");
 	string cmd("openssl enc -aes-256-cbc -in ");
 	cmd += in;
 	cmd += " -base64 -md sha1 -out ";
 	cmd += out;
 	system(cmd.c_str());
-	printf("File encrypted.");
 
 	return -69;
 }

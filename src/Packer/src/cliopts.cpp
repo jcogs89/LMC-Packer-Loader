@@ -24,23 +24,20 @@ void listpayloads(vector<string> files) {
 
 
 void addpayload(string pathpacked, string pathstaging) {
-	char y = 'y';
-	char yc = 'Y';
-	char n = 'n';
-	char ans;
-	string inp;
+	string ans, inp;
+	int compression_ret;
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
 
 	printf("The following payloads are availible in the staging folder:\n");
-		//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
-		dirprint(stage, 10);
-		printf("\nEnter the number for file to be packed ('x' to back out):");
+	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
+	dirprint(stage, 10);
+	printf("\nEnter the number for file to be packed ('x' to back out):");
 
+	//Take user input to select file to turn into a payload
 	while (1) {
 		printf("\n>> ");
 		cin >> inp;
-
 		try {
 			id = std::stoi(inp);
 			if (id>stage.size()-1) {
@@ -58,29 +55,34 @@ void addpayload(string pathpacked, string pathstaging) {
 			}
 		}
 	}
-	cout <<"File :\"" << stage[id] << "\" selected";
+	cout <<"File :\"" << stage[id] << "\" selected.";
 
 	// COMPRESSION <><>
-	string compression_outp= "./Payloads/"+stage[id].substr(10)+".zips";
+	string compression_outp= pathpacked+stage[id].substr(10)+".zips";
 	string iput = stage[id];
-	ziphelp(iput, compression_outp);
-	//ret = uziphelp(outp, outp+".txt");
-	printf("file ziped\n.");
-	printf("password should not be blank\n.");
+	compression_ret = ziphelp(iput, compression_outp);
+
+	if (compression_ret == 0) { //Compression EXIT_SUCCESS is 0
+		printf("File zipped.\n");
+	} else {
+		printf("FILE ZIP FAILED.\n");
+	}
+
 	//ENCRYPTION <><>
-	string encryption_outp= "./Payloads/"+stage[id].substr(10)+".zips";
+	string encryption_outp= pathpacked+stage[id].substr(10)+".zips";
 	encrypthelp(compression_outp, encryption_outp);
+	printf("File encrypted.\n");
 
 	while (1) {
 		printf("Do you want to delete the source in staging (y/n)?\n>> ");
 		cin >> ans;
-		if (ans==y or ans == yc) {
+		if (ans=="Y" or ans == "y") {
 			if( remove( iput.c_str() ) != 0 )
 				perror( "Error deleting file" );
 			  else
 				puts( "File successfully deleted" );
 			break;
-		} else if (ans==n) {
+		} else if (ans=="n" or ans == "N") {
 			break;
 		} else {
 			cout << "Invalid Option\n";
@@ -90,9 +92,8 @@ void addpayload(string pathpacked, string pathstaging) {
 
 
 void sendpayload(string pathpacked) {
-	printf("\nsend a payload\n");
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	string ip = findnew( "Known_hosts");
+	string ip = findnew("Known_hosts");
 	char ip2[ip.size()+1];
 	strcpy(ip2, ip.c_str());
 	connect(ip2);

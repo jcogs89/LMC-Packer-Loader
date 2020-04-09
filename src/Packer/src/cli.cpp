@@ -5,32 +5,33 @@
 
 using namespace std;
 
-static const char options[] = "\n \e[1;32m\
-Choose an option: \e[0;17m \n\
-1. List Available Payloads \n\
-2. Add new payload \n\
-3. Send payload \n\
-0. Exit \n\
-\e[1;32m>\e[0;17m ";
+static const char options[] = "\n\
+\e[1;32mChoose an option: \e[0;17m \n\
+l - List Available Payloads \n\
+a - Add new payload \n\
+s - Send payload \n\
+x - Exit \n\
+\e[1;32m>\e[0;17m";
 	
 
 int cli(vector<string> files, string pathpacked, string pathstaging) {
-		int id;
+		string inp;
 
 		while (1) {
 			cout << options;
-			cin >> id;
-			if(id==1) {
+			cin >> inp;
+			if (inp == "l") {
 				listpayloads(files);
-			} else if(id==2) {
+			} else if (inp == "a") {
 				addpayload(pathpacked, pathstaging);
-			} else if(id==3) {
+			} else if (inp == "s") {
 				sendpayload(pathpacked);
-			} else if(id==0) {
-				cout << "\nexit\n";
+			} else if (inp == "x") {
+				//Kill ssh listener here
+				cout << "\nExiting.\n";
 				break;
 			} else {
-				cout << "Invalid Option! Please enter a number.\n";
+				cout << "Option not recognized.\n";
 			}
 		}
 		return 0;
