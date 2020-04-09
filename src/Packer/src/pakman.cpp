@@ -72,13 +72,8 @@ int main(int argc, char *argv[])
 	std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
 	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
 
-	try {
-		files = dirlist(pathpacked);
-	}
-	catch (...) {
-		printf("Payloads dir (%s) not found", pathpacked.c_str());
-		exit(0);
-	}
+	files = dirlist(pathpacked);
+
 
 	//READING FROM CONFIG FILE DEBUG
 	//bool exists = cfg.keyExists("port");
