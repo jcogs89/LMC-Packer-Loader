@@ -55,7 +55,7 @@ void addpayload(string pathpacked, string pathstaging) {
 			}
 		}
 	}
-	cout <<"File :\"" << stage[id] << "\" selected.";
+	//cout <<"File :\"" << stage[id] << "\" selected.";
 
 	// COMPRESSION <><>
 	string compression_outp= pathpacked+stage[id].substr(10)+".zips";
