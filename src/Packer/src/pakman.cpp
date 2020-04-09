@@ -47,7 +47,7 @@ int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_hos
 	   return 1;
 
 	} else if (pid == 0) { // child process
-		printf("Child process created for ssh listener.");
+		printf("Child process created for ssh listener.\n");
 	    incom("knownhosts", parent, ssh_host_dsa_key, ssh_host_rsa_key);  //main of incom.cpp
 	    printf("child ssh listener died.");
 
@@ -110,6 +110,7 @@ int main(int argc, char *argv[])
 				break;
 			case 's':
 				fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
+				printf("Hello.");
 				cli(files, pathpacked, pathstaging); //main execution
 				return 1;
 				break;

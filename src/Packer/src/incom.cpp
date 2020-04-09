@@ -23,7 +23,7 @@ string findnew (string knownhostsfolder)
 	//hosts.open (knownhostsfile, ios::trunc);
 
 	long unsigned int cnt =0;
-	printf("The following systems are known:\n");
+	printf("\e[1;32mThe following systems are known:\e[0;17m\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
@@ -32,7 +32,7 @@ string findnew (string knownhostsfolder)
 		//printf("%i %s\n",cnt,tmp.substr(magic).c_str());
 
 	}
-	printf("\nEnter the number for system to be packed ('x' to back out):");
+	printf("\nChoose a target host ('x' to back out):"); //ToDo allow for multiple targets
 
 	//hosts << "Writing this to a file.\n";
 	//hosts.close();
@@ -52,10 +52,10 @@ string findnew (string knownhostsfolder)
 					break;
 				}
 			} catch (...) {
-				if ((inp != "x") and (inp != "X")) {
-					printf("Unrecognized input, please try again.");
+				if ((inp == "x") or (inp == "X")) {
+					return "0";
 				} else {
-					exit(0);
+					printf("Unrecognized input, please try again.");
 				}
 			}
 		}

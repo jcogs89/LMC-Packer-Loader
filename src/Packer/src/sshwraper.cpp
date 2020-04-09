@@ -219,9 +219,8 @@ int scp_write(ssh_session session)
 
 int connect(char *ip)
 {
-	  int port = 22;
-	  //ToDo change to variable
-	  char usern[] = {'p','i'};
+	  int port = 22; //ToDo change to variable
+	  char usern[] = {'p','i'}; // ToDo change to variable
 	  //char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
