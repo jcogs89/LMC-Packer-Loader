@@ -24,26 +24,23 @@ Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	\n\n";
 
 
-int forking () {
+int fork_ssh_listener_process () {
 	pid_t parent = getpid();
 	pid_t pid = fork();
 
-	printf("\nstart fork\n");
+	//printf("\nstart fork\n");
 
-	if (pid > 0) { // only good case
-	   // parent process
-	   printf("main process");
+	if (pid > 0) { //main process //ToDo Carl - what does this do?
+	   //printf("main process");
 	   return 1;
 
-	} else if (pid == 0) {
-		// child process
-	    printf("child process");
+	} else if (pid == 0) { // child process
+		printf("Child process created for ssh listener.");
 	    incom("knownhosts", parent);  //main of incom.cpp
-	    printf("child died");
+	    printf("child ssh listener died.");
 
-	} else {
-		// fork failed
-		printf("\nfork() failed!\n");
+	} else { // fork failed
+		printf("\nforking ssh_listener_process failed!\n");
 	}
 	exit(0);
 	return(0);
@@ -119,7 +116,7 @@ int main(int argc, char *argv[])
 				printf(usage);
 				break;
 			case 's':
-				forking(); //ToDo Carl - what does forking to? Descriptive naming...
+				fork_ssh_listener_process();
 				cli(files, pathpacked, pathstaging); //main execution
 				return 1;
 				break;
