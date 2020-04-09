@@ -340,7 +340,7 @@ static int main_loop(ssh_channel chan) {
 
 int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key )
 {
-	printf("\nlook at me\n");
+	//printf("\nSSH server initiated.");
 	int port = 8122;
     ssh_session session;
     ssh_bind sshbind;
@@ -360,17 +360,17 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
     ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, ssh_host_rsa_key.c_str());
 
 //#ifdef HAVE_ARGP_H
-    /*
-     * Parse our arguments; every option seen by parse_opt will
-     * be reflected in arguments.
-     */
+	/*
+	 * Parse our arguments; every option seen by parse_opt will
+	 * be reflected in arguments.
+	 */
 //    argp_parse (&argp, argc, argv, 0, 0, sshbind);
 //#else
 //    (void) argc;
 //    (void) argv;
 //#endif
 #ifdef WITH_PCAP
-    set_pcap(session);
+	set_pcap(session);
 #endif
 
     if(ssh_bind_listen(sshbind)<0){
@@ -397,7 +397,6 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
         ssh_disconnect(session);
         return 1;
     }
-
 
     /* wait for a channel session */
     do {
@@ -453,7 +452,7 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
         return 1;
     }
 
-    printf("it works !\n");
+    //printf("it works !\n");
 
     main_loop(chan);
 

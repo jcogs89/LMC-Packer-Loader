@@ -289,7 +289,7 @@ int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port n
 	ssh_channel forwarding_channel;
 	int rc;
 	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
-	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload
+	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
 	int nbytes, nwritten;
 	forwarding_channel = ssh_channel_new(session);
 	if (forwarding_channel == NULL) {
