@@ -23,8 +23,20 @@ Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-s \tStarts in service mode\
 	\n\n";
 
+string get_config_item(ConfigFile cfg, string item_name) {
+	std::string item;
+	if (cfg.keyExists(item_name)) {
+		item = cfg.getValueOfKey<std::string>(item_name);
+		//printf("Config worked: %s\n", item.c_str());
+	} else {
+		printf("No '%s' specified in packer.conf.  Please update the config and rerun the program.", item_name.c_str()); //ToDo or ask user to input now
+		exit(0);
+	}
+	return item;
+}
 
-int fork_ssh_listener_process () {
+
+int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
 	pid_t parent = getpid();
 	pid_t pid = fork();
 
@@ -36,7 +48,7 @@ int fork_ssh_listener_process () {
 
 	} else if (pid == 0) { // child process
 		printf("Child process created for ssh listener.");
-	    incom("knownhosts", parent);  //main of incom.cpp
+	    incom("knownhosts", parent, ssh_host_dsa_key, ssh_host_rsa_key);  //main of incom.cpp
 	    printf("child ssh listener died.");
 
 	} else { // fork failed
@@ -53,26 +65,12 @@ int main(int argc, char *argv[])
 	char tvalue[32];
 	char fvalue[32];
 	vector<string> files;
-	std::string pathpacked;
-	std::string pathstaging;
 
 	ConfigFile cfg("./packer.conf"); //ToDo Add default conf file and option to pass CLA of its path
-
-	//Read Config for required fields
-	if (cfg.keyExists("payloads_dir")) {
-		pathpacked = cfg.getValueOfKey<std::string>("payloads_dir");
-		//printf("Config worked: %s\n", pathpacked.c_str());
-	} else {
-		printf("No payloads directory specified in config.  Please update 'payloads_dir' in the config."); //ToDo or ask user to input now
-		exit(0);
-	}
-	if (cfg.keyExists("staging_dir")) {
-		pathstaging = cfg.getValueOfKey<std::string>("staging_dir");
-		//printf("Config worked: %s\n", pathstaging.c_str());
-	} else {
-		printf("No staging directory specified in config.  Please update 'staging_dir' in the config."); //ToDo or ask user to input now
-		exit(0);
-	}
+	std::string pathpacked = get_config_item(cfg, "payloads_dir");
+	std::string pathstaging = get_config_item(cfg, "staging_dir");
+	std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
+	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
 
 	try {
 		files = dirlist(pathpacked);
@@ -116,7 +114,7 @@ int main(int argc, char *argv[])
 				printf(usage);
 				break;
 			case 's':
-				fork_ssh_listener_process();
+				fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
 				cli(files, pathpacked, pathstaging); //main execution
 				return 1;
 				break;
