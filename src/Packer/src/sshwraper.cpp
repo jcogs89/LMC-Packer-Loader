@@ -8,6 +8,9 @@
 //requires libssh
 //www.libssh.org
 //use your package manager or build it for windows
+//https://www.libssh.org/get-it/
+//https://github.com/Microsoft/vcpkg/
+
 #define LIBSSH_STATIC 1
 #include <libssh/libssh.h>
 #include "sshwraper.h"

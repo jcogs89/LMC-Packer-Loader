@@ -33,6 +33,8 @@ E:\Git\BluSh3ll\src\Loader\src\loader.cpp(47,2): error C2065: 'listener': undecl
 E:\Git\BluSh3ll\src\Loader\src\loader.cpp(49,10): error C2562: 'Tlistnr': 'void' function returning a value
 E:\Git\BluSh3ll\src\Loader\src\loader.cpp(9): message : see declaration of 'Tlistnr'
 E:\Git\BluSh3ll\src\Loader\src\loader.cpp(56,3): error C2146: syntax error: missing ';' before identifier 'ifstream'
+  sshwraper.cpp
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(29,10): fatal error C1083: Cannot open include file: 'bits/stdc++.h': No such file or directory
   Loader-win.cpp
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,2): error C2065: 'var': undeclared identifier
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,6): error C2146: syntax error: missing ';' before identifier 'listener'
@@ -67,5 +69,7 @@ E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(47,22): error C2065: 'e
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(51,2): error C2065: 'listener': undeclared identifier
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(53,10): error C2562: 'Tlistnr': 'void' function returning a value
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(13): message : see declaration of 'Tlistnr'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(60,3): error C2146: syntax error: missing ';' before identifier 'ifstream'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(60,2): error C2146: syntax error: missing ';' before identifier 'ifstream'
+  ssh_server.cpp
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\ssh_server.cpp(31,10): fatal error C1083: Cannot open include file: 'poll.h': No such file or directory
   Generating Code...

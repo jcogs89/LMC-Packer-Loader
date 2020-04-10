@@ -148,11 +148,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Loader\src\loader.cpp" />
+    <ClCompile Include="..\..\Packer\src\sshwraper.cpp" />
     <ClCompile Include="Loader-win.cpp" />
+    <ClCompile Include="ssh_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Loader\src\loader_service" />
     <None Include="..\..\Loader\src\out" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Packer\src\sshwraper.h" />
+    <ClInclude Include="ssh_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
