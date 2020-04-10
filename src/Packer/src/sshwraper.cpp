@@ -11,6 +11,8 @@
 //https://www.libssh.org/get-it/
 //https://github.com/Microsoft/vcpkg/
 
+#pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
+
 #define LIBSSH_STATIC 1
 #include <libssh/libssh.h>
 #include "sshwraper.h"
@@ -26,6 +28,7 @@
 #include <thread>
 #include <windows.h>
 #include "Helpers.h"
+#include <io.h>
 
 //https://codeforces.com/blog/entry/13981
 #include <algorithm>
@@ -95,9 +98,11 @@ using namespace std;
 #ifdef _MSC_VER
 #define strncasecmp _strnicmp
 #define strcasecmp _stricmp
+#define write _write
+#define open _open
 #endif
 
-char getpass(const char* prompt, bool show_asterisk = true)
+int getpass(const char* prompt, char* password2, bool show_asterisk = true)
 {
     const char BACKSPACE = 8;
     const char RETURN = 13;
@@ -135,9 +140,9 @@ char getpass(const char* prompt, bool show_asterisk = true)
         }
     }
     cout << endl;
-    char password2[password.length()+1];
-    strcpy(password2, password.c_str());
-    return password2;
+    const char* cstr = password.c_str();
+    strncpy(password2, cstr, 90);
+    return 1;
 }
 
 int verify_knownhost(ssh_session session)
@@ -201,7 +206,7 @@ int verify_knownhost(ssh_session session)
             printf( "Public key hash: %s\n>>>", hexa);
             ssh_string_free_char(hexa);
             ssh_clean_pubkey_hash(&hash);
-            scanf("%9s",buf);
+            sscanf_s("%9s",buf);
 
             cmp = strncasecmp(buf, "yes", 3);
             if (cmp != 0)
@@ -367,8 +372,8 @@ int connect(char *ip)
 	  }
 	  ssh_userauth_none(my_ssh_session, NULL);
 	  printf("\nhost v\n");
-	  char *password;
-	  password = getpass("Password: ");
+      char password[100];
+      getpass("Password: ", password,  true);
 	  //printf("password:%s",password);
 	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
@@ -377,7 +382,7 @@ int connect(char *ip)
 	  while (rc != SSH_AUTH_SUCCESS)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
-	    password = getpass("Password: ");
+        getpass("Password: ", password, true);
 	    //printf("password:%s",password);
 	    rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	    //ssh_disconnect(my_ssh_session);
@@ -397,41 +402,41 @@ int connect(char *ip)
 	  return(1);
 }
 
-int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
-{
-	ssh_channel forwarding_channel;
-	int rc;
-	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
-	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
-	int nbytes, nwritten;
-	forwarding_channel = ssh_channel_new(session);
-	if (forwarding_channel == NULL) {
-    return rc;
-  }
-
-  rc = ssh_channel_open_forward(forwarding_channel,
-                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
-                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
-  if (rc != SSH_OK)
-  {
-    ssh_channel_free(forwarding_channel);
-    return rc;
-  }
-
-  nbytes = strlen(payload); //For using vectors we will need to change this
-  nwritten = ssh_channel_write(forwarding_channel,
-                           &payload,
-                           nbytes);
-  if (nbytes != nwritten)
-  {
-    ssh_channel_free(forwarding_channel);
-    return SSH_ERROR;
-  }
-
-
-  ssh_channel_free(forwarding_channel);
-  return SSH_OK;
-}
+//int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+//{
+//	ssh_channel forwarding_channel;
+//	int rc;
+//	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
+//	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
+//	int nbytes, nwritten;
+//	forwarding_channel = ssh_channel_new(session);
+//	if (forwarding_channel == NULL) {
+//    return rc;
+//  }
+//
+//  rc = ssh_channel_open_forward(forwarding_channel,
+//                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
+//                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+//  if (rc != SSH_OK)
+//  {
+//    ssh_channel_free(forwarding_channel);
+//    return rc;
+//  }
+//
+//  nbytes = strlen(payload); //For using vectors we will need to change this
+//  nwritten = ssh_channel_write(forwarding_channel,
+//                           &payload,
+//                           nbytes);
+//  if (nbytes != nwritten)
+//  {
+//    ssh_channel_free(forwarding_channel);
+//    return SSH_ERROR;
+//  }
+//
+//
+//  ssh_channel_free(forwarding_channel);
+//  return SSH_OK;
+//}
 
 int rec(ssh_session session, ssh_scp scp)
 {
@@ -448,7 +453,7 @@ int rec(ssh_session session, ssh_scp scp)
   }
 
   size1 = ssh_scp_request_get_size(scp);
-  filename = strdup(ssh_scp_request_get_filename(scp));
+  filename = _strdup(ssh_scp_request_get_filename(scp));
   mode = ssh_scp_request_get_permissions(scp);
   printf("Receiving file %s, size %d, permissions 0%o\n",
           filename, size1, mode);

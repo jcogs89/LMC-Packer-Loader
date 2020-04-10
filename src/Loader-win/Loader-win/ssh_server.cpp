@@ -28,8 +28,8 @@ clients must be made or how a client should react.
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <poll.h>
-#include <pty.h>
+//#include <poll.h>
+//#include <pty.h>
 
 #define SSHD_USER "libssh"
 #define SSHD_PASSWORD "libssh"

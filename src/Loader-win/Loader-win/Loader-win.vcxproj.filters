@@ -18,9 +18,6 @@
     <ClCompile Include="Loader-win.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Loader\src\loader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ssh_server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
