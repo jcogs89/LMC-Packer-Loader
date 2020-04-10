@@ -42,6 +42,7 @@ clients must be made or how a client should react.
 #endif
 #endif
 
+
 #ifdef WITH_PCAP
 const char* pcap_file = "debug.server.pcap";
 ssh_pcap_file pcap;
@@ -243,11 +244,11 @@ static int copy_fd_to_chan(socket_t fd, int revents, void* userdata) {
     int sz = 0;
 
     if (!chan) {
-        close(fd);
+       closesocket(fd);
         return -1;
     }
     if (revents & POLLIN) {
-        sz = read(fd, buf, 2048);
+        sz = recv(fd, buf, 2048, 0);
         if (sz > 0) {
             ssh_channel_write(chan, buf, sz);
         }
@@ -271,7 +272,8 @@ static int copy_chan_to_fd(ssh_session session,
     (void)channel;
     (void)is_stderr;
 
-    sz = write(fd, data, len);
+    char* pChar = (char*)data;
+    sz = send(fd, pChar, len, 0);
     return sz;
 }
 
@@ -280,7 +282,7 @@ static void chan_close(ssh_session session, ssh_channel channel, void* userdata)
     (void)session;
     (void)channel;
 
-    close(fd);
+    closesocket(fd);
 }
 
 struct ssh_channel_callbacks_struct cb = {
@@ -296,16 +298,16 @@ static int main_loop(ssh_channel chan) {
     socket_t fd;
     struct termios* term = NULL;
     struct winsize* win = NULL;
-    pid_t childpid;
+    //pid_t childpid;
     ssh_event event;
     short events;
 
 
-    childpid = forkpty(&fd, NULL, term, win);
-    if (childpid == 0) {
-        execl("/bin/bash", "/bin/bash", (char*)NULL);
-        abort();
-    }
+    //childpid = forkpty(&fd, NULL, term, win);
+    //if (childpid == 0) {
+    //    execl("/bin/bash", "/bin/bash", (char*)NULL);
+    //    abort();
+    //}
 
     cb.userdata = &fd;
     ssh_callbacks_init(&cb);
