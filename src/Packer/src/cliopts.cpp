@@ -17,7 +17,7 @@ using namespace std;
 
 
 void listpayloads(vector<string> files) {
-	printf("current payloads\n\n");
+	printf("\e[1;32mCurrent payloads:\e[0;17m\n\n");
 	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(files,11);
 }
@@ -29,7 +29,7 @@ void addpayload(string pathpacked, string pathstaging) {
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
 
-	printf("The following payloads are availible in the staging folder:\n");
+	printf("\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
 	printf("\nEnter the number for file to be packed ('x' to back out):");
@@ -55,7 +55,7 @@ void addpayload(string pathpacked, string pathstaging) {
 			}
 		}
 	}
-	cout <<"File :\"" << stage[id] << "\" selected.";
+	//cout <<"File :\"" << stage[id] << "\" selected.";
 
 	// COMPRESSION <><>
 	string compression_outp= pathpacked+stage[id].substr(10)+".zips";
@@ -93,6 +93,7 @@ void addpayload(string pathpacked, string pathstaging) {
 
 void sendpayload(string pathpacked) {
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+<<<<<<< HEAD
 	vector<string> target;
 	target = findnew("Known_hosts");
 	string host = target[0];

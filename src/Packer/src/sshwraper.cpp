@@ -8,6 +8,11 @@
 //requires libssh
 //www.libssh.org
 //use your package manager or build it for windows
+//https://www.libssh.org/get-it/
+//https://github.com/Microsoft/vcpkg/
+
+#pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
+
 #define LIBSSH_STATIC 1
 #include <libssh/libssh.h>
 #include "sshwraper.h"
@@ -21,10 +26,124 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <windows.h>
 #include "Helpers.h"
+#include <io.h>
 
-#include <bits/stdc++.h>
+//https://codeforces.com/blog/entry/13981
+#include <algorithm>
+#include <bitset>
+#include <complex>
+#include <deque>
+#include <exception>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iosfwd>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <limits>
+#include <list>
+#include <locale>
+#include <map>
+#include <memory>
+#include <new>
+#include <numeric>
+#include <ostream>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
+#include <string>
+#include <typeinfo>
+#include <utility>
+#include <valarray>
+#include <vector>
+
+#if __cplusplus >= 201103L
+#include <array>
+#include <atomic>
+#include <chrono>
+#include <codecvt>
+#include <condition_variable>
+#include <forward_list>
+#include <future>
+#include <initializer_list>
+#include <mutex>
+#include <random>
+#include <ratio>
+#include <regex>
+#include <scoped_allocator>
+#include <system_error>
+#include <thread>
+#include <tuple>
+#include <typeindex>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
+#endif
+
+#if __cplusplus >= 201402L
+#include <shared_mutex>
+#endif
+//
+
+//#include <bits/stdc++.h>
 using namespace std;
+
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#define write _write
+#define open _open
+#endif
+
+int getpass(const char* prompt, char* password2, bool show_asterisk = true)
+{
+    const char BACKSPACE = 8;
+    const char RETURN = 13;
+
+    string password;
+
+    unsigned char ch = 0;
+
+    cout << prompt << endl;
+
+    DWORD con_mode;
+    DWORD dwRead;
+
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+
+    GetConsoleMode(hIn, &con_mode);
+    SetConsoleMode(hIn, con_mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+
+    while (ReadConsoleA(hIn, &ch, 1, &dwRead, NULL) && ch != RETURN)
+    {
+        if (ch == BACKSPACE)
+        {
+            if (password.length() != 0)
+            {
+                if (show_asterisk)
+                    cout << "\b \b";
+                password.resize(password.length() - 1);
+            }
+        }
+        else
+        {
+            password += ch;
+            if (show_asterisk)
+                cout << '*';
+        }
+    }
+    cout << endl;
+    const char* cstr = password.c_str();
+    strncpy(password2, cstr, 90);
+    return 1;
+}
 
 int verify_knownhost(ssh_session session)
 {
@@ -87,7 +206,7 @@ int verify_knownhost(ssh_session session)
             printf( "Public key hash: %s\n>>>", hexa);
             ssh_string_free_char(hexa);
             ssh_clean_pubkey_hash(&hash);
-            scanf("%9s",buf);
+            sscanf_s("%9s",buf);
 
             cmp = strncasecmp(buf, "yes", 3);
             if (cmp != 0)
@@ -96,7 +215,7 @@ int verify_knownhost(ssh_session session)
             	fflush(stdin);
             	//this is is ------------------------------------------------------------------------------------
             	cin.clear();
-            	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            	//cin.ignore(numeric_limits<streamsize>::max(),'\n');
             	// ^those lines
                 return -1;
             }
@@ -119,6 +238,7 @@ int verify_knownhost(ssh_session session)
     return 0;
 }
 
+/*
 int scp_write(ssh_session session)
 {
   //https://api.libssh.org/stable/libssh_tutor_scp.html
@@ -165,7 +285,7 @@ int scp_write(ssh_session session)
   			break;
   		}
   	}
-  	cout <<"File :\"" << stage[id] << "\" selected";
+
   	//jenk
   	//magic again
   	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
@@ -178,7 +298,7 @@ int scp_write(ssh_session session)
     vector<char> buffer(size);
     if (file.read(buffer.data(), size))
     {
-       /* worked! */
+
     	printf("\nid did work\n");
 
    }
@@ -216,6 +336,7 @@ int scp_write(ssh_session session)
   ssh_scp_free(scp);
   return SSH_OK;
 }
+*/
 
 int connect(char *ip, char *usern)
 {
@@ -251,8 +372,8 @@ int connect(char *ip, char *usern)
 	  }
 	  ssh_userauth_none(my_ssh_session, NULL);
 	  printf("\nhost v\n");
-	  char *password;
-	  password = getpass("Password: ");
+      char password[100];
+      getpass("Password: ", password,  true);
 	  //printf("password:%s",password);
 	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
@@ -261,7 +382,7 @@ int connect(char *ip, char *usern)
 	  while (rc != SSH_AUTH_SUCCESS)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
-	    password = getpass("Password: ");
+        getpass("Password: ", password, true);
 	    //printf("password:%s",password);
 	    rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	    //ssh_disconnect(my_ssh_session);
@@ -274,48 +395,48 @@ int connect(char *ip, char *usern)
 	  //direct_forwarding(my_ssh_session, ip_remote);
       
       
-	  scp_write(my_ssh_session);
+	  // scp_write(my_ssh_session); TODO DOES NOT WRITE ----------------------------------------------------------------
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
 	  return(1);
 }
 
-int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
-{
-	ssh_channel forwarding_channel;
-	int rc;
-	const char loopback[20] = "192.168.56.102"; //may need to change to ip of remote system
-	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
-	int nbytes, nwritten;
-	forwarding_channel = ssh_channel_new(session);
-	if (forwarding_channel == NULL) {
-    return rc;
-  }
-
-  rc = ssh_channel_open_forward(forwarding_channel,
-                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
-                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
-  if (rc != SSH_OK)
-  {
-    ssh_channel_free(forwarding_channel);
-    return rc;
-  }
-
-  nbytes = strlen(payload); //For using vectors we will need to change this
-  nwritten = ssh_channel_write(forwarding_channel,
-                           &payload,
-                           nbytes);
-  if (nbytes != nwritten)
-  {
-    ssh_channel_free(forwarding_channel);
-    return SSH_ERROR;
-  }
-
-
-  ssh_channel_free(forwarding_channel);
-  return SSH_OK;
-}
+//int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+//{
+//	ssh_channel forwarding_channel;
+//	int rc;
+//	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
+//	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
+//	int nbytes, nwritten;
+//	forwarding_channel = ssh_channel_new(session);
+//	if (forwarding_channel == NULL) {
+//    return rc;
+//  }
+//
+//  rc = ssh_channel_open_forward(forwarding_channel,
+//                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
+//                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+//  if (rc != SSH_OK)
+//  {
+//    ssh_channel_free(forwarding_channel);
+//    return rc;
+//  }
+//
+//  nbytes = strlen(payload); //For using vectors we will need to change this
+//  nwritten = ssh_channel_write(forwarding_channel,
+//                           &payload,
+//                           nbytes);
+//  if (nbytes != nwritten)
+//  {
+//    ssh_channel_free(forwarding_channel);
+//    return SSH_ERROR;
+//  }
+//
+//
+//  ssh_channel_free(forwarding_channel);
+//  return SSH_OK;
+//}
 
 int rec(ssh_session session, ssh_scp scp)
 {
@@ -332,7 +453,7 @@ int rec(ssh_session session, ssh_scp scp)
   }
 
   size1 = ssh_scp_request_get_size(scp);
-  filename = strdup(ssh_scp_request_get_filename(scp));
+  filename = _strdup(ssh_scp_request_get_filename(scp));
   mode = ssh_scp_request_get_permissions(scp);
   printf("Receiving file %s, size %d, permissions 0%o\n",
           filename, size1, mode);

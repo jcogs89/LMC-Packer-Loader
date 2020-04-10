@@ -1,6 +1,2 @@
-sample/__pycache__/
-
-*.pyc
-*.pyo
-
-.idea
+src/Loader-win/Loader-win/.vs/
+src/Loader-win/Loader-win/Debug/

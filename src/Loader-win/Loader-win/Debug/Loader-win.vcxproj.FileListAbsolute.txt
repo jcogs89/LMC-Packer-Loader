@@ -1,0 +1,5 @@
+C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\Loader-win.exe
+C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\ssh.dll
+C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\libcrypto-1_1.dll
+C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\Loader-win.vcxproj.CopyComplete
+C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\Loader-win.pdb
