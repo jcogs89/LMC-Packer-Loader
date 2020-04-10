@@ -1,75 +1,24 @@
-﻿  loader.cpp
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,2): error C2065: 'var': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,6): error C2146: syntax error: missing ';' before identifier 'listener'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,6): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,32): error C2061: syntax error: identifier 'TcpListener'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(16,2): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(20,3): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,3): error C2065: 'TcpClient': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,13): error C2146: syntax error: missing ';' before identifier 'client'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,13): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,22): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(23,3): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,3): error C2065: 'NetworkStream': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,17): error C2146: syntax error: missing ';' before identifier 'ns'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,17): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,22): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(27,3): error C2065: 'byte': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(27,8): error C2059: syntax error: ']'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(32,4): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(32,13): error C2065: 'byteData': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(33,4): error C2146: syntax error: missing ';' before identifier 'outdata'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(33,4): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(34,4): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(34,15): error C2065: 'bytedata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(35,4): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(38,4): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(39,4): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(41,20): error C2061: syntax error: identifier 'Exception'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(41,3): error C2310: catch handlers must specify one type
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(43,4): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(43,22): error C2065: 'e': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(47,2): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(49,10): error C2562: 'Tlistnr': 'void' function returning a value
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(9): message : see declaration of 'Tlistnr'
-E:\Git\BluSh3ll\src\Loader\src\loader.cpp(56,3): error C2146: syntax error: missing ';' before identifier 'ifstream'
-  sshwraper.cpp
-E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(29,10): fatal error C1083: Cannot open include file: 'bits/stdc++.h': No such file or directory
-  Loader-win.cpp
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,2): error C2065: 'var': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,6): error C2146: syntax error: missing ';' before identifier 'listener'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,6): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,32): error C2061: syntax error: identifier 'TcpListener'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(20,2): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(24,3): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,3): error C2065: 'TcpClient': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,13): error C2146: syntax error: missing ';' before identifier 'client'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,13): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,22): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(27,3): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,3): error C2065: 'NetworkStream': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,17): error C2146: syntax error: missing ';' before identifier 'ns'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,17): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,22): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(31,3): error C2065: 'byte': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(31,8): error C2059: syntax error: ']'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(36,4): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(36,13): error C2065: 'byteData': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(37,5): error C2146: syntax error: missing ';' before identifier 'outdata'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(37,5): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(38,4): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(38,15): error C2065: 'bytedata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(39,4): error C2065: 'outdata': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(42,4): error C2065: 'ns': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(43,4): error C2065: 'client': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(45,20): error C2061: syntax error: identifier 'Exception'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(45,3): error C2310: catch handlers must specify one type
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(47,4): error C2065: 'Console': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(47,22): error C2065: 'e': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(51,2): error C2065: 'listener': undeclared identifier
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(53,10): error C2562: 'Tlistnr': 'void' function returning a value
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(13): message : see declaration of 'Tlistnr'
-E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(60,2): error C2146: syntax error: missing ';' before identifier 'ifstream'
+﻿  sshwraper.cpp
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(138,37): error C2131: expression did not evaluate to a constant
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(138,35): message : failure was caused by call of undefined function or one not declared 'constexpr'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(138,35): message : see usage of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::length'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(139,1): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+S:\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133): message : see declaration of 'strcpy'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(204,1): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+S:\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1274): message : see declaration of 'scanf'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(221,1): error C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+S:\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(182): message : see declaration of 'strerror'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(292,25): warning C4244: 'argument': conversion from 'std::streamsize' to 'const unsigned int', possible loss of data
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(313,38): warning C4244: 'argument': conversion from 'std::streamsize' to 'size_t', possible loss of data
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(321,30): warning C4244: 'argument': conversion from 'std::streamsize' to 'size_t', possible loss of data
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(371,36): error C2440: '=': cannot convert from 'char' to 'char *'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(371,22): message : Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(380,38): error C2440: '=': cannot convert from 'char' to 'char *'
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(380,24): message : Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(475,3): error C3861: 'write': identifier not found
+E:\Git\BluSh3ll\src\Packer\src\sshwraper.cpp(451,1): error C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details.
+S:\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(536): message : see declaration of 'strdup'
   ssh_server.cpp
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\ssh_server.h(3,34): error C2061: syntax error: identifier 'string'
 E:\Git\BluSh3ll\src\Loader-win\Loader-win\ssh_server.cpp(31,10): fatal error C1083: Cannot open include file: 'poll.h': No such file or directory
   Generating Code...

@@ -340,7 +340,7 @@ static int main_loop(ssh_channel chan) {
 }
 
 
-int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key)
+int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key)
 {
     //printf("\nSSH server initiated.");
     int port = 8122;

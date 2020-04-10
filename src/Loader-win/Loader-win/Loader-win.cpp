@@ -2,6 +2,8 @@
 //
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include "ssh_server.h"
 #include "config_parser.h"
 
 using namespace std;
@@ -20,6 +22,10 @@ string get_config_item(ConfigFile cfg, string item_name) {
 }
 
 int main() {
+	//Tlistnr()
+	std::string ssh_host_dsa_key = "ssh_host_dsa_key";
+	std::string ssh_host_rsa_key = "ssh_host_rsa_key";
+	ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
 	// Temporary... file will eventually be pulled in from some .NET framework with networking while running as a service to recieve packed data.
 	ConfigFile cfg("loader.conf");
 	std::string port_num = get_config_item(cfg, "port");
