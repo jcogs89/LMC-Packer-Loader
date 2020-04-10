@@ -23,13 +23,14 @@ string get_config_item(ConfigFile cfg, string item_name) {
 
 int main() {
 	//Tlistnr()
-	std::string ssh_host_dsa_key = "ssh_host_dsa_key";
-	std::string ssh_host_rsa_key = "ssh_host_rsa_key";
-	ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
 	// Temporary... file will eventually be pulled in from some .NET framework with networking while running as a service to recieve packed data.
 	ConfigFile cfg("loader.conf");
 	std::string port_num = get_config_item(cfg, "port");
+	std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
+	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
 	printf("The port is: %s\n", port_num.c_str());
+
+	ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
 
 	string inp;
 	while (1) {

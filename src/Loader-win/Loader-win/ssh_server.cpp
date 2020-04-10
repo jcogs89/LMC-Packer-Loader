@@ -44,6 +44,59 @@ clients must be made or how a client should react.
 #include <winsock2.h>
 #pragma comment (lib, "ws2_32.lib")
 
+int scp_rec(ssh_session session, ssh_scp scp)
+{
+    int rc;
+    int size1, mode;
+    char* filename, * buffer;
+
+    rc = ssh_scp_pull_request(scp);
+    if (rc != SSH_SCP_REQUEST_NEWFILE)
+    {
+        fprintf(stderr, "Error receiving information about file: %s\n",
+            ssh_get_error(session));
+        return SSH_ERROR;
+    }
+
+    size1 = ssh_scp_request_get_size(scp);
+    filename = _strdup(ssh_scp_request_get_filename(scp));
+    mode = ssh_scp_request_get_permissions(scp);
+    printf("Receiving file %s, size %d, permissions 0%o\n",
+        filename, size1, mode);
+    free(filename);
+
+    buffer = (char*)malloc(size1);
+    if (buffer == NULL)
+    {
+        fprintf(stderr, "Memory allocation error\n");
+        return SSH_ERROR;
+    }
+
+    ssh_scp_accept_request(scp);
+    rc = ssh_scp_read(scp, buffer, size1);
+    if (rc == SSH_ERROR)
+    {
+        fprintf(stderr, "Error receiving file data: %s\n",
+            ssh_get_error(session));
+        free(buffer);
+        return rc;
+    }
+    printf("Done\n");
+
+    send(1, buffer, size1, 0); //ToDo no idea what 0 is
+    free(buffer);
+
+    rc = ssh_scp_pull_request(scp);
+    if (rc != SSH_SCP_REQUEST_EOF)
+    {
+        fprintf(stderr, "Unexpected request: %s\n",
+            ssh_get_error(session));
+        return SSH_ERROR;
+    }
+
+    return SSH_OK;
+}
+
 #ifdef WITH_PCAP
 const char* pcap_file = "debug.server.pcap";
 ssh_pcap_file pcap;
@@ -402,6 +455,11 @@ int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa
         ssh_disconnect(session);
         return 1;
     }
+
+
+    ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
+    ssh_scp_init(scp);
+    scp_rec(session, scp);
 
     /* wait for a channel session */
     do {
