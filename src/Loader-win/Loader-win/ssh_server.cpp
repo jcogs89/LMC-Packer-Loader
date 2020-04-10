@@ -40,8 +40,9 @@ clients must be made or how a client should react.
 #endif
 #endif
 
-//#include <WS2tcpip.h>
-//#include <winsock2.h>
+#include <WS2tcpip.h>
+#include <winsock2.h>
+#pragma comment (lib, "ws2_32.lib")
 
 #ifdef WITH_PCAP
 const char* pcap_file = "debug.server.pcap";
@@ -244,11 +245,11 @@ static int copy_fd_to_chan(socket_t fd, int revents, void* userdata) {
     int sz = 0;
 
     if (!chan) {
-        close(fd);
+        closesocket(fd);
         return -1;
     }
     if (revents & POLLIN) {
-        sz = read(fd, buf, 2048);
+        sz = recv(fd, buf, 2048, 0); //ToDo what is 0?
         if (sz > 0) {
             ssh_channel_write(chan, buf, sz);
         }
@@ -272,7 +273,8 @@ static int copy_chan_to_fd(ssh_session session,
     (void)channel;
     (void)is_stderr;
 
-    sz = write(fd, data, len);
+    char* ptemp = (char*)data; //ToDo required char * not VOID *, not sure if this fucks shit by changing it.
+    sz = send(fd, ptemp, len, 0); //ToDo what is 0?
     return sz;
 }
 
@@ -281,7 +283,7 @@ static void chan_close(ssh_session session, ssh_channel channel, void* userdata)
     (void)session;
     (void)channel;
 
-    close(fd);
+    closesocket(fd);
 }
 
 struct ssh_channel_callbacks_struct cb = {
@@ -301,7 +303,7 @@ static int main_loop(ssh_channel chan) {
     ssh_event event;
     short events;
 
-    // ToDo
+    // ToDo removed cuz broken.
     //childpid = forkpty(&fd, NULL, term, win);
     //if (childpid == 0) {
     //    execl("/bin/bash", "/bin/bash", (char*)NULL);

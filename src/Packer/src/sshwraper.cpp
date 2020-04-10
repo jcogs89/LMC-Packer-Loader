@@ -238,6 +238,7 @@ int verify_knownhost(ssh_session session)
     return 0;
 }
 
+/*
 int scp_write(ssh_session session)
 {
   //https://api.libssh.org/stable/libssh_tutor_scp.html
@@ -284,7 +285,7 @@ int scp_write(ssh_session session)
   			break;
   		}
   	}
-  	cout <<"File :\"" << stage[id] << "\" selected";
+
   	//jenk
   	//magic again
   	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
@@ -297,7 +298,7 @@ int scp_write(ssh_session session)
     vector<char> buffer(size);
     if (file.read(buffer.data(), size))
     {
-       /* worked! */
+
     	printf("\nid did work\n");
 
    }
@@ -335,6 +336,7 @@ int scp_write(ssh_session session)
   ssh_scp_free(scp);
   return SSH_OK;
 }
+*/
 
 int connect(char *ip)
 {
@@ -395,7 +397,7 @@ int connect(char *ip)
 	  //direct_forwarding(my_ssh_session, ip_remote);
       
       
-	  scp_write(my_ssh_session);
+	  // scp_write(my_ssh_session); TODO DOES NOT WRITE ----------------------------------------------------------------
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
