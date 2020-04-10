@@ -3,9 +3,7 @@
 /* This is a sample implementation of a libssh based SSH server */
 /*
 Copyright 2003-2011 Aris Adamantiadis
-
 This file is part of the SSH Library
-
 You are free to copy this file, modify it in any way, consider it being public
 domain. This does not apply to the rest of the library though, but it is
 allowed to cut-and-paste working code from this file to any license of
@@ -42,6 +40,8 @@ clients must be made or how a client should react.
 #endif
 #endif
 
+//#include <WS2tcpip.h>
+//#include <winsock2.h>
 
 #ifdef WITH_PCAP
 const char* pcap_file = "debug.server.pcap";
@@ -244,11 +244,11 @@ static int copy_fd_to_chan(socket_t fd, int revents, void* userdata) {
     int sz = 0;
 
     if (!chan) {
-       closesocket(fd);
+        close(fd);
         return -1;
     }
     if (revents & POLLIN) {
-        sz = recv(fd, buf, 2048, 0);
+        sz = read(fd, buf, 2048);
         if (sz > 0) {
             ssh_channel_write(chan, buf, sz);
         }
@@ -272,8 +272,7 @@ static int copy_chan_to_fd(ssh_session session,
     (void)channel;
     (void)is_stderr;
 
-    char* pChar = (char*)data;
-    sz = send(fd, pChar, len, 0);
+    sz = write(fd, data, len);
     return sz;
 }
 
@@ -282,7 +281,7 @@ static void chan_close(ssh_session session, ssh_channel channel, void* userdata)
     (void)session;
     (void)channel;
 
-    closesocket(fd);
+    close(fd);
 }
 
 struct ssh_channel_callbacks_struct cb = {
@@ -302,7 +301,7 @@ static int main_loop(ssh_channel chan) {
     ssh_event event;
     short events;
 
-
+    // ToDo
     //childpid = forkpty(&fd, NULL, term, win);
     //if (childpid == 0) {
     //    execl("/bin/bash", "/bin/bash", (char*)NULL);
