@@ -1,0 +1,71 @@
+﻿  loader.cpp
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,2): error C2065: 'var': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,6): error C2146: syntax error: missing ';' before identifier 'listener'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,6): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(14,32): error C2061: syntax error: identifier 'TcpListener'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(16,2): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(20,3): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,3): error C2065: 'TcpClient': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,13): error C2146: syntax error: missing ';' before identifier 'client'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,13): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(21,22): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(23,3): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,3): error C2065: 'NetworkStream': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,17): error C2146: syntax error: missing ';' before identifier 'ns'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,17): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(24,22): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(27,3): error C2065: 'byte': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(27,8): error C2059: syntax error: ']'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(32,4): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(32,13): error C2065: 'byteData': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(33,4): error C2146: syntax error: missing ';' before identifier 'outdata'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(33,4): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(34,4): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(34,15): error C2065: 'bytedata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(35,4): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(38,4): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(39,4): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(41,20): error C2061: syntax error: identifier 'Exception'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(41,3): error C2310: catch handlers must specify one type
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(43,4): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(43,22): error C2065: 'e': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(47,2): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(49,10): error C2562: 'Tlistnr': 'void' function returning a value
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(9): message : see declaration of 'Tlistnr'
+E:\Git\BluSh3ll\src\Loader\src\loader.cpp(56,3): error C2146: syntax error: missing ';' before identifier 'ifstream'
+  Loader-win.cpp
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,2): error C2065: 'var': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,6): error C2146: syntax error: missing ';' before identifier 'listener'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,6): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(18,32): error C2061: syntax error: identifier 'TcpListener'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(20,2): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(24,3): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,3): error C2065: 'TcpClient': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,13): error C2146: syntax error: missing ';' before identifier 'client'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,13): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(25,22): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(27,3): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,3): error C2065: 'NetworkStream': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,17): error C2146: syntax error: missing ';' before identifier 'ns'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,17): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(28,22): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(31,3): error C2065: 'byte': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(31,8): error C2059: syntax error: ']'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(36,4): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(36,13): error C2065: 'byteData': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(37,5): error C2146: syntax error: missing ';' before identifier 'outdata'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(37,5): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(38,4): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(38,15): error C2065: 'bytedata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(39,4): error C2065: 'outdata': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(42,4): error C2065: 'ns': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(43,4): error C2065: 'client': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(45,20): error C2061: syntax error: identifier 'Exception'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(45,3): error C2310: catch handlers must specify one type
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(47,4): error C2065: 'Console': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(47,22): error C2065: 'e': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(51,2): error C2065: 'listener': undeclared identifier
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(53,10): error C2562: 'Tlistnr': 'void' function returning a value
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(13): message : see declaration of 'Tlistnr'
+E:\Git\BluSh3ll\src\Loader-win\Loader-win\Loader-win.cpp(60,3): error C2146: syntax error: missing ';' before identifier 'ifstream'
+  Generating Code...
