@@ -217,12 +217,9 @@ int scp_write(ssh_session session)
   return SSH_OK;
 }
 
-int connect(char *ip)
+int connect(char *ip, char *usern)
 {
 	  int port = 22;
-	  //ToDo change to variable
-	  char usern[] = {'p','i'};
-	  //char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
 	  my_ssh_session = ssh_new();
@@ -234,7 +231,7 @@ int connect(char *ip)
 	  //												V ip to connect to -----------------------------
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, ip);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
-	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, &usern);
+	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, usern);
 
 	  rc = ssh_connect(my_ssh_session);
 	  printf("\n%i\n",rc);
@@ -288,7 +285,7 @@ int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port n
 {
 	ssh_channel forwarding_channel;
 	int rc;
-	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
+	const char loopback[20] = "192.168.56.102"; //may need to change to ip of remote system
 	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
 	int nbytes, nwritten;
 	forwarding_channel = ssh_channel_new(session);
