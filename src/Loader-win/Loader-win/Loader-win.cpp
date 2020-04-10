@@ -2,84 +2,40 @@
 //
 #include <iostream>
 #include <fstream>
+#include "config_parser.h"
 
 using namespace std;
 
-//using System;
-//using System.Net;
-//using System.Net.Sockets;
-//using System.Text;
-
-void Tlistnr() {
-	int portNum = 8000;
-
-	bool done = false;
-
-	var listener = new TcpListener(IPAddress.Any, portNum);
-
-	listener.Start();
-
-	while (!done)
-	{
-		Console.Write("Waiting for connection...");
-		TcpClient client = listener.AcceptTcpClient();
-
-		Console.WriteLine("Connection accepted.");
-		NetworkStream ns = client.GetStream();
-
-		//byte[] byteTime = Encoding.ASCII.GetBytes(DateTime.Now.ToString());
-		byte[] byteData[100];
-
-		try
-		{
-			//    ns.Write(byteTime, 0, byteTime.Length);
-			ns.Write(byteData, 0, 100)
-				outdata.open("mal.exe");
-			outdata << bytedata << endl;
-			outdata.close();
-
-
-			ns.Close();
-			client.Close();
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e.ToString());
-		}
+string get_config_item(ConfigFile cfg, string item_name) {
+	std::string item;
+	if (cfg.keyExists(item_name)) {
+		item = cfg.getValueOfKey<std::string>(item_name);
+		//printf("Config worked: %s\n", item.c_str());
 	}
-
-	listener.Stop();
-
-	return 0;
+	else {
+		printf("No '%s' specified in packer.conf.  Please update the config and rerun the program.", item_name.c_str()); //ToDo or ask user to input now
+		exit(0);
+	}
+	return item;
 }
 
 int main() {
-	Tlistnr()
-
 	// Temporary... file will eventually be pulled in from some .NET framework with networking while running as a service to recieve packed data.
-	ifstream infile;
-	char data[100];
+	ConfigFile cfg("loader.conf");
+	std::string port_num = get_config_item(cfg, "port");
+	printf("The port is: %s\n", port_num.c_str());
 
-	infile.open("hello_world.txt", ios::in);
-
-	cout << "Reading from the file" << endl;
-	infile >> data;
-
-	// write data to screen.
-	cout << data << endl;
-
-	// close opened input file.
-	infile.close();
+	string inp;
+	while (1) {
+		cin >> inp;
+		if (inp == "x") {
+			break;
+		}
+		else {
+			printf("%s", inp.c_str());
+		}
+	}
 
 	return 0;
 }
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
