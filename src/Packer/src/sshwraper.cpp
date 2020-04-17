@@ -467,7 +467,12 @@ int rec(ssh_session session, ssh_scp scp)
   }
 
   ssh_scp_accept_request(scp);
-  rc = ssh_scp_read(scp, buffer, size1);
+  //rc = ssh_scp_read(scp, buffer, size1);
+  int r = 0;
+  while (r < size1) {
+      int rc = ssh_scp_read(scp, buffer + r, size1 - r);
+      r += rc;
+  }
   if (rc == SSH_ERROR)
   {
     fprintf(stderr, "Error receiving file data: %s\n",

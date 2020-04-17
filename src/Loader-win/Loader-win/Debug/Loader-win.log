@@ -1,2 +1,3 @@
-﻿A:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (src.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Loader-win.vcxproj -> C:\Users\mitch\Desktop\Blush3ll\src\Loader-win\Loader-win\Debug\Loader-win.exe
+﻿E:\app\VS-2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (src.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  ssh_server.cpp
+  Loader-win.vcxproj -> E:\Git\BluSh3ll\src\Loader-win\Loader-win\Debug\Loader-win.exe
