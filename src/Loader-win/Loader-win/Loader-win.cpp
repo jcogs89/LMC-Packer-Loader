@@ -42,7 +42,6 @@ int main() {
 			printf("%s", inp.c_str());
 		}
 	}
-
 	return 0;
 }
 

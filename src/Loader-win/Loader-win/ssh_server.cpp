@@ -18,6 +18,10 @@ clients must be made or how a client should react.
 #include <libssh/server.h>
 #include <libssh/callbacks.h>
 #include <string>
+#include "sshwraper.h"
+#include <windows.h>
+#include <stdio.h>
+#include <io.h>
 
 
 #ifdef HAVE_ARGP_H
@@ -43,6 +47,13 @@ clients must be made or how a client should react.
 #include <WS2tcpip.h>
 #include <winsock2.h>
 #pragma comment (lib, "ws2_32.lib")
+
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#define write _write
+#define open _open
+#endif
 
 int scp_rec(ssh_session session, ssh_scp scp)
 {
@@ -347,7 +358,9 @@ struct ssh_channel_callbacks_struct cb = {
 
 };
 
-static int main_loop(ssh_channel chan) {
+static int main_loop(ssh_channel chan)
+{
+    printf("main loop\n");
     ssh_session session = ssh_channel_get_session(chan);
     socket_t fd;
     struct termios* term = NULL;
@@ -356,20 +369,22 @@ static int main_loop(ssh_channel chan) {
     ssh_event event;
     short events;
 
+    printf("mainloop2 auth\n");
     // ToDo removed cuz broken.
     //childpid = forkpty(&fd, NULL, term, win);
     //if (childpid == 0) {
     //    execl("/bin/bash", "/bin/bash", (char*)NULL);
     //    abort();
     //}
-
+    printf("main loop3\n");
     cb.userdata = &fd;
     ssh_callbacks_init(&cb);
     ssh_set_channel_callbacks(chan, &cb);
-
+    printf("main loop4\n");
     events = POLLIN | POLLPRI | POLLERR | POLLHUP | POLLNVAL;
-
+    printf("main loop4.5\n");
     event = ssh_event_new();
+    printf("main loop5\n");
     if (event == NULL) {
         printf("Couldn't get a event\n");
         return -1;
@@ -382,24 +397,168 @@ static int main_loop(ssh_channel chan) {
         printf("Couldn't add the session to the event\n");
         return -1;
     }
-
+    printf("stuff\n");
+    //here
+    //ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
+    //ssh_scp_init(scp);
+    //printf("stuff\n");
+    //rec(session, scp);
+    printf("main loop6\n");
     do {
         ssh_event_dopoll(event, 1000);
     } while (!ssh_channel_is_closed(chan));
+    printf("main loop7\n");
 
     ssh_event_remove_fd(event, fd);
 
     ssh_event_remove_session(event, session);
 
     ssh_event_free(event);
+    printf("end main\n");
     return 0;
 }
 
+int ssh_server_alt(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key)
+{
+    ssh_session session;
+    ssh_bind sshbind;
+    ssh_message message;
+    ssh_channel chan = 0;
+    char buf[2048];
+    int auth = 0;
+    int sftp = 0;
+    int i;
+    int r;
+    int port = portp;
+
+    sshbind = ssh_bind_new();
+    session = ssh_new();
+
+    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
+
+    //printf("%s",ssh_host_dsa_key.c_str());
+    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_DSAKEY, ssh_host_dsa_key.c_str());
+    ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, ssh_host_rsa_key.c_str());
+    printf("main loop\n");
+
+#ifdef WITH_PCAP
+    set_pcap(session);
+#endif
+    printf("main loop\n");
+    if (ssh_bind_listen(sshbind) < 0) {
+        printf("Error listening to socket: %s\n", ssh_get_error(sshbind));
+        return 1;
+    }
+    r = ssh_bind_accept(sshbind, session);
+    if (r == SSH_ERROR) {
+        printf("error accepting a connection : %s\n", ssh_get_error(sshbind));
+        return 1;
+    }
+    if (ssh_handle_key_exchange(session)) {
+        printf("ssh_handle_key_exchange: %s\n", ssh_get_error(session));
+        return 1;
+    }
+    printf("main loop\n");
+    do {
+        message = ssh_message_get(session);
+        if (!message)
+            break;
+        switch (ssh_message_type(message)) {
+        case SSH_REQUEST_AUTH:
+            switch (ssh_message_subtype(message)) {
+            case SSH_AUTH_METHOD_PASSWORD:
+                printf("User %s wants to auth with pass %s\n",
+                    ssh_message_auth_user(message),
+                    ssh_message_auth_password(message));
+                if (auth_password(ssh_message_auth_user(message),
+                    ssh_message_auth_password(message))) {
+                    auth = 1;
+                    ssh_message_auth_reply_success(message, 0);
+                    break;
+                }
+                // not authenticated, send default message
+            case SSH_AUTH_METHOD_NONE:
+            default:
+                ssh_message_auth_set_methods(message, SSH_AUTH_METHOD_PASSWORD);
+                ssh_message_reply_default(message);
+                break;
+            }
+            break;
+        default:
+            ssh_message_reply_default(message);
+        }
+        ssh_message_free(message);
+    } while (!auth);
+    if (!auth) {
+        printf("auth error: %s\n", ssh_get_error(session));
+        ssh_disconnect(session);
+        return 1;
+    }
+    do {
+        message = ssh_message_get(session);
+        if (message) {
+            switch (ssh_message_type(message)) {
+            case SSH_REQUEST_CHANNEL_OPEN:
+                if (ssh_message_subtype(message) == SSH_CHANNEL_SESSION) {
+                    chan = ssh_message_channel_request_open_reply_accept(message);
+                    break;
+                }
+            default:
+                ssh_message_reply_default(message);
+            }
+            ssh_message_free(message);
+        }
+    } while (message && !chan);
+    if (!chan) {
+        printf("error : %s\n", ssh_get_error(session));
+        ssh_finalize();
+        return 1;
+    }
+    do {
+        message = ssh_message_get(session);
+        if (message && ssh_message_type(message) == SSH_REQUEST_CHANNEL &&
+            ssh_message_subtype(message) == SSH_CHANNEL_REQUEST_SHELL) {
+            //            if(!strcmp(ssh_message_channel_request_subsystem(message),"sftp")){
+            sftp = 1;
+            ssh_message_channel_request_reply_success(message);
+            break;
+            //           }
+        }
+        if (!sftp) {
+            ssh_message_reply_default(message);
+        }
+        ssh_message_free(message);
+    } while (message && !sftp);
+    if (!sftp) {
+        printf("error : %s\n", ssh_get_error(session));
+        return 1;
+    }
+    printf("it works !\n");
+    //gets to here
+    do {
+        i = ssh_channel_read(chan, buf, 2048, 0);
+        if (i > 0) {
+            ssh_channel_write(chan, buf, i);
+            if (write(1, buf, i) < 0) {
+                printf("error writing to buffer\n");
+                return 1;
+            }
+        }
+    } while (i > 0);
+    ssh_disconnect(session);
+    ssh_bind_free(sshbind);
+#ifdef WITH_PCAP
+    cleanup_pcap();
+#endif
+    ssh_finalize();
+    return 0;
+
+}
 
 int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key)
 {
     //printf("\nSSH server initiated.");
-    int port = 8122;
+    int port = portp;
     ssh_session session;
     ssh_bind sshbind;
     ssh_message message;
@@ -457,10 +616,10 @@ int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa
     }
 
 
-    ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
-    ssh_scp_init(scp);
-    scp_rec(session, scp);
-
+    //ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
+    //ssh_scp_init(scp);
+    //scp_rec(session, scp);
+    printf("post auth\n");
     /* wait for a channel session */
     do {
         message = ssh_message_get(session);
@@ -487,7 +646,7 @@ int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa
         ssh_finalize();
         return 1;
     }
-
+    printf("post channel\n");
 
     /* wait for a shell */
     do {
@@ -514,13 +673,17 @@ int ssh_server(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa
         }
     } while (!shell);
 
+    printf("post shell\n");
+
     if (!shell) {
         printf("Error: No shell requested (%s)\n", ssh_get_error(session));
         return 1;
     }
 
-    //printf("it works !\n");
-
+    printf("it works !\n");
+    //ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
+    //ssh_scp_init(scp);
+    //scp_rec(session, scp);
     main_loop(chan);
 
     ssh_disconnect(session);
