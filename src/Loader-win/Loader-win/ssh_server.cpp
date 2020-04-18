@@ -399,10 +399,10 @@ static int main_loop(ssh_channel chan)
     }
     printf("stuff\n");
     //here
-    //ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
+    ssh_scp scp = ssh_scp_new(session, SSH_SCP_READ, "DOWNLOADS");
     //ssh_scp_init(scp);
     //printf("stuff\n");
-    //rec(session, scp);
+    rec(session, scp);
     printf("main loop6\n");
     do {
         ssh_event_dopoll(event, 1000);
