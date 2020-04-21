@@ -8,6 +8,11 @@
 //requires libssh
 //www.libssh.org
 //use your package manager or build it for windows
+//https://www.libssh.org/get-it/
+//https://github.com/Microsoft/vcpkg/
+
+#pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
+
 #define LIBSSH_STATIC 1
 #include <libssh/libssh.h>
 #include "sshwraper.h"
@@ -21,11 +26,124 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <windows.h>
 #include "Helpers.h"
 #include <unistd.h>
 
-#include <bits/stdc++.h>
+//https://codeforces.com/blog/entry/13981
+#include <algorithm>
+#include <bitset>
+#include <complex>
+#include <deque>
+#include <exception>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iosfwd>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <limits>
+#include <list>
+#include <locale>
+#include <map>
+#include <memory>
+#include <new>
+#include <numeric>
+#include <ostream>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
+#include <string>
+#include <typeinfo>
+#include <utility>
+#include <valarray>
+#include <vector>
+
+#if __cplusplus >= 201103L
+#include <array>
+#include <atomic>
+#include <chrono>
+#include <codecvt>
+#include <condition_variable>
+#include <forward_list>
+#include <future>
+#include <initializer_list>
+#include <mutex>
+#include <random>
+#include <ratio>
+#include <regex>
+#include <scoped_allocator>
+#include <system_error>
+#include <thread>
+#include <tuple>
+#include <typeindex>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
+#endif
+
+#if __cplusplus >= 201402L
+#include <shared_mutex>
+#endif
+//
+
+//#include <bits/stdc++.h>
 using namespace std;
+
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#define write _write
+#define open _open
+#endif
+
+int getpass(const char* prompt, char* password2, bool show_asterisk = true)
+{
+    const char BACKSPACE = 8;
+    const char RETURN = 13;
+
+    string password;
+
+    unsigned char ch = 0;
+
+    cout << prompt << endl;
+
+    DWORD con_mode;
+    DWORD dwRead;
+
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+
+    GetConsoleMode(hIn, &con_mode);
+    SetConsoleMode(hIn, con_mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+
+    while (ReadConsoleA(hIn, &ch, 1, &dwRead, NULL) && ch != RETURN)
+    {
+        if (ch == BACKSPACE)
+        {
+            if (password.length() != 0)
+            {
+                if (show_asterisk)
+                    cout << "\b \b";
+                password.resize(password.length() - 1);
+            }
+        }
+        else
+        {
+            password += ch;
+            if (show_asterisk)
+                cout << '*';
+        }
+    }
+    cout << endl;
+    const char* cstr = password.c_str();
+    strncpy(password2, cstr, 90);
+    return 1;
+}
 
 int verify_knownhost(ssh_session session)
 {
@@ -88,7 +206,7 @@ int verify_knownhost(ssh_session session)
             printf( "Public key hash: %s\n>>>", hexa);
             ssh_string_free_char(hexa);
             ssh_clean_pubkey_hash(&hash);
-            scanf("%9s",buf);
+            sscanf_s("%9s",buf);
 
             cmp = strncasecmp(buf, "yes", 3);
             if (cmp != 0)
@@ -97,7 +215,7 @@ int verify_knownhost(ssh_session session)
             	fflush(stdin);
             	//this is is ------------------------------------------------------------------------------------
             	cin.clear();
-            	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            	//cin.ignore(numeric_limits<streamsize>::max(),'\n');
             	// ^those lines
                 return -1;
             }
@@ -166,7 +284,7 @@ int verify_knownhost(ssh_session session)
   			break;
   		}
   	}
-  	cout <<"File :\"" << stage[id] << "\" selected";
+
   	//jenk
   	//magic again
   	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
@@ -252,8 +370,8 @@ int connect(char *ip, char *usern)
 	  }
 	  ssh_userauth_none(my_ssh_session, NULL);
 	  printf("\nhost v\n");
-	  char *password;
-	  password = getpass("Password: ");
+      char password[100];
+      getpass("Password: ", password,  true);
 	  //printf("password:%s",password);
 	  rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	  //rc = ssh_userauth_kbdint(my_ssh_session, usern ,NULL);
@@ -262,7 +380,7 @@ int connect(char *ip, char *usern)
 	  while (rc != SSH_AUTH_SUCCESS)
 	  {
 	    fprintf(stderr, "Error authenticating with password: %s\n",ssh_get_error(my_ssh_session));
-	    password = getpass("Password: ");
+        getpass("Password: ", password, true);
 	    //printf("password:%s",password);
 	    rc = ssh_userauth_password(my_ssh_session, NULL, password);
 	    //ssh_disconnect(my_ssh_session);
@@ -384,7 +502,7 @@ int direct_forwarding(ssh_session session)
   }
 
   size1 = ssh_scp_request_get_size(scp);
-  filename = strdup(ssh_scp_request_get_filename(scp));
+  filename = _strdup(ssh_scp_request_get_filename(scp));
   mode = ssh_scp_request_get_permissions(scp);
   printf("Receiving file %s, size %d, permissions 0%o\n",
           filename, size1, mode);
@@ -398,7 +516,12 @@ int direct_forwarding(ssh_session session)
   }
 
   ssh_scp_accept_request(scp);
-  rc = ssh_scp_read(scp, buffer, size1);
+  //rc = ssh_scp_read(scp, buffer, size1);
+  int r = 0;
+  while (r < size1) {
+      int rc = ssh_scp_read(scp, buffer + r, size1 - r);
+      r += rc;
+  }
   if (rc == SSH_ERROR)
   {
     fprintf(stderr, "Error receiving file data: %s\n",

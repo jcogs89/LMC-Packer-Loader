@@ -6,4 +6,4 @@
  */
 #include <string.h>
 void incom(string knownhostsfile, pid_t parent, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key);
-string findnew (string knownhostsfolder);
+vector<string> findnew (string knownhostsfolder);

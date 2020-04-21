@@ -12,54 +12,67 @@
 #include "sshwraper.h"
 #include "sshserver.h"
 #include "dirlist.h"
+#include "incom.h"
 #include <vector>
 using namespace std;
 
-string findnew (string knownhostsfolder)
+vector<string> findnew (string knownhostsfolder)
 {
-	int magic = 12;
+	int magic = 12; // "Known_hosts" is 12 bytes ;)
 	vector<string> hostsf= dirlist("Known_hosts");
 	//ofstream hosts;
 	//hosts.open (knownhostsfile, ios::trunc);
-
 	long unsigned int cnt =0;
-	printf("The following systems are known:\n");
+	printf("\e[1;32mThe following systems are known:\e[0;17m\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
 		//string tmp = *ir;
-		printf("%li %s\n",cnt,hostsf[cnt].substr(magic).c_str());
-		//printf("%i %s\n",cnt,tmp.substr(magic).c_str());
 
+		string name = hostsf[cnt];
+		string hostname = name.substr(magic,name.find("@")-magic);
+		string ipaddress = name.substr(name.find("@")+1);
+		//cout << hostname << " at " << ipaddress << "\n";
+
+		printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
 	}
-	printf("\nEnter the number for system to be packed ('x' to back out):");
+	printf("\nChoose a target host ('x' to back out):"); //ToDo allow for multiple targets
 
 	//hosts << "Writing this to a file.\n";
 	//hosts.close();
-	string inp;
+
+	string selec;
+	string host;
+	string addr;
+	vector<string> target (2);
 	unsigned int id;
+	string inp;
 	while (1) {
-			printf("\n>> ");
+			cout << "\n>> ";
 			cin >> inp;
 			try {
-				id = std::stoi(inp);
+				id = stoi(inp);
 				if (id>hostsf.size()-1) {
 					cout << "Invalid option, please try again.";
 					continue;
 				} else {
 					//printf("\n%i\n",id);
-					cout <<"File :\"" << hostsf[id].substr(magic) << "\" selected";
+					selec = hostsf[id];
+					host = selec.substr(magic,selec.find("@")-magic);
+					addr = selec.substr(selec.find("@")+1);
+					target = {host, addr};
+					cout <<"File :\"" << host << "@" << addr << "\" selected";
 					break;
 				}
 			} catch (...) {
-				if ((inp != "x") and (inp != "X")) {
-					printf("Unrecognized input, please try again.");
+				if ((inp == "x") or (inp == "X")) {
+					return "0";
 				} else {
-					exit(0);
+					printf("Unrecognized input, please try again.");
 				}
 			}
 		}
-		return hostsf[id].substr(magic).c_str();
+		return target;
 }
 
 void incom(string knownhostsfile, pid_t parent, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
