@@ -9,6 +9,7 @@
 #include <libssh/libssh.h>
 
 int verify_knownhost(ssh_session session);
-int connect(char *ip);
+int connect(char *ip, char *host);
 int rec();
-int direct_forwarding(ssh_session session, const char ip_remote[20]);
+//int direct_forwarding(ssh_session session, const char ip_remote[20]);
+int direct_forwarding(ssh_session session);

@@ -22,6 +22,7 @@
 #include <chrono>
 #include <thread>
 #include "Helpers.h"
+#include <unistd.h>
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -119,7 +120,7 @@ int verify_knownhost(ssh_session session)
     return 0;
 }
 
-int scp_write(ssh_session session)
+/*int scp_write(ssh_session session)
 {
   //https://api.libssh.org/stable/libssh_tutor_scp.html
   ssh_scp scp;
@@ -178,7 +179,7 @@ int scp_write(ssh_session session)
     vector<char> buffer(size);
     if (file.read(buffer.data(), size))
     {
-       /* worked! */
+        worked!
     	printf("\nid did work\n");
 
    }
@@ -215,14 +216,11 @@ int scp_write(ssh_session session)
   ssh_scp_close(scp);
   ssh_scp_free(scp);
   return SSH_OK;
-}
+}*/
 
-int connect(char *ip)
+int connect(char *ip, char *usern)
 {
 	  int port = 22;
-	  //ToDo change to variable
-	  char usern[] = {'p','i'};
-	  //char usern[] = {'c','b','a','i'};
 	  ssh_session my_ssh_session;
 	  int rc;
 	  my_ssh_session = ssh_new();
@@ -234,7 +232,7 @@ int connect(char *ip)
 	  //												V ip to connect to -----------------------------
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, ip);
 	  ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
-	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, &usern);
+	  ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, usern);
 
 	  rc = ssh_connect(my_ssh_session);
 	  printf("\n%i\n",rc);
@@ -271,44 +269,95 @@ int connect(char *ip)
 	    //ssh_free(my_ssh_session);
 	    //exit(-1);
 	  }
-	  printf("\nconnected\n");
-
-      //const char ip_remote[20] = "127.0.0.1";//set this to be the ip of the loader may be able to use char array of local host instead of IP
+	  printf("Connected\n");
+      //const char ip_remote[20] = "192.168.56.102";//set this to be the ip of the loader may be able to use char array of local host instead of IP
 	  //direct_forwarding(my_ssh_session, ip_remote);
+      direct_forwarding(my_ssh_session);
       
-      
-	  scp_write(my_ssh_session);
+	  //scp_write(my_ssh_session);
 
 	  ssh_disconnect(my_ssh_session);
 	  ssh_free(my_ssh_session);
 	  return(1);
 }
 
-int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+int direct_forwarding(ssh_session session)
 {
-	ssh_channel forwarding_channel;
-	int rc;
-	const char loopback[20] = "127.0.0.1"; //may need to change to ip of remote system
-	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
-	int nbytes, nwritten;
-	forwarding_channel = ssh_channel_new(session);
-	if (forwarding_channel == NULL) {
-    return rc;
-  }
+  ssh_channel forwarding_channel;
+  int rc;
+  char http_get[] = "Eat Ass\n";
+  int nbytes, nwritten;
 
-  rc = ssh_channel_open_forward(forwarding_channel,
-                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
-                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+  forwarding_channel = ssh_channel_new(session);
+  if (forwarding_channel == NULL) {
+      return 0;
+  }
+  rc = ssh_channel_open_forward(forwarding_channel,"192.168.2.140", 6969,"localhost", 5555);
   if (rc != SSH_OK)
   {
     ssh_channel_free(forwarding_channel);
     return rc;
   }
 
+  nbytes = strlen(http_get);
+  nwritten = ssh_channel_write(forwarding_channel,
+                           http_get,
+                           nbytes);
+  printf("%d\n",nwritten);
+
+  if (nbytes != nwritten)
+  {
+    ssh_channel_free(forwarding_channel);
+    return SSH_ERROR;
+  }
+
+  ssh_channel_free(forwarding_channel);
+  return SSH_OK;
+}
+
+
+
+
+
+
+
+
+
+
+/*int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port number for redirects and the importation of IP addresses
+{
+	printf("%s",ip_remote);
+	ssh_channel forwarding_channel;
+	int rc;
+	const char loopback[20] = "192.168.56.103"; //may need to change to ip of remote system
+	char payload[40] = "Please for the love of god work";//Change this to a vector binary with payload //ToDo
+	int nbytes, nwritten;
+	forwarding_channel = ssh_channel_new(session);
+	if (forwarding_channel == NULL)
+	{
+		return rc;
+	}
+
+	rc = ssh_channel_open_forward(forwarding_channel,
+                                ip_remote, 8570, //port that the loader is monitoring NEED TO GET IP OF REMOTE MACHINE
+                                loopback, 8570);//port that the packer is monitoring (May need to change localhost to IP of that system
+	printf("OpenFord\n");
+	if (rc != SSH_OK)
+	{
+		ssh_channel_free(forwarding_channel);
+		return rc;
+	}
+
   nbytes = strlen(payload); //For using vectors we will need to change this
+
+  printf("waiting\n");
+  sleep(8);
+  printf("writing\n");
   nwritten = ssh_channel_write(forwarding_channel,
                            &payload,
                            nbytes);
+
+  printf("%d\n",nwritten);
   if (nbytes != nwritten)
   {
     ssh_channel_free(forwarding_channel);
@@ -318,9 +367,9 @@ int direct_forwarding(ssh_session session, const char ip_remote[20])//fix port n
 
   ssh_channel_free(forwarding_channel);
   return SSH_OK;
-}
+}*/
 
-int rec(ssh_session session, ssh_scp scp)
+/*int rec(ssh_session session, ssh_scp scp)
 {
   int rc;
   int size1, mode;
@@ -371,5 +420,6 @@ int rec(ssh_session session, ssh_scp scp)
   }
 
   return SSH_OK;
-}
+}*/
+
  
