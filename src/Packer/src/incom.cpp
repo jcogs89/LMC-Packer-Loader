@@ -66,7 +66,7 @@ vector<string> findnew (string knownhostsfolder)
 				}
 			} catch (...) {
 				if ((inp == "x") or (inp == "X")) {
-					return "0";
+					return target;
 				} else {
 					printf("Unrecognized input, please try again.");
 				}

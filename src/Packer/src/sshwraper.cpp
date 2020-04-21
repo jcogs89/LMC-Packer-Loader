@@ -87,7 +87,11 @@ int verify_knownhost(ssh_session session)
             printf( "Public key hash: %s\n>>>", hexa);
             ssh_string_free_char(hexa);
             ssh_clean_pubkey_hash(&hash);
+<<<<<<< Updated upstream
             scanf("%9s",buf);
+=======
+            sscanf("%9s",buf);
+>>>>>>> Stashed changes
 
             cmp = strncasecmp(buf, "yes", 3);
             if (cmp != 0)

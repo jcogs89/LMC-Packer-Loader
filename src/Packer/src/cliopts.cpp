@@ -93,7 +93,6 @@ void addpayload(string pathpacked, string pathstaging) {
 
 void sendpayload(string pathpacked) {
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-<<<<<<< HEAD
 	vector<string> target;
 	target = findnew("Known_hosts");
 	string host = target[0];
