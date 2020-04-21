@@ -101,5 +101,5 @@ void sendpayload(string pathpacked) {
 	strcpy(ip2, ip.c_str());
 	char host2[host.size()+1];
 	strcpy(host2, host.c_str());
-	connect(ip2, host2);
+	//connect(ip2, host2);
 }
