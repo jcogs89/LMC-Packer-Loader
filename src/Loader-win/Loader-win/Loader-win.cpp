@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 string get_config_item(ConfigFile cfg, string item_name) {
 	std::string item;
 	if (cfg.keyExists(item_name)) {
@@ -37,12 +38,14 @@ int main() {
 
 	//call tcp listener here
 
+
+
 	//decryption
 	decryption();
 
 	//decompression
-	string compresion_iput = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\PAYLOADS\\poetry.zips";
-	string compression_outp = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\poetry.txt";
+	string compresion_iput = "..\\PAYLOADS\\poetry.zips";
+	string compression_outp = "..\\poetry.txt";
 	uziphelp(compresion_iput, compression_outp);
 
 

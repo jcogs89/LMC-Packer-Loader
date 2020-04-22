@@ -15,7 +15,7 @@ int decryption()
 	BOOL Final;
 
 	DWORD buflen;
-	char fname[] = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\PAYLOADS\\poetry.encr";
+	char fname[] = "..\\PAYLOADS\\poetry.encr";
 	HANDLE hFile = CreateFileA(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(hFile, buffer, 1024, &buflen, NULL);
 	CloseHandle(hFile);
