@@ -40,6 +40,7 @@ int uziphelp(string in, string out)
 	printf("miniz.c version: %s\n", MZ_VERSION);
 
 	// Open input file.
+	printf(pSrc_filename);
 	pInfile = fopen(pSrc_filename, "rb");
 	if (!pInfile)
 	{

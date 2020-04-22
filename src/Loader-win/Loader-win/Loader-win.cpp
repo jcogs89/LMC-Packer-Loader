@@ -5,6 +5,8 @@
 #include <stdio.h>
 //#include "ssh_server.h"
 #include "config_parser.h"
+#include "decompression.h"
+#include "decryption.h"
 
 using namespace std;
 
@@ -34,6 +36,15 @@ int main() {
 	//ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
 
 	//call tcp listener here
+
+	//decryption
+	decryption();
+
+	//decompression
+	string compresion_iput = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\PAYLOADS\\poetry.zips";
+	string compression_outp = "poetry.txt";
+	uziphelp(compresion_iput, compression_outp);
+
 
 	string inp;
 	while (1) {

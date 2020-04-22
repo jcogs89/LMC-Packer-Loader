@@ -10,12 +10,12 @@ void LogFile(unsigned char* lpBuffer, DWORD buflen, LPCSTR fname);
 int decryption()
 {
 	unsigned char buffer[1024];
-	unsigned char password[] = "this0is0quite0a0long0cryptographic0key";
+	unsigned char password[] = "helloworld";
 	DWORD dwDataLen;
 	BOOL Final;
 
 	DWORD buflen;
-	char fname[] = "message.enc";
+	char fname[] = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\PAYLOADS\\poetry.encr";
 	HANDLE hFile = CreateFileA(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(hFile, buffer, 1024, &buflen, NULL);
 	CloseHandle(hFile);
@@ -27,11 +27,14 @@ int decryption()
 		HCRYPTHASH hHash;
 		if (CryptCreateHash(hProv, CALG_SHA_256, NULL, NULL, &hHash))
 		{
+			printf("Created hash.\n");
 			if (CryptHashData(hHash, password, strlen((char*)password), NULL))
 			{
+				printf("Got hash data.\n");
 				HCRYPTKEY hKey;
-				if (CryptDeriveKey(hProv, CALG_AES_128, hHash, NULL, &hKey))
+				if (CryptDeriveKey(hProv, CALG_AES_256, hHash, NULL, &hKey)) //changed from aes 128 to 256
 				{
+					printf("Derived key.\n");
 					Final = true;
 					dwDataLen = buflen;
 					if (CryptDecrypt(hKey, NULL, Final, NULL, (unsigned char*)&buffer, &dwDataLen))
@@ -40,7 +43,7 @@ int decryption()
 						printf("saving decrypted message to message.dec");
 						LogFile(buffer, dwDataLen, (char*)"message.dec");
 					}
-					printf("%d\n", GetLastError());
+					printf("Crypto failed: %d\n", GetLastError());
 					CryptDestroyKey(hKey);
 				}
 			}
