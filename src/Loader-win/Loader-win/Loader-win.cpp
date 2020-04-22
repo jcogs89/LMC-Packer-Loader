@@ -42,9 +42,8 @@ int main() {
 			break;
 		}
 		else {
-			printf("%s", inp.c_str());
+			printf("\n>>");
 		}
 	}
 	return 0;
 }
-

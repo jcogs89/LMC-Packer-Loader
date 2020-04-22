@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="decompression.cpp" />
+    <ClCompile Include="decryption.cpp" />
     <ClCompile Include="Loader-win.cpp" />
     <ClCompile Include="miniz.c" />
   </ItemGroup>
