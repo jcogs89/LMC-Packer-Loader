@@ -152,6 +152,7 @@
     <ClCompile Include="..\..\Packer\src\sshwraper.cpp" />
     <ClCompile Include="Loader-win.cpp" />
     <ClCompile Include="miniz.c" />
+    <ClCompile Include="sshwraper-backup-sshportforward.cpp" />
     <ClCompile Include="ssh_server.cpp" />
   </ItemGroup>
   <ItemGroup>

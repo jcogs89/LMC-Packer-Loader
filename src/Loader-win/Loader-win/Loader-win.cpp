@@ -30,7 +30,10 @@ int main() {
 	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
 	printf("The port is: %s\n", port_num.c_str());
 
-	ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
+	// Removed ssh server for tcp listner
+	//ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
+
+	//call tcp listener here
 
 	string inp;
 	while (1) {
