@@ -42,7 +42,7 @@ int main() {
 
 	//decompression
 	string compresion_iput = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\PAYLOADS\\poetry.zips";
-	string compression_outp = "poetry.txt";
+	string compression_outp = "C:\\Users\\mitch\\Desktop\\Blush3ll\\src\\Loader-win\\Loader-win\\poetry.txt";
 	uziphelp(compresion_iput, compression_outp);
 
 
