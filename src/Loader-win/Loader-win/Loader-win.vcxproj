@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="customaes.cpp" />
     <ClCompile Include="decompression.cpp" />
     <ClCompile Include="decryption.cpp" />
     <ClCompile Include="Loader-win.cpp" />
@@ -159,6 +160,8 @@
     <None Include="..\..\Loader\src\out" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AES.h" />
+    <ClInclude Include="customaes.h" />
     <ClInclude Include="decompression.h" />
     <ClInclude Include="decryption.h" />
     <ClInclude Include="miniz.h" />

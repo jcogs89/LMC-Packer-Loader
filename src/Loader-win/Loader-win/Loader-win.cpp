@@ -7,6 +7,7 @@
 #include "config_parser.h"
 #include "decompression.h"
 #include "decryption.h"
+#include "customaes.h"
 
 using namespace std;
 
@@ -41,7 +42,16 @@ int main() {
 
 
 	//decryption
-	decryption();
+	//decryption();
+	unsigned char in[1024] = "This is the function to encrypt.";
+	unsigned int inLen = 1024;
+	unsigned  char key[32] = "helloworld";
+	unsigned char iv[32] = "fuck";
+	unsigned char* y = (unsigned char*)(&iv);
+	unsigned int outLen = 1024;
+
+	//EncryptCBC(in, inLen, key, y, outLen);
+	//DecryptCBC(in, inLen, key, iv);
 
 	//decompression
 	string compresion_iput = "..\\PAYLOADS\\poetry.zips";

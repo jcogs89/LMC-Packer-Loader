@@ -1,0 +1,2 @@
+unsigned char* EncryptCBC(unsigned char in[], unsigned int inLen, unsigned  char key[], unsigned char* iv, unsigned int& outLen);
+unsigned char* DecryptCBC(unsigned char in[], unsigned int inLen, unsigned  char key[], unsigned char* iv);
