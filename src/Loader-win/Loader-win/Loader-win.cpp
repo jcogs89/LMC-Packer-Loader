@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
-#include "ssh_server.h"
+//#include "ssh_server.h"
 #include "config_parser.h"
 
 using namespace std;
