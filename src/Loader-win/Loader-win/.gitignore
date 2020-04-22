@@ -4,3 +4,6 @@ Visual Studio 2019/Templates
 Debug/Loader-win.tlog/
 Debug/src.tlog/
 Debug/Loader-win.vcx*
+Loader-win.vcxproj.filters
+Loader-win.vcxproj.user
+Loader-win.vcxproj
