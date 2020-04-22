@@ -1,3 +1,5 @@
 src/Loader-win/Loader-win/.vs/
-src/Loader-win/Loader-win/Debug/
 src/Loader-win/Loader-win/x64/Debug/
+src/Loader-win/Loader-win/Loader-win.vcxproj.user
+!src/Loader-win/Loader-win/x64/Debug/Loader-win.exe
+!src/Loader-win/Loader-win/x64/Debug/loader.conf
