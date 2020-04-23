@@ -10,4 +10,5 @@ void LogFile(unsigned char* lpBuffer, DWORD buflen, LPCSTR fname);
 int decryption()
 {
 	printf("Todo- implement decryption");
+	return 0;
 }

