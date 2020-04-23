@@ -6,6 +6,10 @@
 #include <limits.h>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
+#include <iostream>
+#include <cstring>
+
 
 #include "miniz.h"
 
@@ -19,7 +23,7 @@ typedef unsigned int uint;
 #define my_min(a,b) (((a) < (b)) ? (a) : (b))
 
 #define BUF_SIZE (1024 * 1024)
-static uint8 s_inbuf[BUF_SIZE];
+static uint8 s_inbuf[BUF_SIZE]; 
 static uint8 s_outbuf[BUF_SIZE];
 
 #pragma warning(disable:4996) // ToDo disabled insecure fopen warning
@@ -29,56 +33,17 @@ int uziphelp(char* ibuf, char* obuf)
 	
 	//const char *pMode;
 	//FILE* pInfile, * pOutfile;
-	uint inbuf_size = sizeof(ibuf); //previously infile_size
+	uint inbuf_size = strlen(ibuf); //previously infile_size
 	int level = Z_BEST_COMPRESSION;
 	z_stream stream;
 	//int p = 1;
 	//const char* pSrc_filename = in.c_str();
 	//const char* pDst_filename = out.c_str();
 	//long file_loc;
-	//printf("setsetstsetsetestestsetset\n");
 
 	printf("miniz.c version: %s\n", MZ_VERSION);
 
-	/*
-	// Open input file.
-	printf(pSrc_filename);
-	pInfile = fopen(pSrc_filename, "rb");
-	if (!pInfile)
-	{
-		printf("Failed opening input file!\n");
-		return EXIT_FAILURE;
-	}
-
-	printf("Mode: c, Level: %u\nInput File: \"%s\"\nOutput File: \"%s\"\n", level, pSrc_filename, pDst_filename);
-
-	// Determine input file's size.
-	fseek(pInfile, 0, SEEK_END);
-	file_loc = ftell(pInfile);
-	fseek(pInfile, 0, SEEK_SET);
-
-	if ((file_loc < 0) || (file_loc > INT_MAX))
-	{
-		// This is not a limitation of miniz or tinfl, but this example.
-		printf("File is too large to be processed by this example.\n");
-		return EXIT_FAILURE;
-	}
-
-	infile_size = (uint)file_loc;
-	
-	// Open output file.
-	pOutfile = fopen(pDst_filename, "wb");
-	if (!pOutfile)
-	{
-		printf("Failed opening output file!\n");
-		return EXIT_FAILURE;
-	}
-
-	printf("Input file size: %u\n", infile_size);
-	*/
-
 	// Init the z_stream
-
 	memset(&stream, 0, sizeof(stream));
 	stream.next_in = s_inbuf;
 	stream.avail_in = 0;
@@ -86,7 +51,6 @@ int uziphelp(char* ibuf, char* obuf)
 	stream.avail_out = BUF_SIZE;
 
 	// Decompression.
-	
 	uint inbuf_remaining = inbuf_size; //previously infile_remaining 
 
 	if (inflateInit(&stream))
@@ -95,7 +59,6 @@ int uziphelp(char* ibuf, char* obuf)
 		return EXIT_FAILURE;
 	}
 	//ToDo integrate decompression
-	/*
 	for (; ; )
 	{
 		int status;
@@ -103,12 +66,12 @@ int uziphelp(char* ibuf, char* obuf)
 		{
 			// Input buffer is empty, so read more bytes from input file.
 			uint n = my_min(BUF_SIZE, inbuf_remaining);
+			printf("N: %d\nBUF_SIZE: %d\n, inbuf_rem: %d\n", n, BUF_SIZE, inbuf_remaining);
 
-			if (fread(s_inbuf, 1, n, pInfile) != n)
-			{
-				printf("Failed reading from input file!\n");
-				return EXIT_FAILURE;
-			}
+			//printf("ibuf: %s, uintibuf: %s", ibuf, (uint8*)ibuf);
+			//std::copy(&s_inbuf, ibuf, inbuf_remaining); //todo just reads entire buffer lol
+			sprintf((char*)s_inbuf, ibuf, 1024*1024);
+			printf("sbuf %s", s_inbuf);
 
 			stream.next_in = s_inbuf;
 			stream.avail_in = n;
@@ -122,11 +85,9 @@ int uziphelp(char* ibuf, char* obuf)
 		{
 			// Output buffer is full, or decompression is done, so write buffer to output file.
 			uint n = BUF_SIZE - stream.avail_out;
-			if (fwrite(s_outbuf, 1, n, pOutfile) != n)
-			{
-				printf("Failed writing to output file!\n");
-				return EXIT_FAILURE;
-			}
+			obuf = (char*)s_outbuf; //todo just reads entire buffer lol
+			printf("obuf: %s", obuf);
+
 			stream.next_out = s_outbuf;
 			stream.avail_out = BUF_SIZE;
 		}
@@ -146,17 +107,10 @@ int uziphelp(char* ibuf, char* obuf)
 		return EXIT_FAILURE;
 	}
 
-	fclose(pInfile);
-	if (EOF == fclose(pOutfile))
-	{
-		printf("Failed writing to output file!\n");
-		return EXIT_FAILURE;
-	}
-
 	printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
 	printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 	printf("Success.\n");
 	return EXIT_SUCCESS;
-	*/
+
 	return 0; //ToDo temp
 }
