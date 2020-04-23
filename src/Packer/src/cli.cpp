@@ -6,16 +6,17 @@
 #include "cli.h"
 #include "cliopts.h"
 
-static const char options[] = "\e[1;1H\e[2J\n\
-\e[1;32mChoose an option: \e[0;17m \n\
+static const char options[] = "\n\
+\e[1;32mChoose an option: \e[0;17m \n\n\
 l - List Available Payloads \n\
 a - Add new payload \n\
 s - Send payload \n\
 x - Exit \n\
-\e[1;32m>\e[0;17m";
+\e[1;32m\n>\e[0;17m";
 
 int cli(vector<string> files, string pathpacked, string pathstaging) {
 		string inp;
+		printf("\e[1;1H\e[2J");
 		while (1) {
 			printf(options);
 			cin >> inp;

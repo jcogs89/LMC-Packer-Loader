@@ -18,7 +18,7 @@ using namespace std;
 
 
 void listpayloads(vector<string> files) {
-	printf("\e[1;32mCurrent payloads:\e[0;17m\n\n");
+	printf("\e[1;1H\e[2J\e[1;32mCurrent payloads:\e[0;17m\n\n");
 	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(files,11);
 }
@@ -30,14 +30,14 @@ void addpayload(string pathpacked, string pathstaging) {
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
 	clrscr();
-	printf("\n\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n");
+	printf("\n\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
 	printf("\nEnter the number for file to be packed ('x' to back out):");
 
 	//Take user input to select file to turn into a payload
 	while (1) {
-		printf("\n\e[1;32m>\e[0;17m");
+		printf("\n\e[1;32m\n>\e[0;17m");
 		cin >> inp;
 		try {
 			id = std::stoi(inp);
@@ -52,6 +52,7 @@ void addpayload(string pathpacked, string pathstaging) {
 			if ((inp != "x") and (inp != "X")) {
 				printf("Unrecognized input, please try again.");
 			} else {
+				printf("\e[1;1H\e[2J");
 				return;
 			}
 		}
@@ -91,7 +92,6 @@ void addpayload(string pathpacked, string pathstaging) {
 	}
 }
 
-
 void sendpayload(string pathpacked) {
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	vector<string> target;
@@ -102,5 +102,6 @@ void sendpayload(string pathpacked) {
 	strcpy(ip2, ip.c_str());
 	char host2[host.size()+1];
 	strcpy(host2, host.c_str());
-	//connect(ip2, host2);
+	//connect(ip2, host2); No Longer Using SSH!
+	printf("\e[1;1H\e[2J");
 }

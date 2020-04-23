@@ -23,7 +23,7 @@ vector<string> findnew (string knownhostsfolder)
 	//ofstream hosts;
 	//hosts.open (knownhostsfile, ios::trunc);
 	long unsigned int cnt =0;
-	printf("\e[1;32mThe following systems are known:\e[0;17m\n");
+	printf("\e[1;1H\e[2J\e[1;32mThe following systems are known:\e[0;17m\n\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
@@ -48,7 +48,7 @@ vector<string> findnew (string knownhostsfolder)
 	unsigned int id;
 	string inp;
 	while (1) {
-			cout << "\n>> ";
+			printf("\n\e[1;32m\n>\e[0;17m");
 			cin >> inp;
 			try {
 				id = stoi(inp);
@@ -66,6 +66,7 @@ vector<string> findnew (string knownhostsfolder)
 				}
 			} catch (...) {
 				if ((inp == "x") or (inp == "X")) {
+					printf("\e[1;32m");
 					return target;
 				} else {
 					printf("Unrecognized input, please try again.");
