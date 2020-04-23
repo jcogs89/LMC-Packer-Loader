@@ -40,30 +40,26 @@ int main()
 	while (1)
 	{
 		udp_server_clinet();
+
+		//decryption
+		//decryption();
+		unsigned char in[1024] = "This is the function to encrypt.";
+		unsigned int inLen = 1024;
+		unsigned  char key[32] = "helloworld";
+		unsigned char iv[32] = "fuck";
+		unsigned char* y = (unsigned char*)(&iv);
+		unsigned int outLen = 1024;
+
+		//EncryptCBC(in, inLen, key, y, outLen);
+		//DecryptCBC(in, inLen, key, iv);
+
+		//decompression
+		string compresion_iput = "..\\PAYLOADS\\poetry.zips";
+		string compression_outp = "..\\poetry.txt";
+		uziphelp(compresion_iput, compression_outp);
 	}
 
-
-
-
-	//decryption
-	//decryption();
-	unsigned char in[1024] = "This is the function to encrypt.";
-	unsigned int inLen = 1024;
-	unsigned  char key[32] = "helloworld";
-	unsigned char iv[32] = "fuck";
-	unsigned char* y = (unsigned char*)(&iv);
-	unsigned int outLen = 1024;
-
-	//EncryptCBC(in, inLen, key, y, outLen);
-	//DecryptCBC(in, inLen, key, iv);
-
-	//decompression
-	string compresion_iput = "..\\PAYLOADS\\poetry.zips";
-	string compression_outp = "..\\poetry.txt";
-	uziphelp(compresion_iput, compression_outp);
-
-
-	string inp;
+	/*string inp;
 	while (1) {
 		cin >> inp;
 		if (inp == "x") {
@@ -72,6 +68,6 @@ int main()
 		else {
 			printf("\n>>");
 		}
-	}
+	}*/
 	return 0;
 }
