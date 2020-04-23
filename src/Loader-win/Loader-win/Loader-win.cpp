@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stdio.h>
 //#include "ssh_server.h"
+#include "udp_client.h"
 #include "config_parser.h"
 #include "decompression.h"
 #include "decryption.h"
@@ -25,17 +26,21 @@ string get_config_item(ConfigFile cfg, string item_name) {
 	return item;
 }
 
-int main() {
+int main()
+{
 	//Tlistnr()
 	// Temporary... file will eventually be pulled in from some .NET framework with networking while running as a service to recieve packed data.
-	ConfigFile cfg("loader.conf");
-	std::string port_num = get_config_item(cfg, "port");
-	std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
-	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
-	printf("The port is: %s\n", port_num.c_str());
+	//ConfigFile cfg("loader.conf");
+	//std::string port_num = get_config_item(cfg, "port");
+	//std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
+	//std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
+	//printf("The port is: %s\n", port_num.c_str());
 
-	// Removed ssh server for tcp listner
 	//ssh_server(8833, ssh_host_dsa_key, ssh_host_rsa_key);
+	while (1)
+	{
+		udp_server_clinet();
+	}
 
 	//call tcp listener here
 

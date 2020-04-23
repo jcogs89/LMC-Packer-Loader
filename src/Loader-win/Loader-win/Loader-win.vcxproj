@@ -154,6 +154,7 @@
     <ClCompile Include="decryption.cpp" />
     <ClCompile Include="Loader-win.cpp" />
     <ClCompile Include="miniz.c" />
+    <ClCompile Include="udp_client.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Loader\src\loader_service" />
@@ -165,6 +166,7 @@
     <ClInclude Include="decompression.h" />
     <ClInclude Include="decryption.h" />
     <ClInclude Include="miniz.h" />
+    <ClInclude Include="udp_client.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
