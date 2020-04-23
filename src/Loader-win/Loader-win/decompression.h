@@ -1,3 +1,3 @@
 using namespace std;
 
-int uziphelp(string in, string out);
+int uziphelp(char* ibuf, char* obuf);

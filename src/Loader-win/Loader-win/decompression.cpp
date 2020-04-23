@@ -24,21 +24,23 @@ static uint8 s_outbuf[BUF_SIZE];
 
 #pragma warning(disable:4996) // ToDo disabled insecure fopen warning
 
-int uziphelp(string in, string out)
+int uziphelp(char* ibuf, char* obuf)
 {
+	
 	//const char *pMode;
-	FILE* pInfile, * pOutfile;
-	uint infile_size;
+	//FILE* pInfile, * pOutfile;
+	uint inbuf_size = sizeof(ibuf); //previously infile_size
 	int level = Z_BEST_COMPRESSION;
 	z_stream stream;
 	//int p = 1;
-	const char* pSrc_filename = in.c_str();
-	const char* pDst_filename = out.c_str();
-	long file_loc;
+	//const char* pSrc_filename = in.c_str();
+	//const char* pDst_filename = out.c_str();
+	//long file_loc;
 	//printf("setsetstsetsetestestsetset\n");
 
 	printf("miniz.c version: %s\n", MZ_VERSION);
 
+	/*
 	// Open input file.
 	printf(pSrc_filename);
 	pInfile = fopen(pSrc_filename, "rb");
@@ -49,7 +51,6 @@ int uziphelp(string in, string out)
 	}
 
 	printf("Mode: c, Level: %u\nInput File: \"%s\"\nOutput File: \"%s\"\n", level, pSrc_filename, pDst_filename);
-
 
 	// Determine input file's size.
 	fseek(pInfile, 0, SEEK_END);
@@ -64,7 +65,7 @@ int uziphelp(string in, string out)
 	}
 
 	infile_size = (uint)file_loc;
-
+	
 	// Open output file.
 	pOutfile = fopen(pDst_filename, "wb");
 	if (!pOutfile)
@@ -74,34 +75,34 @@ int uziphelp(string in, string out)
 	}
 
 	printf("Input file size: %u\n", infile_size);
+	*/
 
 	// Init the z_stream
+
 	memset(&stream, 0, sizeof(stream));
 	stream.next_in = s_inbuf;
 	stream.avail_in = 0;
 	stream.next_out = s_outbuf;
 	stream.avail_out = BUF_SIZE;
 
-
-
-
-
 	// Decompression.
-	uint infile_remaining = infile_size;
+	
+	uint inbuf_remaining = inbuf_size; //previously infile_remaining 
 
 	if (inflateInit(&stream))
 	{
 		printf("inflateInit() failed!\n");
 		return EXIT_FAILURE;
 	}
-
+	//ToDo integrate decompression
+	/*
 	for (; ; )
 	{
 		int status;
 		if (!stream.avail_in)
 		{
 			// Input buffer is empty, so read more bytes from input file.
-			uint n = my_min(BUF_SIZE, infile_remaining);
+			uint n = my_min(BUF_SIZE, inbuf_remaining);
 
 			if (fread(s_inbuf, 1, n, pInfile) != n)
 			{
@@ -112,7 +113,7 @@ int uziphelp(string in, string out)
 			stream.next_in = s_inbuf;
 			stream.avail_in = n;
 
-			infile_remaining -= n;
+			inbuf_remaining -= n;
 		}
 
 		status = inflate(&stream, Z_SYNC_FLUSH);
@@ -156,4 +157,6 @@ int uziphelp(string in, string out)
 	printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 	printf("Success.\n");
 	return EXIT_SUCCESS;
+	*/
+	return 0; //ToDo temp
 }
