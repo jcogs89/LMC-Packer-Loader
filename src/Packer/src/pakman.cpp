@@ -1,5 +1,4 @@
-//requires c++ v17  //ToDo reconfirm this is true
-//-std=c++17
+//Requires C++ v17
 
 #include <stdio.h>
 #include <unistd.h>
@@ -11,16 +10,13 @@
 #include "cli.h"
 #include "config_parser.h"
 #include "incom.h"
-//#include "testing.h"
-
-using namespace std;
 
 static const char usage[] = "\n\
 Usage: packman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE] \n\
 Sends a user defined PAYLOAD to TARGET. \n\
 Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-h, --help\tPrints this Help Page\n\
-	-s \tStarts in service mode\
+	-s \t\tStarts in Service Mode\
 	\n\n";
 
 string get_config_item(ConfigFile cfg, string item_name) {
@@ -59,11 +55,11 @@ int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_hos
 }
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
+	bool smode;
 	vector<string> files;
 
 	ConfigFile cfg("./packer.conf"); //ToDo Add default conf file and option to pass CLA of its path
@@ -74,23 +70,15 @@ int main(int argc, char *argv[])
 
 	files = dirlist(pathpacked);
 
-
 	//READING FROM CONFIG FILE DEBUG
 	//bool exists = cfg.keyExists("port");
 	//std::cout << "port: " << std::boolalpha << exists << "\n";
 	//std::string portValue = cfg.getValueOfKey<std::string>("port");
 	//std::cout << "value of key port: " << portValue << "\n";
 
-	//program requires one argument
-	//ToDo do we want to feed more arguments?  Or feed no arguments? (if using config)
-	if(argc<2) {
-		printf(usage);
-		return 0;
-	}
-
-	// put ':' at the starting of the string so compiler can distinguish between '?' and ':'
-	while((option = getopt(argc, argv, ":ht:f:s")) != -1) { //get option from the getopt() method
-		switch(option) {
+	//Put ':' at the starting of the string so compiler can distinguish between '?' and ':'
+	while((option = getopt(argc, argv, ":ht:f:s")) != -1) { //Get option from the getopt() method
+		switch(option) { //Check each give option against allowed values
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
 				printf("Target Flag: %s\n",tvalue);
@@ -101,26 +89,33 @@ int main(int argc, char *argv[])
 				break;
 			case ':':
 				printf("\nOption %c needs a value\n", optopt);
-				break;
+				printf(usage);
+				return 1;
 			case '?':
 				printf("\nUnknown option: %c\n", optopt);
-				break;
+				printf(usage);
+				return 1;
 			case 'h':
 				printf(usage);
-				break;
-			case 's':
-				fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
-				printf("Hello.");
-				cli(files, pathpacked, pathstaging); //main execution
 				return 1;
+			case 's':
+				smode = true;
 				break;
-			return 0;
 		}
 	}
 
-	for (; optind < argc; optind++) { //when some extra arguments are passed
+	for(; optind < argc; optind++) { //Check if extra arguments passed
 		printf("\nGiven extra arguments: %s\n", argv[optind]);
 		printf(usage);
+		return 1;
+	}
+
+	if(smode){
+		fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
+		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		return 0;
 	}
+
+	printf("\nThis should never happen. Please run in service mode with -s\n");
+	return 1;
 }
