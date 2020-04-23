@@ -13,6 +13,7 @@
 #include "Helpers.h"
 #include "sshwraper.h"
 #include "incom.h"
+#include "cliopts.h"
 using namespace std;
 
 
@@ -28,15 +29,15 @@ void addpayload(string pathpacked, string pathstaging) {
 	int compression_ret;
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
-
-	printf("\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n");
+	clrscr();
+	printf("\n\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n");
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
 	printf("\nEnter the number for file to be packed ('x' to back out):");
 
 	//Take user input to select file to turn into a payload
 	while (1) {
-		printf("\n>> ");
+		printf("\n\e[1;32m>\e[0;17m");
 		cin >> inp;
 		try {
 			id = std::stoi(inp);

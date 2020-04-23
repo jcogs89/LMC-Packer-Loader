@@ -4,10 +4,9 @@
 #include <unistd.h>
 #include <vector>
 #include <string.h>
-#include <iostream>
 
-#include "dirlist.h"
 #include "cli.h"
+#include "dirlist.h"
 #include "config_parser.h"
 #include "incom.h"
 
@@ -26,11 +25,10 @@ string get_config_item(ConfigFile cfg, string item_name) {
 		//printf("Config worked: %s\n", item.c_str());
 	} else {
 		printf("No '%s' specified in packer.conf.  Please update the config and rerun the program.", item_name.c_str()); //ToDo or ask user to input now
-		exit(0);
+		exit(1);
 	}
 	return item;
 }
-
 
 int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
 	pid_t parent = getpid();
@@ -40,20 +38,18 @@ int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_hos
 
 	if (pid > 0) { //main process //ToDo Carl - what does this do?
 	   //printf("main process");
-	   return 1;
+	   return 0;
 
 	} else if (pid == 0) { // child process
-		printf("Child process created for ssh listener.\n");
+		//printf("Child process created for ssh listener.\n");
 	    incom("knownhosts", parent, ssh_host_dsa_key, ssh_host_rsa_key);  //main of incom.cpp
-	    printf("child ssh listener died.");
+	    //printf("child ssh listener died.");
 
 	} else { // fork failed
-		printf("\nforking ssh_listener_process failed!\n");
+		//printf("\nforking ssh_listener_process failed!\n");
 	}
-	exit(0);
-	return(0);
+	exit(1);
 }
-
 
 int main(int argc, char *argv[]) {
 	int option;
@@ -70,11 +66,11 @@ int main(int argc, char *argv[]) {
 
 	files = dirlist(pathpacked);
 
-	//READING FROM CONFIG FILE DEBUG
-	//bool exists = cfg.keyExists("port");
-	//std::cout << "port: " << std::boolalpha << exists << "\n";
-	//std::string portValue = cfg.getValueOfKey<std::string>("port");
-	//std::cout << "value of key port: " << portValue << "\n";
+	if(argc<2){
+		printf("\n\e[0;31mNo arguments given\e[0;17m\n");
+		printf(usage);
+		return 1;
+	}
 
 	//Put ':' at the starting of the string so compiler can distinguish between '?' and ':'
 	while((option = getopt(argc, argv, ":ht:f:s")) != -1) { //Get option from the getopt() method
@@ -88,11 +84,11 @@ int main(int argc, char *argv[]) {
 				printf("File Flag: %s\n", fvalue);
 				break;
 			case ':':
-				printf("\nOption %c needs a value\n", optopt);
+				printf("\n\e[0;31mOption %c needs a value\e[0;17m\n", optopt);
 				printf(usage);
 				return 1;
 			case '?':
-				printf("\nUnknown option: %c\n", optopt);
+				printf("\n\e[0;31mUnknown option: %c\e[0;17m\n", optopt);
 				printf(usage);
 				return 1;
 			case 'h':
@@ -105,17 +101,16 @@ int main(int argc, char *argv[]) {
 	}
 
 	for(; optind < argc; optind++) { //Check if extra arguments passed
-		printf("\nGiven extra arguments: %s\n", argv[optind]);
+		printf("\n\e[0;31mGiven extra arguments: %s\e[0;17m\n", argv[optind]);
 		printf(usage);
 		return 1;
 	}
 
-	if(smode){
+	if(smode) {
 		fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		return 0;
 	}
-
 	printf("\nThis should never happen. Please run in service mode with -s\n");
 	return 1;
 }
