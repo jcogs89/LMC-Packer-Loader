@@ -70,7 +70,7 @@ int uziphelp(char* ibuf, char* obuf)
 
 			//printf("ibuf: %s, uintibuf: %s", ibuf, (uint8*)ibuf);
 			//std::copy(&s_inbuf, ibuf, inbuf_remaining); //todo just reads entire buffer lol
-			sprintf((char*)s_inbuf, ibuf, 1024 * 1024);
+			snprintf((char*)s_inbuf, n, ibuf); //ToDo - works! NEED to test with file bigger than buffer.
 			printf("sbuf %s", s_inbuf);
 
 			stream.next_in = s_inbuf;
