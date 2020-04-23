@@ -23,14 +23,14 @@ typedef unsigned int uint;
 #define my_min(a,b) (((a) < (b)) ? (a) : (b))
 
 #define BUF_SIZE (1024 * 1024)
-static uint8 s_inbuf[BUF_SIZE]; 
+static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
 
 #pragma warning(disable:4996) // ToDo disabled insecure fopen warning
 
 int uziphelp(char* ibuf, char* obuf)
 {
-	
+
 	//const char *pMode;
 	//FILE* pInfile, * pOutfile;
 	uint inbuf_size = strlen(ibuf); //previously infile_size
@@ -70,7 +70,7 @@ int uziphelp(char* ibuf, char* obuf)
 
 			//printf("ibuf: %s, uintibuf: %s", ibuf, (uint8*)ibuf);
 			//std::copy(&s_inbuf, ibuf, inbuf_remaining); //todo just reads entire buffer lol
-			sprintf((char*)s_inbuf, ibuf, 1024*1024);
+			sprintf((char*)s_inbuf, ibuf, 1024 * 1024);
 			printf("sbuf %s", s_inbuf);
 
 			stream.next_in = s_inbuf;
