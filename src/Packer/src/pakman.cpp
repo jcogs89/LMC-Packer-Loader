@@ -110,7 +110,10 @@ int main(int argc, char *argv[]) {
 	if(smode) {
 		fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
-		return 0;
+		clrscr();
+		printf("Thanks for using...\n");
+		printf(TITLE);
+		return 1;
 	}
 	//printf(RED("This should never happen. Please run in service mode with -s"));
 	printf(TITLE);

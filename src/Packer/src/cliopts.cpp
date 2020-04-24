@@ -36,11 +36,11 @@ void addpayload(string pathpacked, string pathstaging) {
 	printf(GREEN("The following payloads are availible in the staging folder:\n"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
-	printf("\nEnter the number for file to be packed ('x' to back out):");
+	printf("\nEnter the number for file to be packed ('x' to back out):\n");
 
 	//Take user input to select file to turn into a payload
 	while (1) {
-		printf(GREEN("\n>"));
+		printf(YELLOW(">"));
 		cin >> inp;
 		try {
 			id = std::stoi(inp);
@@ -79,13 +79,13 @@ void addpayload(string pathpacked, string pathstaging) {
 
 	while (1) {
 		printf("Do you want to delete the source in staging (y/n)?");
-		printf(GREEN("\n>"));
+		printf(YELLOW(">"));
 		cin >> ans;
 		if (ans=="Y" or ans == "y") {
 			if( remove( iput.c_str() ) != 0 )
 				perror( "Error deleting file" );
 			  else
-				puts( "File successfully deleted" );
+				printf(GREEN("File successfully deleted"));
 			break;
 		} else if (ans=="n" or ans == "N") {
 			break;

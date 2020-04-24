@@ -25,7 +25,7 @@ vector<string> findnew (string knownhostsfolder)
 	//hosts.open (knownhostsfile, ios::trunc);
 	long unsigned int cnt =0;
 	clrscr();
-	printf(GREEN("The following systems are known:\n"));
+	printf(GREEN("The following systems are known:"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
@@ -38,7 +38,7 @@ vector<string> findnew (string knownhostsfolder)
 
 		printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
 	}
-	printf(GREEN("\nChoose a target host ('x' to back out):")); //ToDo allow for multiple targets
+	printf(GREEN("Choose a target host ('x' to back out):")); //ToDo allow for multiple targets
 
 	//hosts << "Writing this to a file.\n";
 	//hosts.close();
@@ -70,7 +70,7 @@ vector<string> findnew (string knownhostsfolder)
 				if ((inp == "x") or (inp == "X")) {
 					return target;
 				} else {
-					printf("Unrecognized input, please try again.");
+					printf(RED("Unrecognized input, please try again."));
 				}
 			}
 		}

@@ -11,12 +11,13 @@ static const char options[] = "\n\
 l - List Available Payloads \n\
 a - Add new payload \n\
 s - Send payload \n\
-x - Exit \n\
-\e[1;32m\n>\e[0;17m";
+x - Exit \n\n\
+\e[1;33m>\e[0m";
 
 int cli(vector<string> files, string pathpacked, string pathstaging) {
 		string inp;
 		clrscr();
+		printf(TITLE);
 		while (1) {
 			printf(options);
 			cin >> inp;
@@ -27,8 +28,8 @@ int cli(vector<string> files, string pathpacked, string pathstaging) {
 			} else if (inp == "s") {
 				sendpayload(pathpacked);
 			} else if (inp == "x") {
+				cout << "\nExiting...\n";
 				//Kill ssh listener here
-				cout << "\nExiting.\n";
 				break;
 			} else {
 				clrscr();
