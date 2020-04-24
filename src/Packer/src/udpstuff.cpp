@@ -1,19 +1,13 @@
-/*
- * udpstuff.cpp
- *
- *  Created on: Apr 24, 2020
- *      Author: build
- */
-
-#include "udpstuff.h"
-#include "dirlist.h"
-
-//#include <WinSock2.h>
-//#include <Windows.h>
 #include <stdio.h>
-//#include <Ws2tcpip.h>
-//#include <tchar.h>
-//#include <iostream>
+#include <filesystem>
+#include <iostream>
+#include <vector>
+
+#include "colors.h"
+#include "dirlist.h"
+#include "Helpers.h"
+#include "udpstuff.h"
+
 // server code for UDP socket programming
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -23,13 +17,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <vector>
-#include "Helpers.h"
-#include <iostream>
 #include <fstream>
-#include <filesystem>
-#include "colors.h"
-
 
 #define IP_PROTOCOL 0
 
@@ -39,7 +27,6 @@
 #define nofile "File Not Found!"
 using namespace std;
 namespace fs = std::filesystem;
-
 
 //SOCKET Socket, Sub;
 //WSADATA Winsock;

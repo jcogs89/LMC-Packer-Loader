@@ -24,7 +24,7 @@ std::string get_config_item(ConfigFile cfg, std::string item_name) {
 	if (cfg.keyExists(item_name)) {
 		item = cfg.getValueOfKey<std::string>(item_name);
 		Log("Config worked: " << item << "\n");
-	} else {
+	} else { //ToDo Error Handling if no config file found
 		std::cout << "No " << item_name << " specified in packer.conf.  Please update the config and rerun the program.";
 		exit(1);
 	}
