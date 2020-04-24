@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,30 +13,19 @@ s - Send payload \n\
 x - Exit \n\n\
 \e[1;33m>\e[0m";
 
-int cli(vector<string> files, string pathpacked, string pathstaging) {
-		string inp;
+int cli(std::vector < std::string > files, std::string pathpacked, std::string pathstaging) {
+		std::string inp;
 		clrscr();
-		printf(TITLE);
+		std::cout << TITLE;
 		while (1) {
-			printf(options);
-			cin >> inp;
-			if (inp == "l") {
-				clrscr();
-				listpayloads(files);
-			} else if (inp == "a") {
-				clrscr();
-				addpayload(pathpacked, pathstaging);
-			} else if (inp == "s") {
-				clrscr();
-				sendpayload(pathpacked);
-			} else if (inp == "x") {
-				cout << "\nExiting...\n";
-				//Kill ssh listener here
-				break;
-			} else {
-				clrscr();
-				cout << RED("Option not recognized.\n");
-			}
+			std::cout << options;
+			std::cin >> inp;
+			clrscr();
+			if (inp == "l") {listpayloads(files);}
+			else if (inp == "a") {addpayload(pathpacked, pathstaging);}
+			else if (inp == "s") {sendpayload(pathpacked);}
+			else if (inp == "x") {std::cout << "\nExiting...\n";break;}
+			else {std::cout << RED("Option not recognized.\n");}
 		}
 		return 0;
 }

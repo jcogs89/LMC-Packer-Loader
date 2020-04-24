@@ -1,13 +1,6 @@
-/*
- * cliopts.cpp
- *
- *  Created on: Feb 27, 2020
- *      Author: cbai
- */
-
 #include <iostream>
 #include <stdio.h>
-#include <string>
+#include <string.h>
 #include <vector>
 #include "dirlist.h"
 #include "Helpers.h"
@@ -18,13 +11,11 @@
 #include "colors.h"
 using namespace std;
 
-
 void listpayloads(vector<string> files) {
 	printf(GREEN("Current payloads:\n"));
 	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(files,11);
 }
-
 
 void addpayload(string pathpacked, string pathstaging) {
 	std::string ans, inp;

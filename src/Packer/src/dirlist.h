@@ -1,7 +1,5 @@
 #include <string>
 #include <vector>
-using namespace std;
 
-
-vector<string> dirlist(string path);
-void dirprint(vector<string> files, int magic);
+std::vector < std::string > dirlist(std::string path);
+void dirprint(std::vector < std::string > files, int magic);

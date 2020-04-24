@@ -1,5 +1,4 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-int cli(vector<string> files,string pathpacked, string pathstaging);
+int cli(std::vector < std::string> files, std::string pathpacked, std::string pathstaging);
