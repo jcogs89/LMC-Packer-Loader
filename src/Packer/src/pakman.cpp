@@ -1,13 +1,14 @@
 //Requires C++ v17
 
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <vector>
-#include <string.h>
 
 #include "cli.h"
-#include "dirlist.h"
+#include "colors.h"
 #include "config_parser.h"
+#include "dirlist.h"
 #include "incom.h"
 
 static const char usage[] = "\n\
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
 	int option;
 	char tvalue[32];
 	char fvalue[32];
-	bool smode;
+	bool smode = false;
 	vector<string> files;
 
 	ConfigFile cfg("./packer.conf"); //ToDo Add default conf file and option to pass CLA of its path
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
 	files = dirlist(pathpacked);
 
 	if(argc<2){
-		printf("\n\e[0;31mNo arguments given\e[0;17m\n");
+		printf(RED("No arguments given"));
 		printf(usage);
 		return 1;
 	}
@@ -77,18 +78,18 @@ int main(int argc, char *argv[]) {
 		switch(option) { //Check each give option against allowed values
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
-				printf("Target Flag: %s\n",tvalue);
+				printf(BLUE("Target Flag: %s\n"),tvalue);
 				break;
 			case 'f':
 				memcpy(fvalue, optarg, strlen(optarg)+1);
-				printf("File Flag: %s\n", fvalue);
+				printf(BLUE("File Flag: %s\n"), fvalue);
 				break;
 			case ':':
-				printf("\n\e[0;31mOption %c needs a value\e[0;17m\n", optopt);
+				printf(RED("Option %c needs a value"), optopt);
 				printf(usage);
 				return 1;
 			case '?':
-				printf("\n\e[0;31mUnknown option: %c\e[0;17m\n", optopt);
+				printf(RED("Unknown option: %c"), optopt);
 				printf(usage);
 				return 1;
 			case 'h':
@@ -101,7 +102,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	for(; optind < argc; optind++) { //Check if extra arguments passed
-		printf("\n\e[0;31mGiven extra arguments: %s\e[0;17m\n", argv[optind]);
+		printf(RED("Given extra arguments: %s"), argv[optind]);
 		printf(usage);
 		return 1;
 	}
@@ -111,6 +112,7 @@ int main(int argc, char *argv[]) {
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		return 0;
 	}
-	printf("\nThis should never happen. Please run in service mode with -s\n");
+	//printf(RED("This should never happen. Please run in service mode with -s"));
+	printf(TITLE);
 	return 1;
 }

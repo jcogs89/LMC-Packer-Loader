@@ -26,7 +26,7 @@ typedef unsigned int uint;
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
 
-char* uziphelp(char* ibuf, char* obuf)
+int uziphelp(char* ibuf, char* obuf)
 {
 	printf("Decompressing using miniz.c version: %s\n", MZ_VERSION);
 	
@@ -44,7 +44,7 @@ char* uziphelp(char* ibuf, char* obuf)
 	if (inflateInit(&stream))
 	{
 		printf("inflateInit() failed!\n");
-		return obuf;
+		return EXIT_FAILURE;
 	}
 	
 	// Decompression
@@ -77,7 +77,7 @@ char* uziphelp(char* ibuf, char* obuf)
 		{
 			// Output buffer is full, or decompression is done, so write buffer to output buffer.
 			uint n = BUF_SIZE - stream.avail_out;
-			snprintf(obuf, n, (char*)s_outbuf); //ToDo writing to obuf not working!
+			snprintf(obuf, n, (char*)s_outbuf);
 			//memcpy(obuf, (char*)s_outbuf); // appears to work just the same
 			
 			//printf("WORKED YES --- last s_outbuf: %s\nobuf: %s\n", obuf);
@@ -93,18 +93,18 @@ char* uziphelp(char* ibuf, char* obuf)
 		{
 			//printf("s_outbuf: %s\n", s_outbuf);
 			printf("inflate() failed with status %i!\n", status);
-			return obuf; // return EXIT_FAILURE;
+			return EXIT_FAILURE; // return EXIT_FAILURE;
 		}
 	}
 	// error handling
 	if (inflateEnd(&stream) != Z_OK)
 	{
 		printf("inflateEnd() failed!\n");
-		return obuf;
+		return EXIT_FAILURE;
 	}
 
 	printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
 	printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 	printf("Success.\n");
-	return (char*)s_outbuf; //ToDo returns s_outbuf instead of obuf
+	return EXIT_SUCCESS;
 }

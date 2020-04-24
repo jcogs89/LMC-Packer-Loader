@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "cli.h"
 #include "cliopts.h"
+#include "colors.h"
 
 static const char options[] = "\n\
 \e[1;32mChoose an option: \e[0;17m \n\n\
@@ -16,7 +16,7 @@ x - Exit \n\
 
 int cli(vector<string> files, string pathpacked, string pathstaging) {
 		string inp;
-		printf("\e[1;1H\e[2J");
+		clrscr();
 		while (1) {
 			printf(options);
 			cin >> inp;
@@ -31,7 +31,8 @@ int cli(vector<string> files, string pathpacked, string pathstaging) {
 				cout << "\nExiting.\n";
 				break;
 			} else {
-				cout << "Option not recognized.\n";
+				clrscr();
+				cout << RED("Option not recognized.\n");
 			}
 		}
 		return 0;
