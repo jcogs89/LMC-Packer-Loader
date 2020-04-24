@@ -62,7 +62,7 @@ int main()
 		inBuf = Buffer;
 
 		printf("Encrypted buffer: %s\n", Buffer);
-		opBuf = uziphelp(inBuf, opBuf);
+		uziphelp(inBuf, opBuf);
 		printf("\nDecrypted buffer: %s \n", opBuf);
 
 
