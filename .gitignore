@@ -4,3 +4,4 @@ src/Loader-win/Loader-win/Debug/*
 !src/Loader-win/Loader-win/Debug/Loader-win.exe
 !src/Loader-win/Loader-win/Debug/loader.conf
 src/Packer/.settings/
+src/Packer/Debug/Packer
