@@ -115,7 +115,7 @@ int udp_server_clinet()
         //ToDo change decompression from file to buffer input
         char* inBuf = Buffer;
         char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(inBuf, opBuf);
+        //uziphelp(inBuf, opBuf);
 
         //run in memory
         //ToDo run in memory

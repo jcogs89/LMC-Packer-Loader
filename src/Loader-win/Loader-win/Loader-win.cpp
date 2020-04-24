@@ -43,7 +43,7 @@ int main()
 		char* Buffer;
 		unsigned long Size;
 
-		fopen_s(&File, "..\\PAYLOADS\\poetry.zips", "rb");
+		fopen_s(&File, "..\\PAYLOADS\\poetry.txt", "rb");
 		if (!File)
 		{
 			printf("Error while reading the file\n");
@@ -58,13 +58,11 @@ int main()
 		Buffer = new char[Size];
 
 		fread(Buffer, 1, Size, File);
-		//char cSize[MAX_PATH];
-		//sprintf(cSize, "%i", Size);
 
 		inBuf = Buffer;
 
-		printf("Encrypted buffer: %s\n", inBuf);
-		uziphelp(inBuf, opBuf);
+		printf("Encrypted buffer: %s\n", Buffer);
+		opBuf = uziphelp(inBuf, opBuf);
 		printf("\nDecrypted buffer: %s \n", opBuf);
 
 
