@@ -319,10 +319,11 @@ int uziphelp(string in, string out)
 int encrypthelp(string in, string out)
 {
 	//printf("Encryption the file\n.");
-	string cmd("openssl enc -aes-256-cbc -in ");
+	string cmd("openssl enc -aes-256-cbc -p -nosalt -in ");
 	cmd += in;
 	cmd += " -base64 -md sha1 -out ";
 	cmd += out;
+	printf("Openssl string ran: ", cmd.c_str());
 	system(cmd.c_str());
 
 	return -69;

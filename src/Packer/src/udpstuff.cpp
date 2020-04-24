@@ -26,6 +26,8 @@
 #include <vector>
 #include "Helpers.h"
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 
 
 #define IP_PROTOCOL 0
@@ -35,6 +37,7 @@
 #define sendrecvflag 0
 #define nofile "File Not Found!"
 using namespace std;
+namespace fs = std::filesystem;
 
 
 //SOCKET Socket, Sub;
@@ -77,27 +80,18 @@ int sendFile(FILE* fp, char* buf, int s)
 
 int udpclient( int PORT_NO, char *IP_ADDRESS)
 {
-    //client
-    //WSAStartup(MAKEWORD(2, 2), &Winsock);    // Start Winsock
-
-    //if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)    // Check version
-    //{
-    //    WSACleanup();
-    //    return 0;
-    //}
-
-	int sockfd, nBytes;
+	//int sockfd, nBytes;
+	int sockfd;
 	struct sockaddr_in addr_con;
 	unsigned int addrlen = sizeof(addr_con);
 	addr_con.sin_family = AF_INET;
 	addr_con.sin_port = htons(PORT_NO);
 	addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-	char net_buf[NET_BUF_SIZE];
+	//char net_buf[NET_BUF_SIZE];
 	FILE* fp;
 
 
 
-  //put shit here
   vector<string> stage = dirlist("./Payloads/");
   	printf("\n");
   	unsigned int id;
@@ -128,10 +122,8 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
   	const char *fname2= stage[id].c_str();
   	string iput = stage[id];
 
-
   	// socket()
-	sockfd = socket(AF_INET, SOCK_DGRAM,
-					IP_PROTOCOL);
+	sockfd = socket(AF_INET, SOCK_STREAM , IP_PROTOCOL);
 
 	if (sockfd < 0)
 		printf("\nfile descriptor not received!!\n");
@@ -139,43 +131,64 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 		printf("\nfile descriptor %d received\n", sockfd);
 
 	//while (1) {
-		//printf("\nPlease enter file name to receive:\n");
-		//scanf("%s", net_buf);
-		//sendto(sockfd, net_buf, NET_BUF_SIZE,
-		//	   sendrecvflag, (struct sockaddr*)&addr_con,
-		//	   addrlen);
+	//printf("\nPlease enter file name to receive:\n");
+	//scanf("%s", net_buf);
+	//sendto(sockfd, net_buf, NET_BUF_SIZE,
+	//	   sendrecvflag, (struct sockaddr*)&addr_con,
+	//	   addrlen);
 
-		printf("\n---------Data Received---------\n");
+	//test connect
+	connect(sockfd, (struct sockaddr*)&addr_con,  addrlen);
 
-		fp = fopen(fname2, "r");
-		printf("\nFile Name Received: %s\n", fname2);
-		if (fp == NULL)
-		{
-			printf("\nFile open failed!\n");
-		}
-		else
-		{
-			printf("\nFile Successfully opened!\n");
-		}
-		cin.get();
-		while (1) {
+	printf("\n---------Data Received---------\n");
 
-			// process
-			if (sendFile(fp, net_buf, NET_BUF_SIZE))
-			{
-				sendto(sockfd, net_buf, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
-				break;
-			}
-			//printf("%s",net_buf);
-			// send
-			sendto(sockfd, net_buf, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
-			clearBuf(net_buf);
-		}
-		if (fp != NULL)
-			fclose(fp);
+	//get fiel size
+	fs::path p{fname2};
+	p= fs::canonical(p);
+	cout << "The size of " << p.u8string() << " is " << fs::file_size(p) << " bytes.\n";
 
-		printf("\n-------------------------------\n");
-		cin.get();
+	fp = fopen(fname2, "r");
+	printf("\nFile Name Received: %s\n", fname2);
+	if (fp == NULL)
+	{
+		printf("\nFile open failed!\n");
+	}
+	else
+	{
+		printf("\nFile Successfully opened!\n");
+	}
+	cin.get();
+	//try shit here
+	printf("fuck\n");
+	char cSize[NET_BUF_SIZE];
+	sprintf(cSize, "%i", fs::file_size(p));
+	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
+	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
+	printf("fuck2\n");
+
+	char* Buffer;
+	Buffer = new char[fs::file_size(p)];
+	fread(Buffer, fs::file_size(p), 1, fp);
+	printf("%s\n", Buffer);
+
+	send(sockfd, Buffer, fs::file_size(p), sendrecvflag);
+	//while (1) {
+
+		// process
+		//if (sendFile(fp, net_buf, NET_BUF_SIZE))
+		//{
+		//	send(sockfd, net_buf, NET_BUF_SIZE, sendrecvflag);
+		//	break;
+		//}
+		//printf("%s",net_buf);
+		// send
+		//send(sockfd, net_buf, NET_BUF_SIZE, sendrecvflag);
+		//clearBuf(net_buf);
+	//}
+	if (fp != NULL)
+		fclose(fp);
+
+	printf("\n-------------------------------\n");
 	//}
 
 
