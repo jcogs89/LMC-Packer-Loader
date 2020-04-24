@@ -23,6 +23,7 @@ int AddressLen = sizeof(IncomingAddress);
 int udp_server_clinet()
 {
     //server
+    printf("%i", Port);
     WSAStartup(MAKEWORD(2, 2), &Winsock);    // Start Winsock
 
     if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)    // Check version
