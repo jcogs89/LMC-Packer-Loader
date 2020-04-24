@@ -96,6 +96,7 @@ int uziphelp(char* ibuf, char* obuf)
 			break;
 		else if (status != Z_OK)
 		{
+			printf("s_outbuf: %s\n", s_outbuf);
 			printf("inflate() failed with status %i!\n", status);
 			return EXIT_FAILURE;
 		}
