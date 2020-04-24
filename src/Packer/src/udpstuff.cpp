@@ -159,12 +159,12 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	}
 	cin.get();
 	//try shit here
-	printf("fuck\n");
+	//printf("fuck\n");
 	char cSize[NET_BUF_SIZE];
 	sprintf(cSize, "%i", fs::file_size(p));
 	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
 	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
-	printf("fuck2\n");
+	//printf("fuck2\n");
 
 	char* Buffer;
 	Buffer = new char[fs::file_size(p)];
@@ -193,6 +193,6 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 
 
 	printf("\ndone\n");
-	cin.get();
+	//cin.get();
     return 0;
 }
