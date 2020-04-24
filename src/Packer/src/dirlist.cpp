@@ -21,7 +21,7 @@ vector<string> dirlist(string path)
 		return filesv;
 
 	} catch (const std::filesystem::filesystem_error &) {
-		printf("Directory (%s) not found.", path.c_str());
+		printf("Directory (%s) not found.\n", path.c_str());
 		exit(0);
 	}
 }

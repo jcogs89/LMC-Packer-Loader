@@ -40,7 +40,7 @@ void addpayload(string pathpacked, string pathstaging) {
 
 	//Take user input to select file to turn into a payload
 	while (1) {
-		printf(GREEN("\nn>"));
+		printf(GREEN("\n>"));
 		cin >> inp;
 		try {
 			id = std::stoi(inp);
