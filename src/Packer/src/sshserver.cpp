@@ -375,8 +375,7 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
 #endif
 
     if(ssh_bind_listen(sshbind)<0){
-        Log("Error listening to socket: %s\n");
-        Log(ssh_get_error(sshbind));
+        //printf("Error listening to socket: %s\n", ssh_get_error(sshbind));
         return -1;
     }
     //printf("Started sample libssh sshd on port %d\n", port);

@@ -8,7 +8,7 @@
 
 #define DEBUG 1
 #if DEBUG == 1
-#define Log(x) std::cout << BLUE(x)
+#define Log(x) printf(BLUE(x))
 #define clrscr()
 #else
 #define clrscr()	printf("\e[2J\e[1;1H\e[0m")
