@@ -5,12 +5,13 @@
 #define GREEN(x)	"\e[32m" x "\e[0m"
 #define BLUE(x)		"\e[34m" x "\e[0m"
 #define YELLOW(x)	"\e[33m" x "\e[0m"
-#define clrscr()	printf("\e[2J\e[1;1H\e[0m")
 
 #define DEBUG 1
 #if DEBUG == 1
 #define Log(x) std::cout << BLUE(x)
+#define clrscr()
 #else
+#define clrscr()	printf("\e[2J\e[1;1H\e[0m")
 #define Log(x)
 #endif
 
