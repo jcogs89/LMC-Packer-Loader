@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		return 0;
 	}
-	printf(RED("This should never happen. Please run in service mode with -s"));
+	//printf(RED("This should never happen. Please run in service mode with -s"));
+	printf(TITLE);
 	return 1;
 }
