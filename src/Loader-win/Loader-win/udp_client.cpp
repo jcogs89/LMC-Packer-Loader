@@ -23,7 +23,7 @@ int AddressLen = sizeof(IncomingAddress);
 int udp_server_clinet()
 {
     //server
-    printf("%i", Port);
+    printf("\n%i\n", Port);
     WSAStartup(MAKEWORD(2, 2), &Winsock);    // Start Winsock
 
     if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)    // Check version
@@ -52,7 +52,7 @@ int udp_server_clinet()
     {
         //char* ClientIP = inet_ntoa(IncomingAddress.sin_addr);
         int ClientPort = ntohs(IncomingAddress.sin_port);
-        printf("Client conncted!\n");
+        printf("Client connected!\n");
         //printf("IP: %s:%d\n", ClientIP, ClientPort);
         printf("Receiving file .. \n");
 
@@ -95,7 +95,7 @@ int udp_server_clinet()
                 printf("2\n");
             }
         }*/
-        printf("%s\n", Buffer);
+        printf("Recieved data from packer:\n%s\n", Buffer);
         //FILE* File;
         //fopen_s(&File,"E://Git/test-rec.txt", "wb");
         //fwrite(Buffer, 1, Size, File);
