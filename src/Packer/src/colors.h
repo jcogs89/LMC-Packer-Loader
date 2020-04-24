@@ -1,8 +1,8 @@
 #pragma once
 
 #define RESET		"\e[0m"
-#define RED(x)		"\n\e[31m" x "\e[0m\n"
-#define GREEN(x)	"\e[32m" x "\e[0m"
+#define RED(x)		"\n\e[1;31m" x "\e[0m\n"
+#define GREEN(x)	"\e[1;32m" x "\e[0m"
 #define BLUE(x)		"\e[34m" x "\e[0m"
 #define YELLOW(x)	"\e[33m" x "\e[0m"
 
