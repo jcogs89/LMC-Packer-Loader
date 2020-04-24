@@ -65,6 +65,10 @@ int udp_server_clinet()
             Size = atoi((const char*)Filesize);
             printf("File size: %d\n", Size);
         }
+        else {
+            printf("Failed to determine filesize of recieved file.");
+                return 0;
+        }
 
         char* Buffer = new char[Size];
 
