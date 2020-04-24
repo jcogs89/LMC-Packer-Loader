@@ -43,18 +43,24 @@ int main()
 		char* Buffer;
 		unsigned long Size;
 
-		fopen_s(&File, compression_iput, "rb");
+		fopen_s(&File, "..\\PAYLOADS\\poetry.zips", "rb");
 		if (!File)
 		{
 			printf("Error while reading the file\n");
 			getchar();
 			return 0;
 		}
+
 		fseek(File, 0, SEEK_END);
 		Size = ftell(File);
 		fseek(File, 0, SEEK_SET);
+
 		Buffer = new char[Size];
-		fread(Buffer, Size, 1, File);
+
+		fread(Buffer, 1, Size, File);
+		//char cSize[MAX_PATH];
+		//sprintf(cSize, "%i", Size);
+
 		inBuf = Buffer;
 
 		printf("Encrypted buffer: %s\n", inBuf);
