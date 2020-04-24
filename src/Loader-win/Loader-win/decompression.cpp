@@ -51,7 +51,7 @@ int uziphelp(char* ibuf, char* obuf)
 	stream.avail_out = BUF_SIZE;
 
 	// Decompression.
-	uint inbuf_remaining = inbuf_size; //previously infile_remaining 
+	uint inbuf_remaining = inbuf_size + inbuf_size; //previously infile_remaining 
 
 	if (inflateInit(&stream))
 	{
@@ -61,18 +61,23 @@ int uziphelp(char* ibuf, char* obuf)
 	//ToDo integrate decompression
 	for (; ; )
 	{
+		printf("\n\nstartloop...\n");
+		printf("sinbuf: %s\n", s_inbuf);
+		printf("soutbuf: %s\n", s_outbuf);
+
 		int status;
 		if (!stream.avail_in)
 		{
 			// Input buffer is empty, so read more bytes from input file.
 			uint n = my_min(BUF_SIZE, inbuf_remaining);
-			printf("N: %d\nBUF_SIZE: %d\n, inbuf_rem: %d\n", n, BUF_SIZE, inbuf_remaining);
+			//printf("N: %d\nBUF_SIZE: %d\n, inbuf_rem: %d\n", n, BUF_SIZE, inbuf_remaining);
 
-			//printf("ibuf: %s, uintibuf: %s", ibuf, (uint8*)ibuf);
 			//std::copy(&s_inbuf, ibuf, inbuf_remaining); //todo just reads entire buffer lol
 			snprintf((char*)s_inbuf, n, ibuf); //ToDo - works! NEED to test with file bigger than buffer.
-			printf("sbuf %s", s_inbuf);
-
+			//printf("sbuf %s", s_inbuf);
+			//printf("ibuf before: %s\n", ibuf);
+			ibuf += n;
+			//printf("ibuf after: %s\n", ibuf);
 			stream.next_in = s_inbuf;
 			stream.avail_in = n;
 
@@ -80,13 +85,16 @@ int uziphelp(char* ibuf, char* obuf)
 		}
 
 		status = inflate(&stream, Z_SYNC_FLUSH);
+		printf("stream in: %s\n", stream.next_in);
+		printf("stream out: %s\n", stream.next_out);
 
 		if ((status == Z_STREAM_END) || (!stream.avail_out))
 		{
 			// Output buffer is full, or decompression is done, so write buffer to output file.
 			uint n = BUF_SIZE - stream.avail_out;
-			obuf = (char*)s_outbuf; //todo just reads entire buffer lol
-			printf("obuf: %s", obuf);
+			snprintf(obuf, n, (char*)s_outbuf); //todo just reads entire buffer lol
+			obuf += n;
+			printf("WORKED HELL YES --- obuf: %s", obuf);
 
 			stream.next_out = s_outbuf;
 			stream.avail_out = BUF_SIZE;
@@ -96,7 +104,7 @@ int uziphelp(char* ibuf, char* obuf)
 			break;
 		else if (status != Z_OK)
 		{
-			printf("s_outbuf: %s\n", s_outbuf);
+			//printf("s_outbuf: %s\n", s_outbuf);
 			printf("inflate() failed with status %i!\n", status);
 			return EXIT_FAILURE;
 		}
