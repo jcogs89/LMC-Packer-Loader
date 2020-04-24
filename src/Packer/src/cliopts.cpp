@@ -48,7 +48,6 @@ void addpayload(string pathpacked, string pathstaging) {
 				cout << RED("Invalid option, please try again.");
 				continue;
 			} else {
-				printf("\n%i\n",id);
 				break;
 			}
 		} catch (...) {
@@ -68,7 +67,7 @@ void addpayload(string pathpacked, string pathstaging) {
 	compression_ret = ziphelp(iput, compression_outp);
 
 	if (compression_ret == 0) { //Compression EXIT_SUCCESS is 0
-		printf(GREEN("File zipped.\n"));
+		printf("File zipped.\n");
 	} else {
 		printf(RED("FILE ZIP FAILED.\n"));
 	}
@@ -80,7 +79,7 @@ void addpayload(string pathpacked, string pathstaging) {
 
 	while (1) {
 		printf("Do you want to delete the source in staging (y/n)?");
-		printf(GREEN("\nn>"));
+		printf(GREEN("\n>"));
 		cin >> ans;
 		if (ans=="Y" or ans == "y") {
 			if( remove( iput.c_str() ) != 0 )
@@ -94,6 +93,7 @@ void addpayload(string pathpacked, string pathstaging) {
 			cout << RED("Invalid Option\n");
 		}
 	}
+	clrscr();
 }
 
 void sendpayload(string pathpacked) {
