@@ -78,7 +78,11 @@ vector<string> findnew (string knownhostsfolder)
 
 void incom(string knownhostsfile, pid_t parent, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
 	while(1) {
-		sshserver(8833, ssh_host_dsa_key, ssh_host_rsa_key); //ToDo add to config
+		if(-1==sshserver(8833, ssh_host_dsa_key, ssh_host_rsa_key)) //ToDo add to config
+		{
+			printf("\nfailed to establish listen service\ncheck port is open\n");
+			exit(-1);
+		}
 		//ToDo Carl - "comment this out later"
 		if (0 == kill(parent, 0)) {
 		    // Process exists.
