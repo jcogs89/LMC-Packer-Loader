@@ -11,5 +11,3 @@
 #else
 #define Log(x)
 #endif
-
-void Cprint(const char* message);

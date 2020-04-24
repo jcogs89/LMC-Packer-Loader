@@ -1,14 +1,14 @@
 //Requires C++ v17
 
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <vector>
-#include <string.h>
 
 #include "cli.h"
 #include "colors.h"
-#include "dirlist.h"
 #include "config_parser.h"
+#include "dirlist.h"
 #include "incom.h"
 
 static const char usage[] = "\n\
