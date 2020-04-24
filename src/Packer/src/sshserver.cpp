@@ -375,14 +375,14 @@ int sshserver(int portp, std::string ssh_host_dsa_key, std::string ssh_host_rsa_
 
     if(ssh_bind_listen(sshbind)<0){
         printf("Error listening to socket: %s\n", ssh_get_error(sshbind));
-        return 1;
+        return -1;
     }
     //printf("Started sample libssh sshd on port %d\n", port);
     //printf("You can login as the user %s with the password %s\n", SSHD_USER,SSHD_PASSWORD);
     r = ssh_bind_accept(sshbind, session);
     if(r==SSH_ERROR){
       printf("Error accepting a connection: %s\n", ssh_get_error(sshbind));
-      return 1;
+      return -1;
     }
     if (ssh_handle_key_exchange(session)) {
         printf("ssh_handle_key_exchange: %s\n", ssh_get_error(session));

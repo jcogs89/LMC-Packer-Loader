@@ -14,6 +14,7 @@
 #include "sshwraper.h"
 #include "incom.h"
 #include "cliopts.h"
+#include "udpstuff.h"
 #include "colors.h"
 using namespace std;
 
@@ -103,6 +104,9 @@ void sendpayload(string pathpacked) {
 	strcpy(ip2, ip.c_str());
 	char host2[host.size()+1];
 	strcpy(host2, host.c_str());
+	printf("\n%s==\n%s==\n",host2,ip2);
 	//connect(ip2, host2); No Longer Using SSH!
+	//shit here
+	udpclient(6000,ip2);//needs rec port
 	printf("\e[1;1H\e[2J");
 }
