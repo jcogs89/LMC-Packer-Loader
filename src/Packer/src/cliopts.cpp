@@ -20,7 +20,6 @@ using namespace std;
 
 
 void listpayloads(vector<string> files) {
-	clrscr();
 	printf(GREEN("Current payloads:\n"));
 	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(files,11);
@@ -28,15 +27,14 @@ void listpayloads(vector<string> files) {
 
 
 void addpayload(string pathpacked, string pathstaging) {
-	string ans, inp;
+	std::string ans, inp;
 	int compression_ret;
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
-	clrscr();
 	printf(GREEN("The following payloads are availible in the staging folder:\n"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
-	printf("\nEnter the number for file to be packed ('x' to back out):\n");
+	printf(GREEN("Enter the number for file to be packed ('x' to back out):"));
 
 	//Take user input to select file to turn into a payload
 	while (1) {
@@ -99,16 +97,19 @@ void addpayload(string pathpacked, string pathstaging) {
 void sendpayload(string pathpacked) {
 	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	vector<string> target;
-	target = findnew("Known_hosts");
+	target = findnew("Known_hosts"); //What is user pressed x?
+	if(target[0]=="null"){
+		clrscr();
+		return;
+	}
 	string host = target[0];
 	string ip = target[1];
 	char ip2[ip.size()+1];
 	strcpy(ip2, ip.c_str());
 	char host2[host.size()+1];
 	strcpy(host2, host.c_str());
-	printf("\n%s==\n%s==\n",host2,ip2);
+	//printf("\n%s==\n%s==\n",host2,ip2);
 	//connect(ip2, host2); No Longer Using SSH!
-	//shit here
 	udpclient(6000,ip2);//needs rec port
 	clrscr();
 }

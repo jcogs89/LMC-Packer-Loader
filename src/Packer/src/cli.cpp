@@ -22,10 +22,13 @@ int cli(vector<string> files, string pathpacked, string pathstaging) {
 			printf(options);
 			cin >> inp;
 			if (inp == "l") {
+				clrscr();
 				listpayloads(files);
 			} else if (inp == "a") {
+				clrscr();
 				addpayload(pathpacked, pathstaging);
 			} else if (inp == "s") {
+				clrscr();
 				sendpayload(pathpacked);
 			} else if (inp == "x") {
 				cout << "\nExiting...\n";

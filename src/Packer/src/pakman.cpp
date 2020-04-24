@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if(smode) {
-		fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
+		//fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		clrscr();
 		printf("Thanks for using...\n");

@@ -28,6 +28,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include "colors.h"
 
 
 #define IP_PROTOCOL 0
@@ -76,12 +77,27 @@ int sendFile(FILE* fp, char* buf, int s)
     return 0;
 }
 
+bool ask_again(std::string prompt){
+	std::string inp;
+	while(1){ //while input is not valid
+		std::cout << RED("" << prompt << "");
+		printf(YELLOW("Try again? (y/n) >"));
+		std::cin >> inp;
+		clrscr();
+		if (inp == "y" or inp == "Y") {
+			return 1;
+		} else if (inp == "n" or inp == "N") {
+			return 0;
+		} else {
+			cout << RED("Option not recognized.\n");
+		}
+	}
+}
 
-
-int udpclient( int PORT_NO, char *IP_ADDRESS)
-{
+int udpclient( int PORT_NO, char *IP_ADDRESS){
 	//int sockfd, nBytes;
-	int sockfd;
+	int sockfd = -1;
+	int connected = -1;
 	struct sockaddr_in addr_con;
 	unsigned int addrlen = sizeof(addr_con);
 	addr_con.sin_family = AF_INET;
@@ -90,45 +106,58 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	//char net_buf[NET_BUF_SIZE];
 	FILE* fp;
 
-
-
   vector<string> stage = dirlist("./Payloads/");
-  	printf("\n");
+
   	unsigned int id;
-  	while (1)
-  	{
-  		//10 is magic, trust me
-  		dirprint(stage, 10);
-  		printf("\nEnter number for file to be packed\n>> ");
+  	while (1) {
+  	  	printf("\n");
+  		dirprint(stage, 10); //10 is magic, trust me
+  		printf(GREEN("Enter number for payload to be sent:"));
+  		printf(YELLOW(">"));
   		id = intinput();
   		if (id>stage.size()-1)
   		{
-  			cout << "Invalid Option\n\n";
+  	  		clrscr();
+  			cout << RED("Invalid Option");
   			continue;
   		}
   		else
   		{
   			//cout << stage[id];
-  			printf("\n%i\n",id);
+  			//printf("\n%i\n",id);
   			break;
   		}
   	}
-  	cout <<"File :\"" << stage[id] << "\" selected";
-  	//jenk
-  	//magic again
-  	string outp= "./Payloads/"+stage[id].substr(10)+".zips";
+  	clrscr();
+  	cout << GREEN("File: \"" << stage[id] << "\" selected\n");
+  	string outp= "./Payloads/"+stage[id].substr(10)+".zips"; //jenk and magic again
   	string tmp = stage[id].substr(10);
   	//const char *fname= tmp.c_str();
   	const char *fname2= stage[id].c_str();
   	string iput = stage[id];
 
-  	// socket()
+	printf("Creating network socket...\n");
 	sockfd = socket(AF_INET, SOCK_STREAM , IP_PROTOCOL);
 
-	if (sockfd < 0)
-		printf("\nfile descriptor not received!!\n");
-	else
-		printf("\nfile descriptor %d received\n", sockfd);
+  	while(sockfd < 0){ //While socket is not valid
+  		if(ask_again("Network socket could not be created!") == false){return 1;}
+		printf("Creating network socket...\n");
+		sockfd = socket(AF_INET, SOCK_STREAM , IP_PROTOCOL);
+  	}
+  	printf(GREEN("Successfully Created Network Socket!"));
+
+  	Log("File descriptor " << sockfd << " received");
+
+	printf("\nTrying to connect to Loader...\n");
+	connected = connect(sockfd, (struct sockaddr*)&addr_con,  addrlen);
+
+	while(connected < 0){ //while connection to loader is invalid
+		std::cout << RED("ERROR: " << strerror(errno) << "");
+		if(ask_again("Could not connect to Loader!") == false){return 1;}
+		printf("\nTrying to connect to Loader...\n");
+		connected = connect(sockfd, (struct sockaddr*)&addr_con,  addrlen);
+	}
+	printf(GREEN("Successfully Connected to Loader!"));
 
 	//while (1) {
 	//printf("\nPlease enter file name to receive:\n");
@@ -138,39 +167,34 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	//	   addrlen);
 
 	//test connect
-	connect(sockfd, (struct sockaddr*)&addr_con,  addrlen);
+	//printf("\n---------Data Received---------\n");
 
-	printf("\n---------Data Received---------\n");
+	//get file size
 
-	//get fiel size
 	fs::path p{fname2};
 	p= fs::canonical(p);
 	cout << "The size of " << p.u8string() << " is " << fs::file_size(p) << " bytes.\n";
 
 	fp = fopen(fname2, "r");
 	printf("\nFile Name Received: %s\n", fname2);
-	if (fp == NULL)
-	{
-		printf("\nFile open failed!\n");
+	if(fp == NULL){
+		printf(RED("File open failed!"));
 	}
-	else
-	{
-		printf("\nFile Successfully opened!\n");
+	else{
+		printf(GREEN("File Successfully opened!"));
 	}
-	cin.get();
-	//try shit here
-	//printf("fuck\n");
+	//cin.get();
 	char cSize[NET_BUF_SIZE];
-	sprintf(cSize, "%i", fs::file_size(p));
+	printf("Test");
+	sprintf(cSize, "%lu", fs::file_size(p));
 	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
+	printf("Sending data over network...");
 	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
-	//printf("fuck2\n");
-
 	char* Buffer;
 	Buffer = new char[fs::file_size(p)];
 	fread(Buffer, fs::file_size(p), 1, fp);
 	printf("%s\n", Buffer);
-
+	printf("Sending more data over network...");
 	send(sockfd, Buffer, fs::file_size(p), sendrecvflag);
 	//while (1) {
 
