@@ -191,7 +191,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	printf("\n-------------------------------\n");
 	//}
 
-
+	close(sockfd);
 	printf("\ndone\n");
 	//cin.get();
     return 0;
