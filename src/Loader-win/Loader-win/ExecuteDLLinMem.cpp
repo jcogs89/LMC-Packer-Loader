@@ -1,11 +1,10 @@
 #include "MemLoadLibrary.h"
-
+#include <stdio.h>
 typedef void(_cdecl* func)();
 
 /* C:\Users\hjrow\source\repos\TestDLL\Debug\TestDLL.dll (4/22/2020 1:04:29 AM)
    StartOffset(h): 00000000, EndOffset(h): 00008FFF, Length(h): 00009000 */
-
-unsigned char rawData[36864] = {
+unsigned char rawData2[36864] = {
 	0x4D, 0x5A, 0x90, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
 	0xFF, 0xFF, 0x00, 0x00, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -3080,16 +3079,17 @@ unsigned char rawData[36864] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-
-
-int main(int argc, TCHAR* argv[])
+int exe_dll_in_mem(unsigned char *rawData)
 {
+	printf("attempting to exec dll in memory...\n");
 	CLoad lib;
 	HANDLE hLibrary = lib.LoadFromMemory(rawData, sizeof(rawData));
 	func fn = (func)lib.GetProcAddressFromMemory(hLibrary, "testfunc");
 	fn();
 	lib.FreeLibraryFromMemory(hLibrary);
+	
 	return 0;
+
 }
 
 
