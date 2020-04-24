@@ -13,6 +13,7 @@
 #include "sshserver.h"
 #include "dirlist.h"
 #include "incom.h"
+#include "colors.h"
 #include <vector>
 using namespace std;
 
@@ -23,7 +24,8 @@ vector<string> findnew (string knownhostsfolder)
 	//ofstream hosts;
 	//hosts.open (knownhostsfile, ios::trunc);
 	long unsigned int cnt =0;
-	printf("\e[1;1H\e[2J\e[1;32mThe following systems are known:\e[0;17m\n\n");
+	clrscr();
+	printf(GREEN("The following systems are known:\n"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
@@ -36,7 +38,7 @@ vector<string> findnew (string knownhostsfolder)
 
 		printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
 	}
-	printf("\nChoose a target host ('x' to back out):"); //ToDo allow for multiple targets
+	printf(GREEN("\nChoose a target host ('x' to back out):")); //ToDo allow for multiple targets
 
 	//hosts << "Writing this to a file.\n";
 	//hosts.close();
@@ -48,12 +50,12 @@ vector<string> findnew (string knownhostsfolder)
 	unsigned int id;
 	string inp;
 	while (1) {
-			printf("\n\e[1;32m\n>\e[0;17m");
+			clrscr();
 			cin >> inp;
 			try {
 				id = stoi(inp);
 				if (id>hostsf.size()-1) {
-					cout << "Invalid option, please try again.";
+					cout << RED("Invalid option, please try again.");
 					continue;
 				} else {
 					//printf("\n%i\n",id);
@@ -66,7 +68,6 @@ vector<string> findnew (string knownhostsfolder)
 				}
 			} catch (...) {
 				if ((inp == "x") or (inp == "X")) {
-					printf("\e[1;32m");
 					return target;
 				} else {
 					printf("Unrecognized input, please try again.");
@@ -80,7 +81,7 @@ void incom(string knownhostsfile, pid_t parent, std::string ssh_host_dsa_key, st
 	while(1) {
 		if(-1==sshserver(8833, ssh_host_dsa_key, ssh_host_rsa_key)) //ToDo add to config
 		{
-			printf("\nfailed to establish listen service\ncheck port is open\n");
+			Log("\nfailed to establish listen service\ncheck port is open\n");
 			exit(-1);
 		}
 		//ToDo Carl - "comment this out later"
