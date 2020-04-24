@@ -20,7 +20,8 @@ using namespace std;
 
 
 void listpayloads(vector<string> files) {
-	printf("\e[1;1H\e[2J\e[1;32mCurrent payloads:\e[0;17m\n\n");
+	clrscr();
+	printf(GREEN("Current payloads:\n"));
 	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(files,11);
 }
@@ -32,19 +33,19 @@ void addpayload(string pathpacked, string pathstaging) {
 	unsigned int id;
 	vector<string> stage = dirlist(pathstaging);
 	clrscr();
-	printf("\n\e[1;32mThe following payloads are availible in the staging folder:\e[0;17m\n\n");
+	printf(GREEN("The following payloads are availible in the staging folder:\n"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	dirprint(stage, 10);
 	printf("\nEnter the number for file to be packed ('x' to back out):");
 
 	//Take user input to select file to turn into a payload
 	while (1) {
-		printf("\n\e[1;32m\n>\e[0;17m");
+		printf(GREEN("\nn>"));
 		cin >> inp;
 		try {
 			id = std::stoi(inp);
 			if (id>stage.size()-1) {
-				cout << "Invalid option, please try again.";
+				cout << RED("Invalid option, please try again.");
 				continue;
 			} else {
 				printf("\n%i\n",id);
@@ -52,9 +53,9 @@ void addpayload(string pathpacked, string pathstaging) {
 			}
 		} catch (...) {
 			if ((inp != "x") and (inp != "X")) {
-				printf("Unrecognized input, please try again.");
+				printf(RED("Unrecognized input, please try again."));
 			} else {
-				printf("\e[1;1H\e[2J");
+				clrscr();
 				return;
 			}
 		}
@@ -67,9 +68,9 @@ void addpayload(string pathpacked, string pathstaging) {
 	compression_ret = ziphelp(iput, compression_outp);
 
 	if (compression_ret == 0) { //Compression EXIT_SUCCESS is 0
-		printf("File zipped.\n");
+		printf(GREEN("File zipped.\n"));
 	} else {
-		printf("FILE ZIP FAILED.\n");
+		printf(RED("FILE ZIP FAILED.\n"));
 	}
 
 	//ENCRYPTION <><>
@@ -78,7 +79,8 @@ void addpayload(string pathpacked, string pathstaging) {
 	printf("File encrypted.\n");
 
 	while (1) {
-		printf("Do you want to delete the source in staging (y/n)?\n>> ");
+		printf("Do you want to delete the source in staging (y/n)?");
+		printf(GREEN("\nn>"));
 		cin >> ans;
 		if (ans=="Y" or ans == "y") {
 			if( remove( iput.c_str() ) != 0 )
@@ -89,7 +91,7 @@ void addpayload(string pathpacked, string pathstaging) {
 		} else if (ans=="n" or ans == "N") {
 			break;
 		} else {
-			cout << "Invalid Option\n";
+			cout << RED("Invalid Option\n");
 		}
 	}
 }
@@ -108,5 +110,5 @@ void sendpayload(string pathpacked) {
 	//connect(ip2, host2); No Longer Using SSH!
 	//shit here
 	udpclient(6000,ip2);//needs rec port
-	printf("\e[1;1H\e[2J");
+	clrscr();
 }
