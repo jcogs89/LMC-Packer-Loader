@@ -73,7 +73,7 @@ void addpayload(string pathpacked, string pathstaging) {
 	}
 
 	//ENCRYPTION <><>
-	string encryption_outp= pathpacked+stage[id].substr(10)+".zips";
+	string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
 	encrypthelp(compression_outp, encryption_outp);
 	printf("File encrypted.\n");
 
