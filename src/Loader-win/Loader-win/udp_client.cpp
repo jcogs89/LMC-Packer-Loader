@@ -74,7 +74,7 @@ int udp_server_clinet()
         }
 
         char* Buffer = new char[Size];
-
+		char* optBuffer = new char[(Size*2)];  // make it larger since it has to decompress?
         //int len = Size;
         //char *data = Buffer;
         int Offset = 0;
@@ -116,9 +116,9 @@ int udp_server_clinet()
 
         //decompression
         //ToDo change decompression from file to buffer input
-        char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(Buffer, opBuf);
-        printf("Decompressed file: %s\n", opBuf);
+        //char* opBuf = new char[sizeof(Buffer)];
+        uziphelp(Buffer, optBuffer);
+        printf("Decompressed file: %s\n", optBuffer);
 
 
         //run in memory
