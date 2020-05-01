@@ -151,7 +151,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	p= fs::canonical(p);
 	cout << "The size of " << p.u8string() << " is " << fs::file_size(p) << " bytes.\n";
 
-	fp = fopen(fname2, "r");
+	fp = fopen(fname2, "rb");
 	printf("\nFile Name Received: %s\n", fname2);
 	if (fp == NULL)
 	{
@@ -174,7 +174,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	Buffer = new char[fs::file_size(p)];
 	char* Buffer2 = new char[fs::file_size(p)*2]; // magic
 	fread(Buffer, fs::file_size(p), 1, fp);
-	printf("%s\n", Buffer);
+	printf("\nBuffer before byte conversion: %0s\n", Buffer);
 	char* temps;
 	char* temps2;
 	temps = new char[2];
@@ -182,13 +182,20 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	int x=0;
 	for (int i = 0; i <fs::file_size(p); i++)
 	{
-	    std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0')<< static_cast<int>(Buffer[i]) << ' ';
+		//printf("x: %x\n", Buffer[i]);
+		//printf("i: %i\n", Buffer[i]);
+	    std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0')<< static_cast<unsigned long int>(Buffer[i]) << ' ';
 	    printf(" |*");
 	    //temps << std::hex << std::setw(2) << std::setfill('0')<< static_cast<int>(Buffer[i]);
 	    sprintf(temps,"%x",static_cast<int>(Buffer[i]));
-	    if (strlen(temps) !=2)
+	    //printf("Buffer i: %x\n", static_cast<int>(Buffer[i]));
+	    if (strlen(temps) == 1)
 	    {
 	    	sprintf(temps2,"0%s",temps);
+	    }
+	    else if (strlen(temps) != 2)
+	    {
+	    	sprintf(temps2,"%s",&temps[6]);
 	    }
 	    else
 	    {
@@ -202,7 +209,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	    x++;
 	    x++;
 	}
-	printf("%s\n", Buffer2);
+	printf("\nBuffer after byte conversion: %s\n", Buffer2);
 	printf("\n");
 	send(sockfd, Buffer2, x, sendrecvflag);
 	//while (1) {
