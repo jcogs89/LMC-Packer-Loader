@@ -14,7 +14,7 @@
 using namespace std;
 
 #pragma comment(lib, "Ws2_32.lib")
-#define Port 6000
+//#define Port 6000
 
 SOCKET Socket, Sub;
 WSADATA Winsock;
@@ -22,7 +22,7 @@ sockaddr_in Addr;
 sockaddr_in IncomingAddress;
 int AddressLen = sizeof(IncomingAddress);
 
-int udp_server_clinet()
+int udp_server_clinet(int Port)
 {
     //server
     printf("\n%i\n", Port);
