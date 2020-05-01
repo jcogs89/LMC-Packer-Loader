@@ -28,6 +28,10 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+# include <iostream>
+# include <iomanip>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 #define IP_PROTOCOL 0
@@ -161,17 +165,46 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 	//try shit here
 	//printf("fuck\n");
 	char cSize[NET_BUF_SIZE];
-	sprintf(cSize, "%i", fs::file_size(p));
+	sprintf(cSize, "%i", (fs::file_size(p)*2)+1);
 	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
 	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
 	//printf("fuck2\n");
 
 	char* Buffer;
 	Buffer = new char[fs::file_size(p)];
+	char* Buffer2 = new char[fs::file_size(p)*2]; // magic
 	fread(Buffer, fs::file_size(p), 1, fp);
 	printf("%s\n", Buffer);
+	char* temps;
+	char* temps2;
+	temps = new char[2];
+	temps2 = new char[2];
+	int x=0;
+	for (int i = 0; i <fs::file_size(p); i++)
+	{
+	    std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0')<< static_cast<int>(Buffer[i]) << ' ';
+	    printf(" |*");
+	    //temps << std::hex << std::setw(2) << std::setfill('0')<< static_cast<int>(Buffer[i]);
+	    sprintf(temps,"%x",static_cast<int>(Buffer[i]));
+	    if (strlen(temps) !=2)
+	    {
+	    	sprintf(temps2,"0%s",temps);
+	    }
+	    else
+	    {
+	    	sprintf(temps2,"%s",temps);
+	    }
+	    printf("%s",temps2);
 
-	send(sockfd, Buffer, fs::file_size(p), sendrecvflag);
+	    printf("*| ");
+	    Buffer2[x]=temps2[0];
+	    Buffer2[x+1]=temps2[1];
+	    x++;
+	    x++;
+	}
+	printf("%s\n", Buffer2);
+	printf("\n");
+	send(sockfd, Buffer2, x, sendrecvflag);
 	//while (1) {
 
 		// process
