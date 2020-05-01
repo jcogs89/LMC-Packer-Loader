@@ -79,7 +79,8 @@ int udp_server_clinet(int Port)
         //char *data = Buffer;
         int Offset = 0;
         int n = 0;
-        while ((n = ::recv(Sub, Buffer + Offset, Size - Offset - 1, 0)) > 0) {
+        while ((n = ::recv(Sub, Buffer + Offset, Size - Offset - 1, 0)) > 0)
+		{
             Offset += n;
         }
         /*while (Size > Offset)
