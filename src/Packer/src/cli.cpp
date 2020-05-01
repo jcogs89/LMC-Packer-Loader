@@ -5,6 +5,7 @@
 
 #include "cliopts.h"
 #include "colors.h"
+#include "dirlist.h"
 
 static const char options[] = "\n\
 \e[1;32mChoose an option: \e[0;17m \n\n\
@@ -16,6 +17,7 @@ x - Exit \n\n\
 
 int cli(vector<string> files, string pathpacked, string pathstaging) {
 		string inp;
+		files = dirlist(pathpacked);
 		clrscr();
 		printf(TITLE);
 		while (1) {
