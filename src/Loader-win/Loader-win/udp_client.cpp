@@ -110,7 +110,7 @@ int udp_server_clinet(int Port)
 		bool odd = 0;
 		string tmp;
 		int x = 0;
-		for (int i = 0; i < Size; i=i+1)
+		for (int i = 0; i < strlen(Buffer); i=i+1)
 		{
 			printf("%i ",i);
 			tmp = "";
