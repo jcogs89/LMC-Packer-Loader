@@ -4,6 +4,7 @@
 #include <Ws2tcpip.h>
 #include <tchar.h>
 #include <string>
+#include <iostream>
 
 #include "decryption.h"
 #include "decompression.h"
@@ -21,6 +22,8 @@ WSADATA Winsock;
 sockaddr_in Addr;
 sockaddr_in IncomingAddress;
 int AddressLen = sizeof(IncomingAddress);
+
+
 
 int udp_server_clinet(int Port)
 {
@@ -66,7 +69,9 @@ int udp_server_clinet(int Port)
         if (recv(Sub, Filesize, 1024, 0)) // File size
         {
             Size = atoi((const char*)Filesize);
+			Size = Size - 1; //offset
             printf("File size: %d\n", Size);
+			//printf("File size: %i\n", Size);
         }
         else {
             printf("Failed to determine filesize of recieved file.");
@@ -74,12 +79,14 @@ int udp_server_clinet(int Port)
         }
 
         char* Buffer = new char[Size];
+		char* Buffer2 = new char[(Size/2)];
 		char* optBuffer = new char[(Size*2)];  // make it larger since it has to decompress?
         //int len = Size;
+		printf("\nRecieved data from packer raw:\n%ld\n", strlen(Buffer2));
         //char *data = Buffer;
         int Offset = 0;
         int n = 0;
-        while ((n = ::recv(Sub, Buffer + Offset, Size - Offset - 1, 0)) > 0)
+        while ((n = ::recv(Sub, Buffer + Offset, Size - Offset, 0)) > 0)
 		{
             Offset += n;
         }
@@ -99,6 +106,47 @@ int udp_server_clinet(int Port)
             }
         }*/
         printf("Recieved data from packer:\n%s\n", Buffer);
+
+		bool odd = 0;
+		string tmp;
+		int x = 0;
+		for (int i = 0; i < Size; i=i+1)
+		{
+			printf("%i ",i);
+			tmp = "";
+			//printf("%i", odd);
+			
+			//printf("%c ", Buffer[i]);
+			tmp = Buffer[i];
+			if (odd)
+			{
+				printf("\n");
+			}
+			odd = !odd;
+			if (i + 1 < Size)
+			{
+				i++;
+				printf("%i ", i);
+				//printf("%c ", Buffer[i]);
+				tmp = tmp + Buffer[i];
+				if (odd)
+				{
+					printf("\n");
+				}
+				odd = !odd;
+				cout << tmp;
+				printf("\n");
+			}
+
+			Buffer2[x] = strtoul(tmp.c_str(), NULL, 16);
+			printf("\n%c\n", strtoul(tmp.c_str(), NULL, 16));
+			x++;
+
+			
+		}
+		printf("\nRecieved data from packer raw:\n%s\n", Buffer2);
+		printf("\nRecieved data from packer raw:\n%i\n", strlen(Buffer2));
+		printf("\n");
         //FILE* File;
         //fopen_s(&File,"E://Git/test-rec.txt", "wb");
         //fwrite(Buffer, 1, Size, File);

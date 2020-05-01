@@ -172,7 +172,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS)
 
 	char* Buffer;
 	Buffer = new char[fs::file_size(p)];
-	char* Buffer2 = new char[fs::file_size(p)*2]; // magic
+	char* Buffer2 = new char[(fs::file_size(p)*2)+1]; // magic
 	fread(Buffer, fs::file_size(p), 1, fp);
 	printf("\nBuffer before byte conversion: %0s\n", Buffer);
 	char* temps;
