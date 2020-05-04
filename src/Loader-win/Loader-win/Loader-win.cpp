@@ -9,6 +9,7 @@
 #include "decompression.h"
 #include "decryption.h"
 #include "ExecuteDLLinMem.h"
+#include "crypto/aes.h"
 
 using namespace std;
 
