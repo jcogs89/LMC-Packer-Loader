@@ -172,7 +172,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS){
 	}
 	//cin.get();
 	char cSize[NET_BUF_SIZE];
-	sprintf(cSize, "%i", (fs::file_size(p)*2)+1);
+	sprintf(cSize, "%lu", (fs::file_size(p)*2)+1);
 	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
 	printf("Sending data over network...");
 	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
@@ -180,13 +180,13 @@ int udpclient( int PORT_NO, char *IP_ADDRESS){
 	Buffer = new char[fs::file_size(p)];
 	char* Buffer2 = new char[(fs::file_size(p)*2)+1]; // magic
 	fread(Buffer, fs::file_size(p), 1, fp);
-	printf("\nBuffer before byte conversion: %0s\n", Buffer);
+	printf("\nBuffer before byte conversion: %s\n", Buffer);
 	char* temps;
 	char* temps2;
 	temps = new char[2];
 	temps2 = new char[2];
 	int x=0;
-	for (int i = 0; i <fs::file_size(p); i++)
+	for (std::uintmax_t i = 0; i <fs::file_size(p); i++)
 	{
 		//printf("x: %x\n", Buffer[i]);
 		//printf("i: %i\n", Buffer[i]);
