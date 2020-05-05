@@ -4,6 +4,7 @@
 
 #include "cliopts.h"
 #include "colors.h"
+#include "dirlist.h"
 
 static const char options[] = "\n\
 \e[1;32mChoose an option: \e[0;17m \n\n\
@@ -13,8 +14,14 @@ s - Send payload \n\
 x - Exit \n\n\
 \e[1;33m>\e[0m";
 
+<<<<<<< HEAD
 int cli(std::vector < std::string > files, std::string pathpacked, std::string pathstaging) {
 		std::string inp;
+=======
+int cli(vector<string> files, string pathpacked, string pathstaging) {
+		string inp;
+		files = dirlist(pathpacked);
+>>>>>>> master
 		clrscr();
 		std::cout << TITLE;
 		while (1) {

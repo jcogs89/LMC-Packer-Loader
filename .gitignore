@@ -5,3 +5,12 @@ src/Loader-win/Loader-win/Debug/*
 !src/Loader-win/Loader-win/Debug/loader.conf
 src/Packer/.settings/
 src/Packer/Debug/Packer
+src/Loader-win/Loader-win/x64/
+
+src/Loader-win/Loader-win/Debug/
+
+src/Loader-win/Loader-win/Output/Debug/
+
+src/Loader-win/Loader-win/Output/Release/
+
+src/Loader-win/Loader-win/Win32/
