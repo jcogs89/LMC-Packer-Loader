@@ -1,0 +1,9 @@
+/.vs/
+/Loader-win.vcxproj.user
+/Debug/
+!/Debug/Loader-win.exe
+!/Debug/loader.conf
+/x64/
+/Output/Debug/
+/Output/Release/
+/Win32/
