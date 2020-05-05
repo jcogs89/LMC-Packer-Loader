@@ -1,11 +1,7 @@
-/*
- * Helpers.h
- *
- *  Created on: Feb 27, 2020
- *      Author: cbai
- */
+#include <string>
+
 int intinput();
-int ziphelp(string in, string out);
-int uziphelp(string in, string out);
-int encrypthelp(string in, string out);
-int decrypthelp(string in, string out);
+int ziphelp(std::string in, std::string out);
+int uziphelp(std::string in, std::string out);
+int encrypthelp(std::string in, std::string out);
+int decrypthelp(std::string in, std::string out);

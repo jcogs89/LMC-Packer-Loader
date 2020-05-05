@@ -1,55 +1,34 @@
 //Requires C++ v17
 
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include <cstring>
+#include <iostream>
+#include <string>
 #include <vector>
+#include <unistd.h>
 
 #include "cli.h"
 #include "colors.h"
 #include "config_parser.h"
 #include "dirlist.h"
-#include "incom.h"
 
 static const char usage[] = "\n\
-Usage: packman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE] \n\
+Usage: pakman [OPTIONS]... TARGET [HOSTNAME:PORT] PAYLOAD [FILE] \n\
 Sends a user defined PAYLOAD to TARGET. \n\
-Example: packman 192.168.0.1:1337 ~/payload.exe \n\n\
+Example: pakman 192.168.0.1:1337 ~/payload.exe \n\n\
 	-h, --help\tPrints this Help Page\n\
 	-s \t\tStarts in Service Mode\
 	\n\n";
 
-string get_config_item(ConfigFile cfg, string item_name) {
+std::string get_config_item(ConfigFile cfg, std::string item_name) {
 	std::string item;
 	if (cfg.keyExists(item_name)) {
 		item = cfg.getValueOfKey<std::string>(item_name);
-		//printf("Config worked: %s\n", item.c_str());
-	} else {
-		printf("No '%s' specified in packer.conf.  Please update the config and rerun the program.", item_name.c_str()); //ToDo or ask user to input now
+		Log("Config worked: " << item << "\n");
+	} else { //ToDo Error Handling if no config file found
+		std::cout << "No " << item_name << " specified in packer.conf.  Please update the config and rerun the program.";
 		exit(1);
 	}
 	return item;
-}
-
-int fork_ssh_listener_process (std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
-	pid_t parent = getpid();
-	pid_t pid = fork();
-
-	//printf("\nstart fork\n");
-
-	if (pid > 0) { //main process //ToDo Carl - what does this do?
-	   //printf("main process");
-	   return 0;
-
-	} else if (pid == 0) { // child process
-		//printf("Child process created for ssh listener.\n");
-	    incom("knownhosts", parent, ssh_host_dsa_key, ssh_host_rsa_key);  //main of incom.cpp
-	    //printf("child ssh listener died.");
-
-	} else { // fork failed
-		//printf("\nforking ssh_listener_process failed!\n");
-	}
-	exit(1);
 }
 
 int main(int argc, char *argv[]) {
@@ -57,7 +36,8 @@ int main(int argc, char *argv[]) {
 	char tvalue[32];
 	char fvalue[32];
 	bool smode = false;
-	vector<string> files;
+
+	std::vector<std::string> files;
 
 	ConfigFile cfg("./packer.conf"); //ToDo Add default conf file and option to pass CLA of its path
 	std::string pathpacked = get_config_item(cfg, "payloads_dir");
@@ -67,55 +47,43 @@ int main(int argc, char *argv[]) {
 
 	files = dirlist(pathpacked);
 
-	if(argc<2){
-		printf(RED("No arguments given"));
-		printf(usage);
+	if(argc < 2) {
+		std::cout << RED("No arguments given");
+		std::cout << usage;
 		return 1;
 	}
 
 	//Put ':' at the starting of the string so compiler can distinguish between '?' and ':'
 	while((option = getopt(argc, argv, ":ht:f:s")) != -1) { //Get option from the getopt() method
-		switch(option) { //Check each give option against allowed values
+		switch(option) { //Check each given option against allowed values
 			case 't':
 				memcpy(tvalue, optarg, strlen(optarg)+1);
-				printf(BLUE("Target Flag: %s\n"),tvalue);
+				Log("Target Flag: " << tvalue << "\n");
 				break;
 			case 'f':
 				memcpy(fvalue, optarg, strlen(optarg)+1);
-				printf(BLUE("File Flag: %s\n"), fvalue);
+				Log("File Flag: " << fvalue << "\n");
 				break;
-			case ':':
-				printf(RED("Option %c needs a value"), optopt);
-				printf(usage);
-				return 1;
-			case '?':
-				printf(RED("Unknown option: %c"), optopt);
-				printf(usage);
-				return 1;
-			case 'h':
-				printf(usage);
-				return 1;
-			case 's':
-				smode = true;
-				break;
+			case ':': std::cout << RED("Option " << optopt << " needs a value") << usage; return 1;
+			case '?': std::cout << RED("Unknown option: " << optopt << "") << usage; return 1;
+			case 'h': std::cout << usage; return 1;
+			case 's': smode = true; break;
 		}
 	}
 
 	for(; optind < argc; optind++) { //Check if extra arguments passed
-		printf(RED("Given extra arguments: %s"), argv[optind]);
-		printf(usage);
+		std::cout << RED("Given extra arguments: " << argv[optind] << "") << usage;
 		return 1;
 	}
 
 	if(smode) {
-		fork_ssh_listener_process(ssh_host_dsa_key, ssh_host_rsa_key);
 		cli(files, pathpacked, pathstaging); //Enter Main Execution
 		clrscr();
-		printf("Thanks for using...\n");
-		printf(TITLE);
-		return 1;
+		std::cout << "Thanks for using...\n" << TITLE;
+		return 0;
 	}
-	//printf(RED("This should never happen. Please run in service mode with -s"));
-	printf(TITLE);
+
+	std::cout << "This should never happen. Please run in service mode with -s" << TITLE;
 	return 1;
+
 }

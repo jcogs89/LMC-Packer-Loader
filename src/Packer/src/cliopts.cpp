@@ -1,51 +1,34 @@
-/*
- * cliopts.cpp
- *
- *  Created on: Feb 27, 2020
- *      Author: cbai
- */
-
 #include <iostream>
-#include <stdio.h>
-#include <string>
+#include <string.h>
 #include <vector>
+
+#include "colors.h"
 #include "dirlist.h"
 #include "Helpers.h"
-#include "sshwraper.h"
 #include "incom.h"
-#include "cliopts.h"
 #include "udpstuff.h"
-#include "colors.h"
-using namespace std;
 
-
-void listpayloads(vector<string> files) {
-	clrscr();
-	printf(GREEN("Current payloads:\n"));
-	//2 or 11 is magic, trust me  //ToDo, whoever wrote this - please clarify.
-	dirprint(files,11);
+void listpayloads(std::vector < std::string > files) {
+	std::cout << GREEN("Current payloads:\n");
+	dirprint(files,11); //2 or 11 is magic, trust me //ToDo, whoever wrote this - please clarify.
 }
 
-
-void addpayload(string pathpacked, string pathstaging) {
-	string ans, inp;
+void addpayload(std::string pathpacked, std::string pathstaging) {
+	std::string ans, inp;
 	int compression_ret;
 	unsigned int id;
-	vector<string> stage = dirlist(pathstaging);
-	clrscr();
-	printf(GREEN("The following payloads are availible in the staging folder:\n"));
-	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
-	dirprint(stage, 10);
-	printf("\nEnter the number for file to be packed ('x' to back out):\n");
+	std::vector<std::string> stage = dirlist(pathstaging);
 
-	//Take user input to select file to turn into a payload
-	while (1) {
+	while (1) { //Take user input to select file to turn into a payload
+		std::cout << GREEN("The following payloads are available in the staging folder:\n");
+		dirprint(stage, 10); //10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
+		std::cout << GREEN("Enter the number for file to be packed ('x' to back out):");
 		printf(YELLOW(">"));
-		cin >> inp;
-		try {
-			id = std::stoi(inp);
-			if (id>stage.size()-1) {
-				cout << RED("Invalid option, please try again.");
+		std::cin >> inp;
+		clrscr();
+		try {id = std::stoi(inp);
+		if (id>stage.size()-1) {
+				std::cout << RED("Invalid option, please try again.");
 				continue;
 			} else {
 				break;
@@ -59,56 +42,49 @@ void addpayload(string pathpacked, string pathstaging) {
 			}
 		}
 	}
-	//cout <<"File :\"" << stage[id] << "\" selected.";
+	std::cout << "File: \"" << stage[id] << "\" selected.\n";
 
-	// COMPRESSION <><>
-	string compression_outp= pathpacked+stage[id].substr(10)+".zips";
-	string iput = stage[id];
+	std::cout << "Compressing File...\n";
+	std::string compression_outp= pathpacked+stage[id].substr(10)+".zips";
+	std::string iput = stage[id];
 	compression_ret = ziphelp(iput, compression_outp);
-
 	if (compression_ret == 0) { //Compression EXIT_SUCCESS is 0
-		printf("File zipped.\n");
+		std::cout << GREEN("File Zipped Successfully!\n");
 	} else {
-		printf(RED("FILE ZIP FAILED.\n"));
+		std::cout << RED("FILE ZIP FAILED");
 	}
 
 	//ENCRYPTION <><>
-	string encryption_outp= pathpacked+stage[id].substr(10)+".zips";
+	std::string encryption_outp= pathpacked+stage[id].substr(10)+".zips";
 	encrypthelp(compression_outp, encryption_outp);
-	printf("File encrypted.\n");
+	std::cout << GREEN("\nFile Encrypted Successfully!\n");
 
 	while (1) {
 		printf("Do you want to delete the source in staging (y/n)?");
 		printf(YELLOW(">"));
-		cin >> ans;
+		std::cin >> ans;
+		clrscr();
 		if (ans=="Y" or ans == "y") {
-			if( remove( iput.c_str() ) != 0 )
-				perror( "Error deleting file" );
-			  else
-				printf(GREEN("File successfully deleted"));
-			break;
-		} else if (ans=="n" or ans == "N") {
-			break;
-		} else {
-			cout << RED("Invalid Option\n");
-		}
+			if(remove(iput.c_str()) != 0 ){perror( "Error deleting file" );}
+			printf(GREEN("File successfully deleted"));
+			break;}
+		else if (ans=="n" or ans == "N") {break;}
+		else {std::cout << RED("Invalid Option\n");}
 	}
-	clrscr();
+
 }
 
-void sendpayload(string pathpacked) {
-	//ToDo logic to select server here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	vector<string> target;
+void sendpayload(std::string pathpacked) {
+	std::vector<std::string> target;
 	target = findnew("Known_hosts");
-	string host = target[0];
-	string ip = target[1];
-	char ip2[ip.size()+1];
-	strcpy(ip2, ip.c_str());
-	char host2[host.size()+1];
-	strcpy(host2, host.c_str());
-	printf("\n%s==\n%s==\n",host2,ip2);
-	//connect(ip2, host2); No Longer Using SSH!
-	//shit here
-	udpclient(6000,ip2);//needs rec port
+	if(target[0]=="null"){
+		clrscr();
+		return;
+	}
+	char ip2[target[1].size()+1];
+	strcpy(ip2, target[1].c_str());
+	char host2[target[0].size()+1];
+	strcpy(host2, target[0].c_str());
+	udpclient(6000,ip2); //needs rec port
 	clrscr();
 }
