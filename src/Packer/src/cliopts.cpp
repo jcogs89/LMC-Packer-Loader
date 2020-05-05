@@ -55,7 +55,7 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 	}
 
 	//ENCRYPTION <><>
-	string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
+	std::string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
 	encrypthelp(compression_outp, encryption_outp);
 	std::cout << GREEN("\nFile Encrypted Successfully!\n");
 
