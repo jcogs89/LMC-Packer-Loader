@@ -107,6 +107,13 @@ int udp_server_clinet(int Port)
         }*/
         printf("Recieved data from packer:\n%s\n", Buffer);
 
+		//before manipulation, 
+		char* Buffer_without_padding = new char[(Size)];
+		memcpy(Buffer_without_padding, Buffer, (Size));
+		printf("Buffer without padding:\n%s\n", Buffer_without_padding);
+
+
+
 		bool odd = 0;
 		string tmp;
 		int x = 0;
