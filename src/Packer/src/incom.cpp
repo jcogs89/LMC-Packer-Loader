@@ -9,8 +9,6 @@
 #include <fstream>
 #include <iostream>
 #include <string.h>
-#include "sshwraper.h"
-#include "sshserver.h"
 #include "dirlist.h"
 #include "incom.h"
 #include "colors.h"
