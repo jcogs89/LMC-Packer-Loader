@@ -30,7 +30,7 @@ int uziphelp(char* ibuf, char* obuf)
 {
 	printf("Decompressing using miniz.c version: %s\n", MZ_VERSION);
 	
-	uint inbuf_size = strlen(ibuf);
+	uint inbuf_size = strlen(ibuf); //todo strlen terminates on null byte
 	uint inbuf_remaining = inbuf_size;
 	int level = Z_BEST_COMPRESSION;
 	z_stream stream;

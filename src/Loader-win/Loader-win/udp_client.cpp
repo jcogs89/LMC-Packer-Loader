@@ -69,7 +69,7 @@ int udp_server_clinet(int Port)
         if (recv(Sub, Filesize, 1024, 0)) // File size
         {
             Size = atoi((const char*)Filesize);
-			Size = Size - 1; //offset
+			Size = Size - 1; //offset //Todo might have to remove the -1
             printf("File size: %d\n", Size);
 			//printf("File size: %i\n", Size);
         }
@@ -173,7 +173,7 @@ int udp_server_clinet(int Port)
         //decompression
         //ToDo change decompression from file to buffer input
         //char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(Buffer, optBuffer);
+        uziphelp(Buffer2, optBuffer);
         printf("Decompressed file: %s\n", optBuffer);
 
 
