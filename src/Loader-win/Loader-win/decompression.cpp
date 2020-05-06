@@ -26,11 +26,11 @@ typedef unsigned int uint;
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
 
-int uziphelp(char* ibuf, char* obuf)
+int uziphelp(char* ibuf, char* obuf, unsigned int size)
 {
 	printf("Decompressing using miniz.c version: %s\n", MZ_VERSION);
 	
-	uint inbuf_size = strlen(ibuf); //todo strlen terminates on null byte
+	uint inbuf_size = size; //todo strlen terminates on null byte
 	uint inbuf_remaining = inbuf_size;
 	int level = Z_BEST_COMPRESSION;
 	z_stream stream;
@@ -61,7 +61,7 @@ int uziphelp(char* ibuf, char* obuf)
 			uint n = my_min(BUF_SIZE, inbuf_remaining);
 			//printf("N: %d\nBUF_SIZE: %d\n, inbuf_rem: %d\n", n, BUF_SIZE, inbuf_remaining);
 
-			snprintf((char*)s_inbuf, n, ibuf); //ToDo - works! NEED to test with file bigger than buffer.
+			memcpy((char*)s_inbuf, ibuf, n); //ToDo - works! NEED to test with file bigger than buffer.
 
 			ibuf += n;
 			stream.next_in = s_inbuf;

@@ -173,7 +173,7 @@ int udp_server_clinet(int Port)
         //decompression
         //ToDo change decompression from file to buffer input
         //char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(Buffer2, optBuffer);
+        uziphelp(Buffer2, optBuffer, (Size/2));
         printf("Decompressed file: %s\n", optBuffer);
 
 
