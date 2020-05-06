@@ -24,8 +24,7 @@ vector<string> findnew (string knownhostsfolder)
 	//ofstream hosts;
 	//hosts.open (knownhostsfile, ios::trunc);
 	long unsigned int cnt =0;
-	clrscr();
-	printf(GREEN("The following systems are known:"));
+	printf(GREEN("The following systems are known:\n"));
 	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
 	for (cnt=0; cnt !=hostsf.size();cnt++)
 	{
@@ -39,18 +38,17 @@ vector<string> findnew (string knownhostsfolder)
 		printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
 	}
 	printf(GREEN("Choose a target host ('x' to back out):")); //ToDo allow for multiple targets
-
+	printf(YELLOW(">"));
 	//hosts << "Writing this to a file.\n";
 	//hosts.close();
 
 	string selec;
 	string host;
 	string addr;
-	vector<string> target (2);
+	vector<string> target{"null","target"};
 	unsigned int id;
 	string inp;
 	while (1) {
-			clrscr();
 			cin >> inp;
 			try {
 				id = stoi(inp);
@@ -63,12 +61,13 @@ vector<string> findnew (string knownhostsfolder)
 					host = selec.substr(magic,selec.find("@")-magic);
 					addr = selec.substr(selec.find("@")+1);
 					target = {host, addr};
-					cout <<"File :\"" << host << "@" << addr << "\" selected";
+					clrscr();
+					cout << GREEN("File: \"" << host << "@" << addr << "\" selected");
 					break;
 				}
 			} catch (...) {
 				if ((inp == "x") or (inp == "X")) {
-					return target;
+					return target; //No target selected!
 				} else {
 					printf(RED("Unrecognized input, please try again."));
 				}
@@ -79,7 +78,7 @@ vector<string> findnew (string knownhostsfolder)
 
 void incom(string knownhostsfile, pid_t parent, std::string ssh_host_dsa_key, std::string ssh_host_rsa_key) {
 	while(1) {
-		if(-1==sshserver(8833, ssh_host_dsa_key, ssh_host_rsa_key)) //ToDo add to config
+		//if(-1==sshserver(8833, ssh_host_dsa_key, ssh_host_rsa_key)) //ToDo add to config
 		{
 			Log("\nfailed to establish listen service\ncheck port is open\n");
 			exit(-1);
