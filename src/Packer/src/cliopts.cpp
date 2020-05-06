@@ -65,29 +65,11 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 
 	/*//ENCRYPTION <><>
 	string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
-	//ENCRYPTION <><>
 	std::string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
 	encrypthelp(compression_outp, encryption_outp);
 	std::cout << GREEN("\nFile Encrypted Successfully!\n");
+	*/
 
-	while (1) {
-		printf("Do you want to delete the source in staging (y/n)?");
-		printf(YELLOW(">"));
-		std::cin >> ans;
-		clrscr();
-		if (ans=="Y" or ans == "y") {
-
-			if( remove( iput.c_str() ) != 0 )
-				perror( "Error deleting file" );
-			  else
-				printf(GREEN("File successfully deleted"));
-			break;
-		} else if (ans=="n" or ans == "N") {
-			break;
-		} else {
-			cout << RED("Invalid Option\n");
-		}
-	}*/
 
 	/////////////////////////
 	//Hardcoded Key and IV//
@@ -114,20 +96,20 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 	//Decryption
 	string decryption_outp = Decrypt(encryption_outp, key, iv);
 
+	while (1) {
+	        printf("Do you want to delete the source in staging (y/n)?");
+	        printf(YELLOW(">"));
+	        std::cin >> ans;
+	        clrscr();
+	        if (ans=="Y" or ans == "y") {
+	            if(remove(iput.c_str()) != 0 ){perror( "Error deleting file" );}
+	            printf(GREEN("File successfully deleted"));
+	            break;}
+	        else if (ans=="n" or ans == "N") {break;}
+	        else {std::cout << RED("Invalid Option\n");}
+	    }
 
-
-
-	clrscr();
-
-			if(remove(iput.c_str()) != 0 ){perror( "Error deleting file" );}
-			printf(GREEN("File successfully deleted"));
-			break;}
-		else if (ans=="n" or ans == "N") {break;}
-		else {std::cout << RED("Invalid Option\n");}
 	}
-
-
-}
 
 void sendpayload(std::string pathpacked) {
 	std::vector<std::string> target;
