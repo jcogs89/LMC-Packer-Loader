@@ -26,7 +26,7 @@ typedef unsigned int uint;
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
 
-int uziphelp(char* ibuf, char* obuf, unsigned int size)
+int uziphelp(char* ibuf, unsigned char* obuf, unsigned int size)
 {
 	printf("Decompressing using miniz.c version: %s\n", MZ_VERSION);
 	
@@ -64,6 +64,9 @@ int uziphelp(char* ibuf, char* obuf, unsigned int size)
 			memcpy((char*)s_inbuf, ibuf, n); //ToDo - works! NEED to test with file bigger than buffer.
 
 			ibuf += n;
+			//*(ibuf) += n;
+			//printf("ibuf: %s", obuf);
+			//printf("*(ibuf): %d", *(obuf));
 			stream.next_in = s_inbuf;
 			stream.avail_in = n;
 			inbuf_remaining -= n;
@@ -77,12 +80,13 @@ int uziphelp(char* ibuf, char* obuf, unsigned int size)
 		{
 			// Output buffer is full, or decompression is done, so write buffer to output buffer.
 			uint n = BUF_SIZE - stream.avail_out;
-			snprintf(obuf, n, (char*)s_outbuf);
-			//memcpy(obuf, (char*)s_outbuf); // appears to work just the same
+			//snprintf(obuf, n, (char*)s_outbuf);
+			memcpy(obuf, s_outbuf, n); // appears to work just the same
 			
 			//printf("WORKED YES --- last s_outbuf: %s\nobuf: %s\n", obuf);
 
 			obuf += n;
+			//*(obuf) += n;
 			stream.next_out = s_outbuf;
 			stream.avail_out = BUF_SIZE;
 		}

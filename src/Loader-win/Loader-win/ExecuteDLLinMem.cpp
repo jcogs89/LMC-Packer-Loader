@@ -7,10 +7,13 @@ int exe_dll_in_mem(unsigned char *rawData, int size)
 	printf("attempting to exec dll in memory...\n");
 	CLoad lib;
 	HANDLE hLibrary = lib.LoadFromMemory(rawData, size);
+	printf("here1");
 	func fn = (func)lib.GetProcAddressFromMemory(hLibrary, "testfunc");
+	printf("here2");
 	fn();
+	printf("here3");
 	lib.FreeLibraryFromMemory(hLibrary);
-	
+	printf("here4");
 	return 0;
 }
 
