@@ -14,7 +14,11 @@
 #include <iomanip>
 
 #include "miniz/miniz.h"
-
+#include "modes.h"
+#include "aes.h"
+#include "filters.h"
+#include "sha3.h"
+#include "hex.h"
 
 using namespace std;
 
@@ -316,7 +320,7 @@ int uziphelp(string in, string out)
 }
 
 
-int encrypthelp(string in, string out)
+/*int encrypthelp(string in, string out)
 {
 	//printf("Encryption the file\n.");
 	string cmd("openssl enc -aes-256-cbc -p -nosalt -in ");
@@ -327,6 +331,91 @@ int encrypthelp(string in, string out)
 	system(cmd.c_str());
 
 	return -69;
+}*/
+int Hash(std::string msg, CryptoPP::byte* digest){
+    CryptoPP::SHA3_256().CalculateDigest(digest, (const CryptoPP::byte*)msg.data(), msg.length());
+
+    CryptoPP::HexEncoder encoder;
+    std::string output;
+    encoder.Attach( new CryptoPP::StringSink( output ) );
+    encoder.Put( digest, 32 );
+    encoder.MessageEnd();
+    std::cout << output << std::endl;
+
+    return 0;
+}
+
+
+string Encrypt(string plain_in,CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE])
+	{
+
+	//Key and IV setup
+	//AES encryption uses a secret key of a variable length (128-bit, 196-bit or 256-
+	//bit). This key is secretly exchanged between two parties before communication
+	//begins. DEFAULT_KEYLENGTH= 16 bytes
+
+	//
+	// String and Sink setup
+	//
+	string plaintext = plain_in;
+	string ciphertext;
+
+	//
+	// Dump Plain Text
+	//
+	cout << "Plain Text (" << plaintext.size() << " bytes)" << endl;
+	cout << plaintext;
+	cout << endl << endl;
+
+	//
+	// Create Cipher Text
+	//
+	CryptoPP::AES::Encryption aesEncryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
+	CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, iv);
+
+	CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, new CryptoPP::StringSink(ciphertext));
+	stfEncryptor.Put(reinterpret_cast<const unsigned char*>(plaintext.c_str()), plaintext.length());
+	stfEncryptor.MessageEnd();
+
+	//
+	// Dump Cipher Text
+	//
+	cout << "Cipher Text (" << ciphertext.size() << " bytes)" << endl;
+
+	for (int i = 0; i < ciphertext.size(); i++) {
+
+		cout << "0x" << hex << (0xFF & static_cast<CryptoPP::byte>(ciphertext[i])) << " ";
+	}
+
+	cout << endl << endl;
+
+	return ciphertext;
+}
+
+string Decrypt(string cipher_in, CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]){
+
+
+	string ciphertext = cipher_in;
+	string decryptedtext;
+
+	//
+	// Decrypt
+	//
+	CryptoPP::AES::Decryption aesDecryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
+	CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv);
+
+	CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, new CryptoPP::StringSink(decryptedtext));
+	stfDecryptor.Put(reinterpret_cast<const unsigned char*>(ciphertext.c_str()), ciphertext.size());
+	stfDecryptor.MessageEnd();
+
+	//
+	// Dump Decrypted Text
+	//
+	cout << "Decrypted Text: " << endl;
+	cout << decryptedtext;
+	cout << endl << endl;
+
+	return decryptedtext;
 }
 
 int decrypthelp(string in, string out)

@@ -45,7 +45,7 @@ all: Packer
 Packer: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++ -L/usr/include/ -o "Packer" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/usr/include/ -L/usr/include/cryptopp -o "Packer" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -16,6 +16,11 @@
 #include "cliopts.h"
 #include "udpstuff.h"
 #include "colors.h"
+#include "modes.h"
+#include "aes.h"
+#include "filters.h"
+#include "sha3.h"
+#include "cryptlib.h"
 using namespace std;
 
 
@@ -72,7 +77,7 @@ void addpayload(string pathpacked, string pathstaging) {
 		printf(RED("FILE ZIP FAILED.\n"));
 	}
 
-	//ENCRYPTION <><>
+	/*//ENCRYPTION <><>
 	string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
 	encrypthelp(compression_outp, encryption_outp);
 	printf("File encrypted.\n");
@@ -92,7 +97,36 @@ void addpayload(string pathpacked, string pathstaging) {
 		} else {
 			cout << RED("Invalid Option\n");
 		}
-	}
+	}*/
+
+	/////////////////////////
+	//Hardcoded Key and IV//
+	////////////////////////
+	CryptoPP::byte key[32], iv[CryptoPP::AES::BLOCKSIZE];
+	//memset(key, 0x00, 32);
+	memset(iv, 0x00, CryptoPP::AES::BLOCKSIZE);
+
+	//prompt user to input password to encrypt
+	string msg;
+
+	cout << "Enter Password for Encryption: ";
+	cin >> msg;
+
+
+	//Hashing and key generation
+	Hash(msg,key);
+
+
+	//Encryption
+	string encryption_outp = Encrypt(compression_outp, key, iv);
+
+
+	//Decryption
+	string decryption_outp = Decrypt(encryption_outp, key, iv);
+
+
+
+
 	clrscr();
 }
 
