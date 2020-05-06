@@ -42,8 +42,6 @@ int main(int argc, char *argv[]) {
 	ConfigFile cfg("./packer.conf"); //ToDo Add default conf file and option to pass CLA of its path
 	std::string pathpacked = get_config_item(cfg, "payloads_dir");
 	std::string pathstaging = get_config_item(cfg, "staging_dir");
-	std::string ssh_host_dsa_key = get_config_item(cfg, "ssh_host_dsa_key");
-	std::string ssh_host_rsa_key = get_config_item(cfg, "ssh_host_rsa_key");
 
 	files = dirlist(pathpacked);
 
