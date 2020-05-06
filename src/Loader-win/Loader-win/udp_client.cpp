@@ -119,7 +119,7 @@ int udp_server_clinet(int Port)
 		int x = 0;
 		for (int i = 0; i < Size; i=i+1)
 		{
-			printf("%i ",i);
+			//printf("%i ",i);
 			tmp = "";
 			//printf("%i", odd);
 			
@@ -127,26 +127,26 @@ int udp_server_clinet(int Port)
 			tmp = Buffer[i];
 			if (odd)
 			{
-				printf("\n");
+				//printf("\n");
 			}
 			odd = !odd;
 			if (i + 1 < Size)
 			{
 				i++;
-				printf("%i ", i);
+				//printf("%i ", i);
 				//printf("%c ", Buffer[i]);
 				tmp = tmp + Buffer[i];
 				if (odd)
 				{
-					printf("\n");
+					//printf("\n");
 				}
 				odd = !odd;
 				cout << tmp;
-				printf("\n");
+				//printf("\n");
 			}
 
 			Buffer2[x] = strtoul(tmp.c_str(), NULL, 16);
-			printf("\n%c\n", strtoul(tmp.c_str(), NULL, 16));
+			//printf("\n%c\n", strtoul(tmp.c_str(), NULL, 16));
 			x++;
 
 			
