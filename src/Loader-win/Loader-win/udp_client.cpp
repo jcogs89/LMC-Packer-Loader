@@ -106,6 +106,7 @@ int udp_server_clinet(int Port, std::string password)
 			x++;
 		}
 		//printf("\nRecieved data from packer translated back to raw:\n");
+        //cout.write(Buffer2, x);
 		//cout << Buffer2;
 		//printf("\n");
         //printf("x: %d", x);
@@ -116,16 +117,16 @@ int udp_server_clinet(int Port, std::string password)
 
 
         //decryption ------------------------------------------------------------------------------------------
-        printf("x: %d\n", x);
+        //printf("x: %d\n", x);
         string encryptedblob(Buffer2, x);
-        printf("encrypt blob:\n%s\n", encryptedblob);
+        //printf("encrypt blob:\n%s\n", encryptedblob);
 
         string decrypted_outp = Decrypt(encryptedblob, x, password); //maybe need x+1
 
         
 
         //printf("decrypted_outp: %s\n", decrypted_outp);
-        printf("size of decrypted opt: %d\n", decrypted_outp.size());
+        //printf("size of decrypted opt: %d\n", decrypted_outp.size());
         char* Buffer3 = new char[decrypted_outp.size()];
         memcpy(Buffer3, decrypted_outp.c_str(), decrypted_outp.size());
 

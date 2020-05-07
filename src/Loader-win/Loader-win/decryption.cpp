@@ -37,21 +37,21 @@ string Decrypt(string ciphertext, int size, std::string password) {
     //
     CryptoPP::AES::Decryption aesDecryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
     CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv);
-    printf("mid\n");
+    //printf("mid\n");
     CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, new CryptoPP::StringSink(decryptedtext));
-    printf("1\n");
+    //printf("1\n");
     stfDecryptor.Put(reinterpret_cast<const unsigned char*>(ciphertext.c_str()), ciphertext.size());
-    printf("2\n");
-    printf("Size of file: %d\n", ciphertext.size());
+    //printf("2\n");
+    //printf("Size of file: %d\n", ciphertext.size());
     stfDecryptor.MessageEnd();
-    printf("got decryption\n");
+    //printf("got decryption\n");
     //
     // Dump Decrypted Text
     //
-    cout << "Decrypted Text (" << ciphertext.size() << " bytes)" << endl;
-    cout << "Decrypted Text: " << endl;
-    cout << decryptedtext;
-    cout << endl << endl;
+    //cout << "Decrypted Text (" << ciphertext.size() << " bytes)" << endl;
+    //cout << "Decrypted Text: " << endl;
+    //cout << decryptedtext;
+    //cout << endl << endl;
 
     return decryptedtext;
 }
