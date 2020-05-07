@@ -3,13 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
-//#include "ssh_server.h"
+
 #include "udp_client.h"
 #include "config_parser.h"
-#include "decompression.h"
-#include "decryption.h"
-#include "ExecuteDLLinMem.h"
-#include "crypto/aes.h"
 
 using namespace std;
 

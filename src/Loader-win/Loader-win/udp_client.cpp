@@ -108,7 +108,7 @@ int udp_server_clinet(int Port, std::string password)
 		//printf("\nRecieved data from packer translated back to raw:\n");
 		//cout << Buffer2;
 		//printf("\n");
-
+        //printf("x: %d", x);
         closesocket(Socket);
         closesocket(Sub);
         WSACleanup();
@@ -116,12 +116,26 @@ int udp_server_clinet(int Port, std::string password)
 
 
         //decryption ------------------------------------------------------------------------------------------
-        //ToDo decryption
-        //decryption();
+        printf("x: %d\n", x);
+        string encryptedblob(Buffer2, x);
+        printf("encrypt blob:\n%s\n", encryptedblob);
 
+        string decrypted_outp = Decrypt(encryptedblob, x, password); //maybe need x+1
+
+        
+
+        //printf("decrypted_outp: %s\n", decrypted_outp);
+        printf("size of decrypted opt: %d\n", decrypted_outp.size());
+        char* Buffer3 = new char[decrypted_outp.size()];
+        memcpy(Buffer3, decrypted_outp.c_str(), decrypted_outp.size());
+
+        //printf("buf3size: %d\n", decrypted_outp.size());
+       // cout.write(Buffer3, decrypted_outp.size());
+
+        //printf("buffer conversion: %s\n", Buffer3);
         //decompression ---------------------------------------------------------------------------------------
         long decompressed_size;
-        decompressed_size = uziphelp(Buffer2, DecompressedBuffer, (Size/2)); //decompression function
+        decompressed_size = uziphelp(Buffer3, DecompressedBuffer, decrypted_outp.size()); //decompression function
 		//printf("Decompressed file:\n");
 		//cout << DecompressedBuffer;
 		//printf("\n");
