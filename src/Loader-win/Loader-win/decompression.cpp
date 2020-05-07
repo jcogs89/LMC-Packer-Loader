@@ -10,7 +10,6 @@
 #include <iostream>
 #include <cstring>
 
-
 #include "miniz.h"
 
 using namespace std;
@@ -26,11 +25,12 @@ typedef unsigned int uint;
 static uint8 s_inbuf[BUF_SIZE];
 static uint8 s_outbuf[BUF_SIZE];
 
-int uziphelp(char* ibuf, unsigned char* obuf, unsigned int size)
+//returns size of unzipped file if succeeds
+int uziphelp(char* ibuf, unsigned char* obuf, unsigned int inbuf_size)
 {
 	printf("Decompressing using miniz.c version: %s\n", MZ_VERSION);
-	
-	uint inbuf_size = size; //todo strlen terminates on null byte
+
+	//variable declarations
 	uint inbuf_remaining = inbuf_size;
 	int level = Z_BEST_COMPRESSION;
 	z_stream stream;
@@ -50,43 +50,32 @@ int uziphelp(char* ibuf, unsigned char* obuf, unsigned int size)
 	// Decompression
 	for (; ; )
 	{
-		//printf("\n\nstartloop...\n");
-		//printf("sinbuf: %s\n", s_inbuf);
-		//printf("soutbuf: %s\n", s_outbuf);
-
 		int status;
 		if (!stream.avail_in)
 		{
 			// Input buffer is empty, so read more bytes from input file.
 			uint n = my_min(BUF_SIZE, inbuf_remaining);
-			//printf("N: %d\nBUF_SIZE: %d\n, inbuf_rem: %d\n", n, BUF_SIZE, inbuf_remaining);
 
-			memcpy((char*)s_inbuf, ibuf, n); //ToDo - works! NEED to test with file bigger than buffer.
+			memcpy((char*)s_inbuf, ibuf, n); // Read input buffer into the stream buffer
 
+			// Increment input buffer and zstream
 			ibuf += n;
-			//*(ibuf) += n;
-			//printf("ibuf: %s", obuf);
-			//printf("*(ibuf): %d", *(obuf));
 			stream.next_in = s_inbuf;
 			stream.avail_in = n;
 			inbuf_remaining -= n;
 		}
 
+		// Does the hard work
 		status = inflate(&stream, Z_SYNC_FLUSH);
-		//printf("stream in: %s\n", stream.next_in);
-		//printf("stream out: %s\n", stream.next_out);
 
+		// Output buffer is full, or decompression is done, so write buffer to output buffer.
 		if ((status == Z_STREAM_END) || (!stream.avail_out))
 		{
-			// Output buffer is full, or decompression is done, so write buffer to output buffer.
 			uint n = BUF_SIZE - stream.avail_out;
-			//snprintf(obuf, n, (char*)s_outbuf);
-			memcpy(obuf, s_outbuf, n); // appears to work just the same
-			
-			//printf("WORKED YES --- last s_outbuf: %s\nobuf: %s\n", obuf);
+			memcpy(obuf, s_outbuf, n);
 
+			// Increment output buffer and zstream
 			obuf += n;
-			//*(obuf) += n;
 			stream.next_out = s_outbuf;
 			stream.avail_out = BUF_SIZE;
 		}
@@ -95,20 +84,20 @@ int uziphelp(char* ibuf, unsigned char* obuf, unsigned int size)
 			break;
 		else if (status != Z_OK)
 		{
-			//printf("s_outbuf: %s\n", s_outbuf);
 			printf("inflate() failed with status %i!\n", status);
-			return EXIT_FAILURE; // return EXIT_FAILURE;
+			return EXIT_FAILURE;
 		}
 	}
-	// error handling
+	// more error handling
 	if (inflateEnd(&stream) != Z_OK)
 	{
 		printf("inflateEnd() failed!\n");
 		return EXIT_FAILURE;
 	}
 
-	printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
-	printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
-	printf("Success.\n");
+	//success
+	printf("Decompression successful.\n");
+	//printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
+	//printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 	return (mz_uint32)stream.total_out;
 }
