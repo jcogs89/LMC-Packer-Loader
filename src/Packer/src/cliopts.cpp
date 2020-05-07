@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <limits.h>
+#include <fstream>
+#include <unistd.h>
 #include "colors.h"
 #include "dirlist.h"
 #include "Helpers.h"
@@ -100,6 +103,10 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 
 	//Encryption
 	string encryption_outp = Encrypt(file_data, Size, key, iv);
+	std::string encrypted_file= pathpacked+stage[id].substr(10)+".enc";
+    std::ofstream file(encrypted_file);
+    file << encryption_outp;
+    file.close();
 	std::cout << GREEN("\nFile Encrypted Successfully!\n");
 
 	//Decryption
