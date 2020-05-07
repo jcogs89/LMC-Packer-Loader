@@ -110,5 +110,5 @@ int uziphelp(char* ibuf, unsigned char* obuf, unsigned int size)
 	printf("Total input bytes: %u\n", (mz_uint32)stream.total_in);
 	printf("Total output bytes: %u\n", (mz_uint32)stream.total_out);
 	printf("Success.\n");
-	return EXIT_SUCCESS;
+	return (mz_uint32)stream.total_out;
 }
