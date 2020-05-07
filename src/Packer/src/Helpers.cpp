@@ -342,7 +342,7 @@ int Hash(std::string msg, CryptoPP::byte* digest){
     encoder.Attach( new CryptoPP::StringSink( output ) );
     encoder.Put( digest, 32 );
     encoder.MessageEnd();
-    std::cout << output << std::endl;
+    //std::cout << output << std::endl;
 
     return 0;
 }
@@ -353,9 +353,9 @@ string Encrypt(string plaintext, int size, CryptoPP::byte key[CryptoPP::AES::DEF
 
 	string ciphertext;
 
-	cout << "Plain Text (" << plaintext.size() << " bytes)" << endl;
-	cout << plaintext;
-	cout << endl << endl;
+	//cout << "Plain Text (" << plaintext.size() << " bytes)" << endl;
+	//cout << plaintext;
+	//cout << endl << endl;
 
 	CryptoPP::AES::Encryption aesEncryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
 	CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, iv);
@@ -387,10 +387,10 @@ string Decrypt(string ciphertext, int size, CryptoPP::byte key[CryptoPP::AES::DE
 	stfDecryptor.Put(reinterpret_cast<const unsigned char*>(ciphertext.c_str()), ciphertext.size());
 	stfDecryptor.MessageEnd();
 
-	cout << "Decrypted Text (" << decryptedtext.size() << " bytes)" << endl;
-	cout << "Decrypted Text: " << endl;
-	cout << decryptedtext;
-	cout << endl << endl;
+	//cout << "Decrypted Text (" << decryptedtext.size() << " bytes)" << endl;
+	//cout << "Decrypted Text: " << endl;
+	//cout << decryptedtext;
+	//cout << endl << endl;
 
 	return decryptedtext;
 }

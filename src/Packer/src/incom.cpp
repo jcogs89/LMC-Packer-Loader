@@ -15,30 +15,12 @@
 #include <vector>
 using namespace std;
 
-vector<string> findnew (string knownhostsfolder)
-{
+vector<string> findnew (string knownhostsfolder){
 	int magic = 12; // "Known_hosts" is 12 bytes ;)
 	vector<string> hostsf= dirlist("Known_hosts");
 	//ofstream hosts;
 	//hosts.open (knownhostsfile, ios::trunc);
 	long unsigned int cnt =0;
-	printf(GREEN("The following systems are known:\n"));
-	//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
-	for (cnt=0; cnt !=hostsf.size();cnt++)
-	{
-		//string tmp = *ir;
-
-		string name = hostsf[cnt];
-		string hostname = name.substr(magic,name.find("@")-magic);
-		string ipaddress = name.substr(name.find("@")+1);
-		//cout << hostname << " at " << ipaddress << "\n";
-
-		printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
-	}
-	printf(GREEN("Choose a target host ('x' to back out):")); //ToDo allow for multiple targets
-	printf(YELLOW(">"));
-	//hosts << "Writing this to a file.\n";
-	//hosts.close();
 
 	string selec;
 	string host;
@@ -47,10 +29,27 @@ vector<string> findnew (string knownhostsfolder)
 	unsigned int id;
 	string inp;
 	while (1) {
+		printf(GREEN("The following systems are known:\n"));
+		//10 is magic, trust me  //ToDo, whoever wrote this - please clarify.
+		for (cnt=0; cnt !=hostsf.size();cnt++){
+			//string tmp = *ir;
+
+			string name = hostsf[cnt];
+			string hostname = name.substr(magic,name.find("@")-magic);
+			string ipaddress = name.substr(name.find("@")+1);
+			//cout << hostname << " at " << ipaddress << "\n";
+
+			printf("%li %s@%s\n",cnt,hostname.c_str(),ipaddress.c_str());
+		}
+		printf(GREEN("Choose a target host ('x' to back out):")); //ToDo allow for multiple targets
+		printf(YELLOW(">"));
+		//hosts << "Writing this to a file.\n";
+		//hosts.close();
 			cin >> inp;
 			try {
 				id = stoi(inp);
 				if (id>hostsf.size()-1) {
+					clrscr();
 					cout << RED("Invalid option, please try again.");
 					continue;
 				} else {
@@ -60,17 +59,18 @@ vector<string> findnew (string knownhostsfolder)
 					addr = selec.substr(selec.find("@")+1);
 					target = {host, addr};
 					clrscr();
-					cout << GREEN("File: \"" << host << "@" << addr << "\" selected");
+					cout << GREEN("Target: \"" << host << "@" << addr << "\" selected");
 					break;
 				}
 			} catch (...) {
 				if ((inp == "x") or (inp == "X")) {
 					return target; //No target selected!
 				} else {
+					clrscr();
 					printf(RED("Unrecognized input, please try again."));
 				}
 			}
-		}
+	}
 		return target;
 }
 
