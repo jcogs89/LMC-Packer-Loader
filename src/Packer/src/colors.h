@@ -7,7 +7,7 @@
 #define BLUE(x)		"\e[1;34m" x "\e[0m"
 #define YELLOW(x)	"\n\e[1;33m" x "\e[0m"
 
-#define DEBUG 1
+#define DEBUG 0
 #if DEBUG == 1
 #define Log(x) std::cout << BLUE(x)
 #define clrscr()

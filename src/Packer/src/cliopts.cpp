@@ -81,9 +81,8 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 	    Size = ftell(File);
 	    fseek(File, 0, SEEK_SET);
 	    Buffer = new char[Size];
-	    string file_data(Buffer,Size);
-
 	    fread(Buffer, 1, Size, File);
+	    string file_data(Buffer,Size);
 
 	/////////////////////////
 	//Hardcoded Key and IV//
@@ -111,7 +110,10 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 
 	//Decryption
 	string decryption_outp = Decrypt(encryption_outp, Size, key, iv);
-
+	std::string decrypted_file= pathpacked+stage[id].substr(10)+".dec";
+    std::ofstream file2(decrypted_file);
+    file2 << decryption_outp;
+    file2.close();
     fclose(File);
 
 	while (1) {
