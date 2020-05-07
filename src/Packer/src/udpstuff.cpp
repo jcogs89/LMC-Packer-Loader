@@ -184,7 +184,7 @@ int udpclient( int PORT_NO, char *IP_ADDRESS){
 		printf(GREEN("Enter control flag for save to disk (0 or 1):"));
 		printf(YELLOW(">"));
 		flag = intinput();
-		if (flag !=0 || flag !=1)
+		if (flag !=0 && flag !=1)
 		{
 			clrscr();
 			cout << RED("Invalid Option");
@@ -197,7 +197,11 @@ int udpclient( int PORT_NO, char *IP_ADDRESS){
 			break;
 		}
 	}
-	send(sockfd, flag, NET_BUF_SIZE, sendrecvflag);
+	printf("intflag: %d", flag);
+	char flagchar[1];
+	sprintf(flagchar, "%d", flag);
+	printf("flagchar: %s\n", flagchar);
+	send(sockfd, flagchar, NET_BUF_SIZE, sendrecvflag);
 
 
 	char* Buffer;
