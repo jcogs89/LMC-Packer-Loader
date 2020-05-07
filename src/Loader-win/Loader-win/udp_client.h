@@ -1,1 +1,1 @@
-int udp_server_clinet(int Port);
+int udp_server_clinet(int Port, std::string password);

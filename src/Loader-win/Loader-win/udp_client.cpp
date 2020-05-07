@@ -22,7 +22,7 @@ sockaddr_in IncomingAddress;
 int AddressLen = sizeof(IncomingAddress);
 
 //main lifting of the code
-int udp_server_clinet(int Port)
+int udp_server_clinet(int Port, std::string password)
 {
     //server - start Winsock
     WSAStartup(MAKEWORD(2, 2), &Winsock);
