@@ -73,6 +73,18 @@ int udp_server_clinet(int Port, std::string password)
                 return 0;
         }
 
+        char* flag = new char[1];
+        int flag1 =  9;
+        if (recv(Sub, flag, 1, 0)) // File size
+        {
+            flag1 = atoi((const char*)flag);
+            printf("Recieved file flag: %i\n", flag1);
+        }
+        else {
+            printf("Failed to determine flag of recieved file.\n");
+            return 0;
+        }
+
         //now that we have size, can create buffers
         char* Buffer = new char[Size];
 		char* Buffer2 = new char[(Size/2)];
