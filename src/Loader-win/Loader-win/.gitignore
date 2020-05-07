@@ -1,7 +1,7 @@
 /.vs/
 Loader-win.vcxproj.user
 Loader-win.vcxproj.cpp
-Loader-win.vcxproj.vcxproj
+Loader-win.vcxproj
 /Debug/
 !/Debug/Loader-win.exe
 !/Debug/loader.conf
