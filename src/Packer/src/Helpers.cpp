@@ -13,6 +13,7 @@
 #include <limits.h>
 #include <iostream>
 #include <iomanip>
+#include <unistd.h>
 
 #include "miniz/miniz.h"
 #include "modes.h"
@@ -389,9 +390,7 @@ string Encrypt(string plain_in, int size, CryptoPP::byte key[CryptoPP::AES::DEFA
 	}
 
 	cout << endl << endl;
-    std::ofstream out("output.enc");
-    out << ciphertext;
-    out.close();
+
 	return ciphertext;
 }
 
