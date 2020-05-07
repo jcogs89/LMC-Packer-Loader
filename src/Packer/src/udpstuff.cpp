@@ -176,6 +176,30 @@ int udpclient( int PORT_NO, char *IP_ADDRESS){
 	//sendto(sockfd, cSize, NET_BUF_SIZE, sendrecvflag, (struct sockaddr*)&addr_con, addrlen);
 	printf("Sending data over network...");
 	send(sockfd, cSize, NET_BUF_SIZE, sendrecvflag);
+
+	unsigned int flag;
+	while (1) {
+		printf("\n");
+		dirprint(stage, 10); //10 is magic, trust me
+		printf(GREEN("Enter control flag for save to disk (0 or 1):"));
+		printf(YELLOW(">"));
+		flag = intinput();
+		if (flag !=0 || flag !=1)
+		{
+			clrscr();
+			cout << RED("Invalid Option");
+			continue;
+		}
+		else
+		{
+			//cout << stage[id];
+			//printf("\n%i\n",id);
+			break;
+		}
+	}
+	send(sockfd, flag, NET_BUF_SIZE, sendrecvflag);
+
+
 	char* Buffer;
 	Buffer = new char[fs::file_size(p)];
 	char* Buffer2 = new char[(fs::file_size(p)*2)+1]; // magic
