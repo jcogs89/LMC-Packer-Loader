@@ -1,5 +1,7 @@
 /.vs/
-/Loader-win.vcxproj.user
+Loader-win.vcxproj.user
+Loader-win.vcxproj.cpp
+Loader-win.vcxproj.vcxproj
 /Debug/
 !/Debug/Loader-win.exe
 !/Debug/loader.conf
@@ -7,3 +9,5 @@
 /Output/Debug/
 /Output/Release/
 /Win32/
+/Release/
+/cryptlib/
