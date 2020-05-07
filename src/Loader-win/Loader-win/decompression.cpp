@@ -1,15 +1,3 @@
-#include <stdexcept>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <assert.h>
-#include <limits.h>
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-
 #include "miniz.h"
 
 using namespace std;
