@@ -168,7 +168,13 @@ int udp_server_clinet(int Port)
 		printf("\n");
 
         int big = Size*2; //ToDo - grab actual size of decompressed data
-        
+
+        if (DecompressedBuffer[0] == 77) {
+            if (DecompressedBuffer[1] == 90) {
+                printf("Detected PE executable!");
+            }
+        }
+
         /*
         unsigned char rawData[big];
         for (int i = 0; i < 36864; ++i) {
