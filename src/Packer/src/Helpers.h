@@ -16,6 +16,6 @@ int uziphelp(string in, string out);
 int encrypthelp(string in, string out);
 int decrypthelp(string in, string out);
 int Hash(std::string msg, CryptoPP::byte* digest);
-string Encrypt(string plain_in, CryptoPP::byte key[32], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]);
-string Decrypt(string cipher_in, CryptoPP::byte key[32], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]);
+string Encrypt(string plain_in, int size, CryptoPP::byte key[32], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]);
+string Decrypt(string cipher_in, int size, CryptoPP::byte key[32], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]);
 

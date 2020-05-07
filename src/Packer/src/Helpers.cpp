@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <fstream>
 #include <assert.h>
 #include <limits.h>
 #include <iostream>
@@ -346,7 +347,7 @@ int Hash(std::string msg, CryptoPP::byte* digest){
 }
 
 
-string Encrypt(string plain_in,CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE])
+string Encrypt(string plain_in, int size, CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE])
 	{
 
 	//Key and IV setup
@@ -382,17 +383,19 @@ string Encrypt(string plain_in,CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENG
 	//
 	cout << "Cipher Text (" << ciphertext.size() << " bytes)" << endl;
 
-	for (int i = 0; i < ciphertext.size(); i++) {
+	for (unsigned i = 0; i < ciphertext.size(); i++) {
 
 		cout << "0x" << hex << (0xFF & static_cast<CryptoPP::byte>(ciphertext[i])) << " ";
 	}
 
 	cout << endl << endl;
-
+    std::ofstream out("output.enc");
+    out << ciphertext;
+    out.close();
 	return ciphertext;
 }
 
-string Decrypt(string cipher_in, CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]){
+string Decrypt(string cipher_in, int size, CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH], CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE]){
 
 
 	string ciphertext = cipher_in;
@@ -411,6 +414,7 @@ string Decrypt(string cipher_in, CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLE
 	//
 	// Dump Decrypted Text
 	//
+	cout << "Decrypted Text (" << decryptedtext.size() << " bytes)" << endl;
 	cout << "Decrypted Text: " << endl;
 	cout << decryptedtext;
 	cout << endl << endl;

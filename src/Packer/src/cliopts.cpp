@@ -8,7 +8,6 @@
 #include "incom.h"
 #include "cliopts.h"
 #include "udpstuff.h"
-#include "colors.h"
 #include "modes.h"
 #include "aes.h"
 #include "filters.h"
@@ -63,13 +62,25 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 	}
 
 
-	/*//ENCRYPTION <><>
-	string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
-	std::string encryption_outp= pathpacked+stage[id].substr(10)+".encr";
-	encrypthelp(compression_outp, encryption_outp);
-	std::cout << GREEN("\nFile Encrypted Successfully!\n");
-	*/
+	 FILE* File;
+	    char* Buffer;
+	    unsigned long Size;
+	    std::string copied;
 
+	    File = fopen(compression_outp.c_str(), "rb");
+	    if (!File)
+	    {
+	        printf("Error while reading the file\n");
+	        getchar();
+	        return;
+	    }
+	    fseek(File, 0, SEEK_END);
+	    Size = ftell(File);
+	    fseek(File, 0, SEEK_SET);
+	    Buffer = new char[Size];
+	    string file_data(Buffer,Size);
+
+	    fread(Buffer, 1, Size, File);
 
 	/////////////////////////
 	//Hardcoded Key and IV//
@@ -84,17 +95,17 @@ void addpayload(std::string pathpacked, std::string pathstaging) {
 	cout << "Enter Password for Encryption: ";
 	cin >> msg;
 
-
 	//Hashing and key generation
 	Hash(msg,key);
 
-
 	//Encryption
-	string encryption_outp = Encrypt(compression_outp, key, iv);
-
+	string encryption_outp = Encrypt(file_data, Size, key, iv);
+	std::cout << GREEN("\nFile Encrypted Successfully!\n");
 
 	//Decryption
-	string decryption_outp = Decrypt(encryption_outp, key, iv);
+	string decryption_outp = Decrypt(encryption_outp, Size, key, iv);
+
+    fclose(File);
 
 	while (1) {
 	        printf("Do you want to delete the source in staging (y/n)?");
